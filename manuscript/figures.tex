@@ -1,0 +1,211 @@
+%\renewcommand{\figdir}{Fig} % figure directory
+%
+%%% Methodology
+%\plot{Figure1}{width=\textwidth}{
+%	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) defined by 
+%	$N_{x} = 4$ and $N_{y} = 3$. The grids are oriented along the (a) $x$-axis and (b) $y$-axis. The grid 
+%	coordinates are $x_{k}$ and $y_{k}$, where the $k = 1, \dots, N_{x}$ and $l = 1, \dots, N_{y}$ are 
+%	called the grid indices. The insets show the grid indices $k$ and $l$.}
+%	\label{fig:methodology}
+%}
+%
+%\plot{4_equivalent_sources}{width=\textwidth}{
+%	{Representation of the four equivalent sources (black dots) needed to reconstruct the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Each of the equivalent sources are located in the corner of the simulated regular grid of $M_x = 4$ and $M_y = 3$ sources. The influence of these sources on each of the observation points (blue dots) i the regular grid of $N_x = 4$ and $N_y = 3$ will give the four columns necessary of matrix $\mathbf{A}$.}
+%	\label{fig:4_equivalent_sources}
+%}
+%
+%%% Computational performance
+%
+%\plot{flops_mag}{width=13.5cm}{
+%	{Number of flops necessary to estimate the parameter vector $\mathbf{\hat{p}}$ using the non-iterative classical method (equation \ref{eq:flops-normal-cholesky}) the CGLS (equation \ref{eq:flops-cgls}) and our modified CGLS method (equation \ref{eq:flops-cgls-bccb}) with $N^{it} = 50$. 
+%	The observation point $N$ varied from $5,000$ to $1,000,000$. The \emph{radix-2} 2D FFT
+%	algorithm was considered for our method, with $\kappa = 5$.}
+%	\label{fig:flops}
+%}
+%
+%\plot{time_comparison_mag}{width=13.5cm}{
+%	{Comparison between the runtime of the equivalent-layer technique using the classical, the CGLS algorithm and our method.	The values for the CGLS and our methods were obtained for $N^{it} = 50$ iterations.}
+%	\label{fig:solve_time}
+%}
+%
+%\plot{time_sources_mag}{width=13.5cm}{
+%	{Comparison between the runtime to calculate the first column of the BCCB matrix embbeded from $\mathbf{A}$ (equation \ref{eq:aij_mag}) using only one and using four equivalent sources. Although the time is very similar, with one source a small advantage can be observed as the number of data $N$ increases. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.}
+%	\label{fig:sources_time}
+%}
+%
+%%% Synthetic data part I
+%
+%\plot{model_mag_synthetic}{width=13.5cm}{
+%	{Observed synthetic magnetic field data. A regular grid of $80 \times 80$ points was used, totaling $N = 6,\, 400$ observation points. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic}
+%}
+%
+%\plot{predicted_synthetic_mag}{width=13.5cm}{
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}). (b) Residuals between the observed (\ref{fig:model_mag_synthetic}) and the predicted data (panel a), with mean $-0.0007556$ nT and standart deviation of $0.4120$ nT. This process took $2.04$ seconds.}
+%	\label{fig:predicted_synthetic_mag}
+%}
+%
+%\plot{predicted_bccb_mag}{width=13.5cm}{
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product. (b) Residuals between the observed (\ref{fig:model_mag_synthetic}) and the predicted data (panel a), with mean $-0.003246$ nT and standart deviation of $0.5471$ nT. This process took $0.083$ seconds.}
+%	\label{fig:predicted_bccb_mag}
+%}
+%
+%\plot{convergence_synthetic_mag}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for this synthetic application of the magnetic equivalent layer using the fast BTTB matrix-vector product.}
+%	\label{fig:convergence_synthetic_mag}
+%}
+%
+%%% Synthetic data part II
+%
+%\plot{model_mag_synthetic_irregular_10}{width=13.5cm}{
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. Deviations of $5\%$ in the \emph{x} direction and $5\%$ in the \emph{y} direction were used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_10}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_10}{width=13.5cm}{
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $-0.0005$ nT and standart deviation of $0.4539$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_10}
+%}
+%
+%\plot{predicted_bccb_mag_irregular_10}{width=13.5cm}{
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $-0.0237$ nT and standart deviation of $0.7824$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_10}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_10}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $10\%$ of pertubation on the $x$-\textit{direction} and $y$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_10}
+%}
+%
+%%
+%%
+%
+%\plot{model_mag_synthetic_irregular_20}{width=13.5cm}{	
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. Deviations of $20\%$ in the \emph{x} direction and $20\%$ in the \emph{y} direction were used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_20}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_20}{width=13.5cm}{	
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_20}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_20}b) and the predicted data (panel a), with mean $-0.0006003$ nT and standart deviation of $0.4543$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_20}
+%}
+%
+%\plot{predicted_bccb_mag_irregular_20}{width=13.5cm}{	
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_20}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_20}b) and the predicted data (panel a), with mean $-0.005673$ nT and standart deviation of $0.9093$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_20}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_20}{width=13.5cm}{	
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $20\%$ of pertubation on the $x$-\textit{direction} and $y$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_20}
+%}
+%
+%%
+%%
+%
+%\plot{model_mag_synthetic_irregular_30}{width=13.5cm}{
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. Deviations of $30\%$ in the \emph{x} direction and $30\%$ in the \emph{y} direction were used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_30}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_30}{width=13.5cm}{	
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_30}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_30}b) and the predicted data (panel a), with mean $-0.0006351$ nT and standart deviation of $0.4548$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_30}
+%}
+%
+%\plot{predicted_bccb_mag_irregular_30}{width=13.5cm}{	
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_30}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_30}b) and the predicted data (panel a), with mean $-0.03092$ nT and standart deviation of $1.2304$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_30}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_30}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $30\%$ of pertubation on the $x$-\textit{direction} and $y$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_30}
+%}
+%
+%%
+%%
+%
+%\plot{model_mag_synthetic_irregular_z5}{width=13.5cm}{ 
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. A deviation of $5\%$ in the \emph{z} direction was used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_z5}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_z5}{width=13.5cm}{
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z5}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z5}b) and the predicted data (panel a), with mean $-0.002141$ nT and standart deviation of $0.4692$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_z5}
+%}
+%
+%\plot{predicted_bccb_mag_irregular_z5}{width=13.5cm}{
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z5}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z5}b) and the predicted data (panel a), with mean $0.01091$ nT and standart deviation of $1.3077$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_z5}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_z5}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $5\%$ of pertubation on the $z$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_z5}
+%}
+%
+%%
+%%
+%
+%
+%\plot{model_mag_synthetic_irregular_z10}{width=13.5cm}{
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. A deviation of $10\%$ in the \emph{z} direction was used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_z10}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_z10}{width=13.5cm}{
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z10}b) and the predicted data (panel a), with mean $-0.006071$ nT and standart deviation of $0.5027$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_z10}
+%}
+%%
+%\plot{predicted_bccb_mag_irregular_z10}{width=13.5cm}{
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z10}b) and the predicted data (panel a), with mean $0.04800$ nT and standart deviation of $2.2860$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_z10}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_z10}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $10\%$ of pertubation on the $z$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_z10}
+%}
+%
+%%
+%%
+%
+%\plot{model_mag_synthetic_irregular_z20}{width=13.5cm}{
+%	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. A deviation of $20\%$ in the \emph{z} direction was used. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+%	\label{fig:model_mag_synthetic_irregular_z20}
+%}
+%
+%\plot{predicted_synthetic_mag_irregular_z20}{width=13.5cm}{
+%	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z20}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z20}b) and the predicted data (panel a), with mean $-0.01717$ nT and standart deviation of $0.5768$ nT.}
+%	\label{fig:predicted_synthetic_mag_irregular_z20}
+%}
+%
+%\plot{predicted_bccb_mag_irregular_z20}{width=13.5cm}{
+%	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_z20}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z20}b) and the predicted data (panel a), with mean $-0.3614$ nT and standart deviation of $5.9610$ nT.}
+%	\label{fig:predicted_bccb_mag_irregular_z20}
+%}
+%
+%\plot{convergence_synthetic_mag_irregular_z20}{width=13.5cm}{
+%	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $20\%$ of pertubation on the $z$-\textit{direction}.}
+%	\label{fig:convergence_synthetic_mag_irregular_z20}
+%}
+%
+%%% Field Data
+%
+%\plot{carajas_real_data_mag}{width=13.5cm}{
+%	{Observed magnetic field data of the Carajás, Brazil area. A regular grid of $500 \times 500$ points was used, totaling $N = 250,\, 000$ observation points.}
+%	\label{fig:carajas_real_data_mag}
+%}
+%
+%\plot{carajas_tf_predito_500x500}{width=13.5cm}{
+%	{(a) Predicted data using our method. (b) Residuals between the observed (\ref{fig:carajas_real_data_mag}) and the predicted data (panel a), with mean $-2.7135\times 10^{-07}$ nT and standart deviation of $3.2726\times 10^{-06}$ nT.}
+%	\label{fig:carajas_gz_predito_mag}
+%}
+%
+%\plot{up5000_carajas_mag_500x500}{width=13.5cm}{
+%	{Upward continuation transformation of real data of Carajás, Brazil at $5000$ meter. It was necessary $0.49$ seconds to complete the process.}
+%	\label{fig:up5000_carajas_500x500_mag}
+%}

@@ -1,8 +1,5 @@
 from __future__ import division
 import numpy as np
-from fatiando.constants import G, SI2MGAL
-from scipy.sparse import diags
-from scipy.linalg import toeplitz
 from numpy.linalg import inv,norm
 
 def cg_eq_bccb_mag(x,y,z,zj,shape,data,F,h,itmax):
@@ -57,6 +54,66 @@ def cg_eq_bccb_mag(x,y,z,zj,shape,data,F,h,itmax):
 
     return p_cg, datap
 
+def cgls_eq_mag(x,y,z,zj,shape,data,F,h,itmax):
+    '''
+    Calculates the estimate physical property distribution of
+    an equivalent layer that repreduces a total-field anomaly
+    data through the conjugate gradient least square iterative
+    method [2].
+
+    [2]Aster, Richard C., Brian Borchers, and Clifford H. Thurber. 
+    Parameter estimation and inverse problems. Elsevier, 2018.
+    p.166
+
+    input
+    x, y: numpy array - the x, y coordinates
+    of the grid and equivalent layer points.
+    z: numpy array - the height of observation points.
+    zj: numpy array - the depth of the equivalent layer.
+    shape: tuple - grid size.
+    data: numpy array - the total-field anomaly 
+    potential field data at the x,y and z grid points.
+    F: numpy array - cosines directions of the main magnetic field.
+    h: numpy array - cosines directions of the body's magnetization.
+    itmax: scalar - number of iterations of the CGLS method.
+
+    output
+    p_cg: numpy array - final equivalent layer property estimative.
+    datap: numpy array - the predicted data.
+    '''
+    assert x.size == y.size == z.size == zj.size == data.size, 'x, y,\
+    z, h and data must have the same number of elements'
+    #assert zj.all() > z.all(), 'The equivalent layer must be beneath\
+	#the observation points'
+    
+    # Dataset lenght 
+    N = shape[0]*shape[1]
+    
+    A = np.empty((N, N), dtype=np.float)
+    for i in range (N):
+        a = (x-x[i])
+        b = (y-y[i])
+        c = (zj-z[i])
+        r = (a*a+b*b+c*c)
+        r3 = r**(-1.5)
+        r5 = r**(2.5)
+        Hxx = -r3+3*(a*a)/r5
+        Hxy = 3*(a*b)/r5
+        Hxz = 3*(a*c)/r5
+        Hyy = -r3+3*(b*b)/r5
+        Hyz = 3*(b*c)/r5
+        Hzz = -r3+3*(c*c)/r5
+        A[i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
+        F[2]*Hyz)*h[1] + (F[0]*Hxz+F[1]*Hyz+F[2]*Hzz)*h[2])
+
+    #CGLS inversion method for Equivalent layer
+    p_cgls = cgls_loop(A,shape,N,data,itmax)
+
+    #Final predicted data
+    datap = A.dot(p_cgls)
+
+    return p_cgls, datap
+    
 def cgls_eq_bccb_mag(x,y,z,zj,shape,data,F,h,itmax):
     '''
     Calculates the estimate physical property distribution of
@@ -111,7 +168,7 @@ def cgls_eq_bccb_mag(x,y,z,zj,shape,data,F,h,itmax):
         cev_row = ones_cev_mag_row(hxx,hxy,hxz,hyy,hyz,hzz,shape,N,F,h)
 
     #CGLS inversion method for Equivalent layer
-    p_cgls = cgls_eq_mag(cev,cev_row,shape,N,data,itmax)
+    p_cgls = cgls_bccb_loop(cev,cev_row,shape,N,data,itmax)
 
     #Final predicted data
     datap = fast_forward_bccb_mag(cev,p_cgls,shape,N)
@@ -398,7 +455,7 @@ def classic_mag(x,y,z,zj,F,h,N,data):
     data: numpy array - the predicted data.
     '''
     A = np.empty((N, N), dtype=np.float)
-    for i in xrange (N):
+    for i in range (N):
         a = (x-x[i])
         b = (y-y[i])
         c = (zj-z[i])
@@ -575,7 +632,7 @@ def ones_cev_mag(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
     bccb_zz = np.zeros(4*N, dtype='complex128')
     k = 2*shape[0]-1
 
-    for i in xrange (shape[0]):
+    for i in range (shape[0]):
         block_xx = Hxx[shape[1]*(i):shape[1]*(i+1)]
         block_xy = Hxy[shape[1]*(i):shape[1]*(i+1)]
         block_xz = -Hxz[shape[1]*(i):shape[1]*(i+1)]
@@ -646,7 +703,7 @@ def ones_cev_mag_row(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
     bccb_zz = np.zeros(4*N, dtype='complex128')
     k = 2*shape[0]-1
 
-    for i in xrange (shape[0]):
+    for i in range (shape[0]):
         block_xx = Hxx[shape[1]*(i):shape[1]*(i+1)]
         block_xy = Hxy[shape[1]*(i):shape[1]*(i+1)]
         block_xz = Hxz[shape[1]*(i):shape[1]*(i+1)]
@@ -711,7 +768,7 @@ def cev_mag(bttb_0,bttb_1,bttb_2,bttb_3,shape,N):
     BCCB = np.zeros(4*N, dtype='complex128')
     q = shape[0]-1
     k = 2*shape[0]-1
-    for i in xrange (shape[0]):
+    for i in range (shape[0]):
         block_2 = bttb_2[shape[1]*(q):shape[1]*(q+1)]
         block_3 = bttb_3[shape[1]*(q):shape[1]*(q+1)]
         c_2 = block_2[::-1]
@@ -748,7 +805,7 @@ def cev_mag_row(bttb_0,bttb_1,bttb_2,bttb_3,shape,N):
     BCCB = np.zeros(4*N, dtype='complex128')
     q = shape[0]-2
     k = 2*shape[0]-1
-    for i in xrange (shape[0]): # Upper part of BCCB first column
+    for i in range (shape[0]): # Upper part of BCCB first column
         block_0 = bttb_0[shape[1]*(i):shape[1]*(i+1)]
         block_1 = bttb_1[shape[1]*(i):shape[1]*(i+1)]
         BCCB[shape[1]*(2*i):shape[1]*(2*i+2)] = np.concatenate((block_0,
@@ -784,7 +841,7 @@ def fast_forward_bccb_mag(cev_mag,p,shape,N):
     # First column of BCCB
     v = np.zeros(4*N, dtype='complex128')
 
-    for i in xrange (shape[0]):
+    for i in range (shape[0]):
         v[shape[1]*(2*i):shape[1]*(2*i+2)] = np.concatenate((p[shape[1]*
         (i):shape[1]*(i+1)], np.zeros(shape[1])), axis=None)
 
@@ -832,7 +889,7 @@ def cg_eq_mag(cev_mag,shape,N,data,itmax):
         res_new = res_new - t_k*s
     return p_cg
 
-def cgls_eq_mag(cev_mag,cev_mag_row,shape,N,data,itmax):
+def cgls_loop(A,shape,N,data,itmax):
     '''
     Linear conjugate gradient least squares iterative method.
 
@@ -852,6 +909,47 @@ def cgls_eq_mag(cev_mag,cev_mag_row,shape,N,data,itmax):
     '''
     # Vector of initial guess of parameters
     m = np.ones(N)
+    # Matrix-vector product with initial guess
+    A_m = A.dot(m)
+    # Residual
+    s = data - A_m
+    res_new = A.T.dot(s)
+    # Basis vector mutually conjugate with respect to sensitivity matrix
+    p = np.zeros(N)
+    norm_res_new = 1.
+    # Conjugate gradient loop
+    for i in range (itmax):
+        norm_res_old = norm_res_new
+        norm_res_new = res_new.dot(res_new)
+        Beta = norm_res_new/norm_res_old
+        p = res_new + Beta*p
+        A_p = A.dot(p)
+        t_k = norm_res_new/(A_p.dot(A_p)) # Step size parameter
+        m = m + t_k*p
+        s = s - t_k*A_p
+        res_new = A.T.dot(s)
+    return m
+    
+def cgls_bccb_loop(cev_mag,cev_mag_row,shape,N,data,itmax):
+    '''
+    Linear conjugate gradient least squares iterative method.
+
+    input
+    cev_mag: numpy array - eigenvalues of the BCCB matrix.
+    cev_mag_row: numpy array - eigenvalues of the transposed BCCB matrix.
+    shape: tuple - grid size.
+    N: scalar - number of observation points.
+    data: numpy array - the total-field anomaly 
+    potential field data at the x,y and z grid points.
+    itmax: scalar - number of iterations of the CGLS method.
+
+    output
+    m: numpy array - the estimate physical property
+    distribution (magnetic moment Am^2).
+
+    '''
+    # Vector of initial guess of parameters
+    m = np.zeros(N)
     # Matrix-vector product with initial guess
     A_m = fast_forward_bccb_mag(cev_mag,m,shape,N)
     # Residual

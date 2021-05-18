@@ -1,0 +1,43 @@
+\append{The eigenvalues of $\mathbf{C}$}
+
+
+In the present Appendix, we show how to efficiently compute matrix $\mathbf{L}$
+(equations \ref{eq:left_side_DFT_system_3}, \ref{eq:DFT-system-preliminary} 
+and \ref{eq:DFT-system}) by using only the first column of the BCCB matrix
+$\mathbf{C}$ (equation \ref{eq:w_Cv}).
+
+We need first premultiply both sides of equation \ref{eq:C-diagonalized}
+by $\left(\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right)$ to obtain
+\begin{equation}
+\left(\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) \mathbf{C} = 
+\boldsymbol{\Lambda}
+\left(\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) \: .
+\label{eq:C-diagonalized2}
+\end{equation}
+From equation \ref{eq:C-diagonalized2}, we can easily show that 
+\citep[][ p. 77]{chan-jin2007}:
+\begin{equation}
+	\left(\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) \, 
+	\mathbf{c}_{0} = \frac{1}{\sqrt{4QP}} \, \boldsymbol{\lambda} \: ,
+	\label{eq:DFT_C_column}
+\end{equation}
+where $\mathbf{c}_{0}$ is a $4QP \times 1$ vector representing the first column of 
+$\mathbf{C}$ (equation \ref{eq:w_Cv}) and 
+$\boldsymbol{\lambda}$ (equation \ref{eq:left_side_DFT_system_2}) is the $4QP \times 1$ 
+vector that contains the diagonal of matrix $\boldsymbol{\Lambda}$ (equation \ref{eq:C-diagonalized}) 
+and is obtained by applying the $vec$-operator (equation \ref{eq:vec-operator}) to matrix $\mathbf{L}$.
+Now, let us conveniently consider that $\mathbf{c}_{0}$ is obtained by applying the $vec$-operator 
+to a $2Q \times 2P$ matrix $\mathbf{G}$.
+Using this matrix, the property of the $vec$-operator for separable transformations 
+(equation \ref{eq:matrix-S}) and the symmetry of unitary DFT matrices, equation \ref{eq:DFT_C_column} 
+can be rewritten as follows
+\begin{eqnarray}
+	\mathbf{F}_{2Q} \, \mathbf{G} \, \mathbf{F}_{2P} = 
+	\frac{1}{\sqrt{4QP}} \, \mathbf{L} \: .
+	\label{eq:DFT_G}
+\end{eqnarray}
+This equation shows that the eigenvalues of the BCCB matrix $\mathbf{C}$ 
+(equation \ref{eq:w_Cv}), forming the rows of $\mathbf{L}$,
+are obtained by computing the 2D DFT of matrix $\mathbf{G}$,
+which contains the elements forming the first column of the BCCB matrix 
+$\mathbf{C}$ (equation \ref{eq:w_Cv}).

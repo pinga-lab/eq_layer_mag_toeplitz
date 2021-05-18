@@ -1,0 +1,27 @@
+\tabl{RAM-usage}{This table shows the RAM memory usage (in Megabytes) for storing the whole matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}), the sum of all six first columns of the BCCB matrices embedded from the components of the matrix $\mathbf{H}$ from equation \ref{eq:Hi} (both need 8 bytes per element) and the matrix $\mathbf{L}$ containing the eigenvalues complex numbers (16 bytes per element) resulting from the diagonalization of matrix $\mathbf{C}$ (equation \ref{eq:w_Cv}). Here we must consider that $N$ observation points forms a $N \times N$ matrix.
+\label{tab:RAM-usage}}
+{
+	\begin{center}
+		\begin{tabular}[]{|l|c|c|c|}
+			\hline
+			\textbf{$N$} & \textbf{Matrix $\mathbf{A}$} & \textbf{All six first columns of BCCB matrices} & \textbf{Matrix $\mathbf{L}$}\\
+			\hline 
+			$100$ & 0.0763 & 0.0183 & 0.00610\\
+			\hline
+			$400$ & 1.22 & 0.0744 & 0.0248\\
+			\hline
+			$2,500$ & 48 & 0.458 & 0.1528\\
+			\hline
+			$10,000$ & 763 & 1.831 & 0.6104\\
+			\hline
+			$40,000$ & 12,207 & 7.32 & 2.4416 \\
+			\hline
+			$250,000$ & 476,837 & 45.768 & 15.3 \\
+			\hline
+			$500,000$ & 1,907,349 & 91.56 & 30.518 \\
+			\hline
+			$1,000,000$ & 7,629,395 & 183.096 & 61.035 \\
+			\hline
+		\end{tabular}
+	\end{center} 
+}

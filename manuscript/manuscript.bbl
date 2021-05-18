@@ -1,0 +1,96 @@
+\begin{thebibliography}{}
+\itemsep0pt
+
+\bibitem[Aster et~al., 2018]{aster2018parameter}
+Aster, R.~C., B. Borchers, and C.~H. Thurber,  2018, Parameter estimation and
+  inverse problems: Elsevier.
+
+\bibitem[Blakely, 1996]{blakely1996}
+Blakely, R.~J.,  1996, Potential theory in gravity and magnetic applications, 1
+  ed.: Cambridge University Press.
+
+\bibitem[Chan and Jin, 2007]{chan-jin2007}
+Chan, R. H.-F., and X.-Q. Jin,  2007, An introduction to iterative {Toeplitz}
+  solvers: SIAM, {\bf 5}.
+
+\bibitem[Dampney, 1969]{dampney1969}
+Dampney, C. N.~G.,  1969, The equivalent source technique: Geophysics, {\bf
+  34}, no. 1, 39--53.
+
+\bibitem[Emilia, 1973]{emilia1973}
+Emilia, D.~A.,  1973, Equivalent sources used as an analytic base for
+  processing total magnetic field profiles: Geophysics, {\bf 38}, no. 2,
+  339--348.
+
+\bibitem[Golub and Loan, 2013]{golub-vanloan2013}
+Golub, G.~H., and C.~F.~V. Loan,  2013, Matrix computations (johns hopkins
+  studies in the mathematical sciences), 4 ed.: Johns Hopkins University Press.
+
+\bibitem[Hogue et~al., 2020]{hogue2020tutorial}
+Hogue, J.~D., R.~A. Renaut, and S. Vatankhah,  2020, A tutorial and open source
+  software for the efficient evaluation of gravity and magnetic kernels:
+  Computers \& Geosciences, {\bf 144}, 104575.
+
+\bibitem[Le\~{a}o and Silva, 1989]{leao-silva1989}
+Le\~{a}o, J. W.~D., and J.~B.~C. Silva,  1989, Discrete linear transformations
+  of potential field data: Geophysics, {\bf 54}, no. 4, 497--507.
+
+\bibitem[Levinson, 1946]{levinson1946}
+Levinson, N.,  1946, The wiener (root mean square) error criterion in filter
+  design and prediction: Journal of Mathematics and Physics, {\bf 25}, no. 1-4,
+  261--278.
+
+\bibitem[Li et~al., 2014]{li2014using}
+Li, Y., M. Nabighian, and D.~W. Oldenburg,  2014, Using an equivalent source
+  with positivity for low-latitude reduction to the pole without striation:
+  Geophysics, {\bf 79}, J81--J90.
+
+\bibitem[Li and Oldenburg, 2010]{li-oldenburg2010}
+Li, Y., and D.~W. Oldenburg,  2010, Rapid construction of equivalent sources
+  using wavelets: Geophysics, {\bf 75}, no. 3, L51--L59.
+
+\bibitem[Mendon{\c{c}}a, 2020]{mendoncca2020subspace}
+Mendon{\c{c}}a, C.~A.,  2020, Subspace method for solving large-scale
+  equivalent layer and density mapping problems: Geophysics, {\bf 85},
+  G57--G68.
+
+\bibitem[Mendon\c{c}a and Silva, 1994]{mendonca-silva1994}
+Mendon\c{c}a, C.~A., and J.~B.~C. Silva,  1994, The equivalent data concept
+  applied to the interpolation of potential field data: Geophysics, {\bf 59},
+  no. 5, 722--732.
+
+\bibitem[Oliveira{ }Jr. et~al., 2013]{oliveirajr-etal2013}
+Oliveira{ }Jr., V.~C., V.~C.~F. Barbosa, and L. Uieda,  2013, Polynomial
+  equivalent layer: Geophysics, {\bf 78}, no. 1, G1--G13.
+
+\bibitem[Renaut et~al., 2020]{renaut2020fast}
+Renaut, R.~A., J.~D. Hogue, S. Vatankhah, and S. Liu,  2020, A fast methodology
+  for large-scale focusing inversion of gravity and magnetic data using the
+  structured model matrix and the 2-d fast fourier transform: Geophysical
+  Journal International, {\bf 223}, 1378--1397.
+
+\bibitem[Siqueira et~al., 2017]{siqueira-etal2017}
+Siqueira, F.~C., V.~C. Oliveira{ }Jr, and V.~C. Barbosa,  2017, Fast iterative
+  equivalent-layer technique for gravity data processing: A method grounded on
+  excess mass constraint: Geophysics, {\bf 82}, no. 4, G57--G69.
+
+\bibitem[Takahashi et~al., 2020]{takahashi2020convolutional}
+Takahashi, D., V.~C. Oliveira~Jr, and V.~C. Barbosa,  2020, Convolutional
+  equivalent layer for gravity data processing: Geophysics, {\bf 85},
+  G129--G141.
+
+\bibitem[Van{ }Loan, 1992]{vanloan1992}
+Van{ }Loan, C.,  1992, Computational frameworks for the {Fast Fourier
+  Transform}: SIAM.
+
+\bibitem[Zhang and Wong, 2015]{zhang-wong2015}
+Zhang, Y., and Y.~S. Wong,  2015, {BTTB}-based numerical schemes for
+  three-dimensional gravity field inversion: Geophysical Journal International,
+  {\bf 203}, no. 1, 243--256.
+
+\bibitem[Zhang et~al., 2016]{zhang-etal2016}
+Zhang, Y., Y.~S. Wong, and Y. Lin,  2016, {BTTB}--{RRCG} method for downward
+  continuation of potential field data: Journal of Applied Geophysics, {\bf
+  126}, 74--86.
+
+\end{thebibliography}
