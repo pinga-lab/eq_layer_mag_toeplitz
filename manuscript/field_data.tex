@@ -6,9 +6,10 @@ The total number of data is 7,706,153. For this case we gridded the data to $500
 To achieve high efficiency in property estimative of the equivalent sources, the method CGLS for inversion was used, combined with a fast matrix-vector product, only possible because of the Block-Toeplitz Toeplitz-Block(BTTB) structure of the sensitivity matrix. This fast matrix-vector product was also used for data processing (upward continuation) in a very efficient way.
 
 As this area is very large different values of the magnetic main field can be considered. 
-For this test it was considered an approximated mid location of the area (latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ for the IGRF model in 01/01/2014. The inclination was calculated considering the Geocentric axial dipole model ($tang \, I = 2 \times tan \, \lambda$) and is equal to $12.84^{\circ}$.
-As the source magnetization is unknown, inclination and declination equals to the main field is being used.
+For this test it was considered an approximated mid location of the area (latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ for the IGRF model in 1st january, 2014. The inclination was calculated considering the Geocentric axial dipole model ($tang \, I = 2 \times tan \, \lambda$) and is equal to $12.84^{\circ}$. As the source magnetization is unknown, inclination and declination equals to the main field is being used.
 
-Figure \ref{fig:carajas_real_data_mag} shows the observed magnetic field data of the area. Using a equivalent layer at $300$ meters above the ground the predicted data and its residual are shown in figure \ref{fig:carajas_gz_predito_mag}. The mean of $-2.7135\times 10^{-07}$ nT and the standart deviation of $3.2726\times 10^{-06}$ nT of the residual shows the good result of physical property estimative. It was used 50 iterations of the CGLS method taking $15.5$ seconds with a Intel core i7 7700HQ@2.8GHz processor.
+Figure \ref{fig:carajas_real_data_mag} shows the observed magnetic field data of the area. Using a equivalent layer at $300$ meters above the ground the predicted data and its residual are shown in figure \ref{fig:carajas_gz_predito_mag}. The mean of $2.4566\times 10^{-06}$ nT and the standart deviation of $1.9787\times 10^{-06}$ nT of the residual shows the good result of physical property estimative. It was used 50 iterations of the CGLS method taking $15.5$ seconds with a Intel core i7 7700HQ@2.8GHz processor.
+
+The convergence analysis is shown in figure \ref{fig:convergence_carajas_mag_500x500}
 
 In figure \ref{fig:up5000_carajas_500x500_mag} the upward continuation transformation was made at $5000$ meters and took $0.49$ seconds.
