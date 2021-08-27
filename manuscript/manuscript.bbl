@@ -1,0 +1,154 @@
+\begin{thebibliography}{}
+\itemsep0pt
+
+\bibitem[Aster et~al., 2018]{aster2018parameter}
+Aster, R.~C., B. Borchers, and C.~H. Thurber,  2018, Parameter estimation and
+  inverse problems: Elsevier.
+
+\bibitem[Bhattacharyya, 1980]{bhattacharyya1980generalized}
+Bhattacharyya, B.,  1980, A generalized multibody model for inversion of
+  magnetic anomalies: Geophysics, {\bf 45}, 255--270.
+
+\bibitem[Blakely, 1996]{blakely1996}
+Blakely, R.~J.,  1996, Potential theory in gravity and magnetic applications, 1
+  ed.: Cambridge University Press.
+
+\bibitem[Bott, 1960]{bott1960use}
+Bott, M.,  1960, The use of rapid digital computing methods for direct gravity
+  interpretation of sedimentary basins: Geophysical Journal International, {\bf
+  3}, 63--67.
+
+\bibitem[Bott, 1967]{bott1967solution}
+--------, 1967, Solution of the linear inverse problem in magnetic
+  interpretation with application to oceanic magnetic anomalies: Geophysical
+  Journal International, {\bf 13}, 313--323.
+
+\bibitem[Chan and Jin, 2007]{chan-jin2007}
+Chan, R. H.-F., and X.-Q. Jin,  2007, An introduction to iterative {Toeplitz}
+  solvers: SIAM, {\bf 5}.
+
+\bibitem[Cribb, 1976]{cribb1976application}
+Cribb, J.,  1976, Application of the generalized linear inverse to the
+  inversion of static potential data: Geophysics, {\bf 41}, 1365--1369.
+
+\bibitem[Dampney, 1969]{dampney1969}
+Dampney, C. N.~G.,  1969, The equivalent source technique: Geophysics, {\bf
+  34}, no. 1, 39--53.
+
+\bibitem[Danes, 1961]{danes1961structure}
+Danes, Z.,  1961, Structure calculations from gravity data and density logs:
+  Mining Trans., 223 C.
+
+\bibitem[Emilia, 1973]{emilia1973}
+Emilia, D.~A.,  1973, Equivalent sources used as an analytic base for
+  processing total magnetic field profiles: Geophysics, {\bf 38}, no. 2,
+  339--348.
+
+\bibitem[Hansen and Miyazaki, 1984]{hansen-miyazaki1984}
+Hansen, R.~O., and Y. Miyazaki,  1984, Continuation of potential fields between
+  arbitrary surfaces: Geophysics, {\bf 49}, no. 6, 787--795.
+
+\bibitem[Hogue et~al., 2020]{hogue2020tutorial}
+Hogue, J.~D., R.~A. Renaut, and S. Vatankhah,  2020, A tutorial and open source
+  software for the efficient evaluation of gravity and magnetic kernels:
+  Computers \& Geosciences, {\bf 144}, 104575.
+
+\bibitem[Kellogg, 1929]{kellogg1929}
+Kellogg, O.~D.,  1929, Foundations of potential theory: Frederick Ungar
+  Publishing Company.
+
+\bibitem[Le\~{a}o and Silva, 1989]{leao-silva1989}
+Le\~{a}o, J. W.~D., and J.~B.~C. Silva,  1989, Discrete linear transformations
+  of potential field data: Geophysics, {\bf 54}, no. 4, 497--507.
+
+\bibitem[Levinson, 1946]{levinson1946}
+Levinson, N.,  1946, The wiener (root mean square) error criterion in filter
+  design and prediction: Journal of Mathematics and Physics, {\bf 25}, no. 1-4,
+  261--278.
+
+\bibitem[Li et~al., 2014]{li2014using}
+Li, Y., M. Nabighian, and D.~W. Oldenburg,  2014, Using an equivalent source
+  with positivity for low-latitude reduction to the pole without striation:
+  Geophysics, {\bf 79}, J81--J90.
+
+\bibitem[Li and Oldenburg, 1996]{li19963}
+Li, Y., and D.~W. Oldenburg,  1996, 3-d inversion of magnetic data: Geophysics,
+  {\bf 61}, 394--408.
+
+\bibitem[Li and Oldenburg, 2010]{li-oldenburg2010}
+--------, 2010, Rapid construction of equivalent sources using wavelets:
+  Geophysics, {\bf 75}, no. 3, L51--L59.
+
+\bibitem[Liu et~al., 2017]{liu20173d}
+Liu, S., X. Hu, H. Zhang, M. Geng, and B. Zuo,  2017, 3d magnetization vector
+  inversion of magnetic data: Improving and comparing methods: Pure and Applied
+  Geophysics, {\bf 174}, 4421--4444.
+
+\bibitem[Mendon{\c{c}}a, 2020]{mendoncca2020subspace}
+Mendon{\c{c}}a, C.~A.,  2020, Subspace method for solving large-scale
+  equivalent layer and density mapping problems: Geophysics, {\bf 85},
+  G57--G68.
+
+\bibitem[Mendon\c{c}a and Silva, 1994]{mendonca-silva1994}
+Mendon\c{c}a, C.~A., and J.~B.~C. Silva,  1994, The equivalent data concept
+  applied to the interpolation of potential field data: Geophysics, {\bf 59},
+  no. 5, 722--732.
+
+\bibitem[Oliveira{ }Jr. et~al., 2013]{oliveirajr-etal2013}
+Oliveira{ }Jr., V.~C., V.~C.~F. Barbosa, and L. Uieda,  2013, Polynomial
+  equivalent layer: Geophysics, {\bf 78}, no. 1, G1--G13.
+
+\bibitem[Parker and Huestis, 1974]{parker1974inversion}
+Parker, R., and S. Huestis,  1974, The inversion of magnetic anomalies in the
+  presence of topography: Journal of Geophysical Research, {\bf 79},
+  1587--1593.
+
+\bibitem[Pilkington and Crossley, 1986]{pilkington1986determination}
+Pilkington, M., and D. Crossley,  1986, Determination of crustal interface
+  topography from potential fields: Geophysics, {\bf 51}, 1277--1284.
+
+\bibitem[Renaut et~al., 2020]{renaut2020fast}
+Renaut, R.~A., J.~D. Hogue, S. Vatankhah, and S. Liu,  2020, A fast methodology
+  for large-scale focusing inversion of gravity and magnetic data using the
+  structured model matrix and the 2-d fast fourier transform: Geophysical
+  Journal International, {\bf 223}, 1378--1397.
+
+\bibitem[Silva, 1986]{silva1986}
+Silva, J. B.~C.,  1986, Reduction to the pole as an inverse problem and its
+  application to low-latitude anomalies: Geophysics, {\bf 51}, no. 2, 369--382.
+
+\bibitem[Siqueira et~al., 2017]{siqueira-etal2017}
+Siqueira, F.~C., V.~C. Oliveira{ }Jr, and V.~C. Barbosa,  2017, Fast iterative
+  equivalent-layer technique for gravity data processing: A method grounded on
+  excess mass constraint: Geophysics, {\bf 82}, no. 4, G57--G69.
+
+\bibitem[Sun et~al., 2019]{sun2019constrained}
+Sun, S., C. Chen, and Y. Liu,  2019, Constrained 3d inversion of magnetic data
+  with structural orientation and borehole lithology: A case study in the
+  macheng iron deposit, hebei, china: Geophysics, {\bf 84}, B121--B133.
+
+\bibitem[Takahashi et~al., 2020]{takahashi2020convolutional}
+Takahashi, D., V.~C. Oliveira~Jr, and V.~C. Barbosa,  2020, Convolutional
+  equivalent layer for gravity data processing: Geophysics, {\bf 85},
+  G129--G141.
+
+\bibitem[Trench, 1964]{trench1964}
+Trench, W.~F.,  1964, An algorithm for the inversion of finite {Toeplitz}
+  matrices: Journal of the Society for Industrial and Applied Mathematics, {\bf
+  12}, no. 3, 515--522.
+
+\bibitem[Van{ }Loan, 1992]{vanloan1992}
+Van{ }Loan, C.,  1992, Computational frameworks for the {Fast Fourier
+  Transform}: SIAM.
+
+\bibitem[Zhang and Wong, 2015]{zhang-wong2015}
+Zhang, Y., and Y.~S. Wong,  2015, {BTTB}-based numerical schemes for
+  three-dimensional gravity field inversion: Geophysical Journal International,
+  {\bf 203}, no. 1, 243--256.
+
+\bibitem[Zhang et~al., 2016]{zhang-etal2016}
+Zhang, Y., Y.~S. Wong, and Y. Lin,  2016, {BTTB}--{RRCG} method for downward
+  continuation of potential field data: Journal of Applied Geophysics, {\bf
+  126}, 74--86.
+
+\end{thebibliography}

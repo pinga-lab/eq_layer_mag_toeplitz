@@ -1,0 +1,77 @@
+%\documentclass[paper,twocolumn,twoside]{geophysics}
+\documentclass[manuscript,noblind]{geophysics}
+%\documentclass[manuscript]{geophysics}
+
+% An example of defining macros
+\newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
+\newcommand{\rr}[1]{\mbox{\rm #1}}
+
+% Extra packages
+\usepackage{amsmath}
+%\usepackage[]{algorithm2e}
+\usepackage{algorithm}
+\usepackage{bm}
+\usepackage[hyphens,spaces]{url}
+\usepackage[pdftex,colorlinks=true]{hyperref}
+\hypersetup{
+	allcolors=black,
+}
+\usepackage{lipsum}
+\usepackage[table]{xcolor}
+
+\begin{document}
+
+\title{Convolutional equivalent layer for magnetic data processing}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+
+\ms{GEO-XXXX} % manuscript number
+
+\address{
+\footnotemark[2]Observat\'{o}rio Nacional, Department of Geophysics, Rio de Janeiro, Brazil\\
+\footnotemark[1] Corresponding author: vanderlei@on.br
+}
+\author{Diego Takahashi\footnotemark[2], Vanderlei C. Oliveira{ }Jr.\footnotemark[2]\footnotemark[1] and 
+Val{\'e}ria C. F. Barbosa\footnotemark[2]}
+
+%\footer{Example}
+\lefthead{Takahashi, Oliveira{ }Jr. \& Barbosa}
+\righthead{Magnetic convolutional equivalent layer}
+
+\maketitle
+
+% Main body
+\include{abstract}
+\include{introduction}
+\include{methodology}
+\include{synthetic_data}
+\include{field_data}
+\include{conclusions}
+\include{aknowledgements}
+
+\clearpage
+
+% Tables and figures
+\include{figures}
+
+\clearpage
+
+% Appendices
+%\appendix
+\include{Flops_computations}
+%\include{matrix_C}
+%\include{DFT_computations}
+%\include{eigenvalues_C}
+
+\newpage
+
+\bibliographystyle{seg}  % style file is seg.bst
+\bibliography{references}
+
+\clearpage
+
+% Tables and figures
+\include{tables}
+
+
+\end{document}

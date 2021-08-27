@@ -1,0 +1,84 @@
+\append{Flops computations}
+
+%======================================================================================
+\subsection{Classical flops count}
+%======================================================================================
+
+The flops count of the classical approach to solve the linear system (equation \ref{eq:estimated-p-parameter-space}) using the Cholesky factorization is given by equation \ref{eq:flops-normal-cholesky}. The step-by-step count follows:
+\begin{itemize}
+\item[\textbf{(1)}] $\mathbf{A}^{\top}\mathbf{A}$: $2 N^3$ (one matrix-matrix product).
+
+\item[\textbf{(2)}] $\mathbf{A}^{\top} \mathbf{A}$: $\dfrac{1}{3} N^3$ (one Cholesky factorization $\mathbf{C_f}$).
+
+\item[\textbf{(3)}] $\mathbf{A}^{\top} \mathbf{d}^{o}$: $2 N^2$ (one matrix-vector product).
+
+\item[\textbf{(4)}] $\mathbf{C_f} (\mathbf{A}^{\top} \mathbf{d}^{o})$: $2 N^2$ (one matrix-vector product).
+
+\item[\textbf{(5)}] $\mathbf{C_f}^{\top} (\mathbf{C_f} \mathbf{A}^{\top} \mathbf{d}^{o})$: $2 N^2$ (one matrix-vector product).
+\end{itemize}
+Summing all calculations: 
+\begin{equation}
+f_{classical} =  \dfrac{7}{3} N^{3} + 6 N^{2}\: ,
+\label{eq:flops-normal-cholesky-append}
+\end{equation}
+
+%======================================================================================
+\subsection{CGLS flops count}
+%======================================================================================
+
+The flops count of CGLS algorithm \ref{al:cgls-algorithm} can be summarized as:
+
+Out of the loop:
+
+\begin{itemize}
+%\item[\textbf{(1)}] $\mathbf{d}^{o} - \mathbf{A} \hat{\mathbf{p}}^{(0)}$: $2 N^2 + N$ (one matrix-vector product %and one vector subtraction)
+
+\item[\textbf{(1)}] $\mathbf{A}^{\top} \mathbf{s}$: $2 N^2$ (one matrix-vector product).
+\end{itemize}
+
+Inside the loop:
+
+\begin{itemize}
+\item[\textbf{(1)}] $\dfrac{{\mathbf{r}^{(it)}}^{\top} \, \mathbf{r}^{(it)}} {{\mathbf{r}^{(it - 1)}}^{\top} \, \mathbf{r}^{(it - 1)}}$: $4 N$ (two vector-vector products).
+
+\item[\textbf{(2)}] $\mathbf{r}^{it} - \alpha_{it} \,\beta_{it} \, \mathbf{c}^{(it - 1)}$: $2 N$ (one scalar-vector product and one vector subtraction).
+
+\item[\textbf{(3)}] $\frac{{||\mathbf{r}^{(it)}||_2}^2}{({\mathbf{c}^{(it)}}^{\top} \, \mathbf{A}^{\top})(\mathbf{A} \, \mathbf{c}^{(it)})}$: $2 N^2 + 2N$ (one matrix-vector and one vector-vector product).
+
+\item[\textbf{(4)}] $\hat{\mathbf{p}}^{it} - \alpha_{it} \, \mathbf{c}^{(it)}$: $2 N$ (one vector subtraction).
+
+\item[\textbf{(5)}] $\mathbf{s}^{it} - \alpha_{it} \, \mathbf{A} \, \mathbf{c}^{(it)}$: $2 N$ (one vector subtraction, the matrix-vector product was calculated in step 3).
+
+\item[\textbf{(6)}] $ \mathbf{A}^{\top} \, \mathbf{s}^{(it + 1)}$: $2 N^2$ (one matrix-vector product).
+\end{itemize}
+The result of all flops count leads to:
+\begin{equation}
+f_{cgls} =  2 N^{2} + it \, (4 N^{2} + 12 N) \: .
+\label{eq:flops-cgls-append}
+\end{equation}
+
+%======================================================================================
+\subsection{Our modified CGLS flops count}
+%======================================================================================
+
+All the flops count presented in previous section for the CGLS remains, only substituting the  out of the loop matrix-vector product in step 1 and the two matrix-vector products inside the loop in steps 3 and 6.
+The computations necessary to carry the matrix-vector used in this work are given by:
+
+\begin{itemize}
+\item[\textbf{(1)}] $\mathbf{L}$: $\kappa  \, 4 N \log_2(4N)$ (one 2D FFT for the eigenvalues calculation of the sensitivity matrix $\mathbf{A}$ or the transposed sensitivity matrix $\mathbf{A}^{\top}$).
+
+\item[\textbf{(2)}] $\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P}$: $\kappa  \, 4 N \log_2(4N)$ (one 2D FFT).
+
+\item[\textbf{(3)}] $\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right)$: $24 N$ (one complex Hadamard matrix multiplication).
+
+\item[\textbf{(4)}] $\mathbf{F}_{2Q}^{\ast} \left[ 
+\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+\right] \mathbf{F}_{2P}^{\ast}$: $\kappa  \, 4 N \log_2(4N)$ (one inverse 2D FFT).
+\end{itemize}
+Matrix-vector product total:  $\kappa  \, 12 N \log_2(4 N) + 24 N$.
+
+As matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) and its transposed never changes, it is not necessary to calculate the eigenvalues inside the loop at each iteration, we are considering that both are calculated out of the loop. Inside the loop, steps 2 to 4 are repeated two times per iteration. Substituting this result into the CGLS flops count (equation \ref{eq:flops-cgls-append}) leads to:
+\begin{equation}
+f_{ours} =  \kappa  \, 16 N \log_2(4 N) + 24 N + it \, (\kappa  \, 16 N \log_2 (4 N) + 60 N).
+\label{eq:flops-cgls-bccb-append}
+\end{equation}
