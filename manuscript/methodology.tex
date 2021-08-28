@@ -207,11 +207,11 @@ A pseudocode for the CGLS method follows:
 	
 	1 - If $it > 0$, let $\beta_{(it)} = \dfrac{{\mathbf{r}^{(it)}}^{\top} \, \mathbf{r}^{(it)}} {{\mathbf{r}^{(it - 1)}}^{\top} \, \mathbf{r}^{(it - 1)}}$
 	
-	2 - $\mathbf{c}^{(it)} = \mathbf{r}^{(it)} - \alpha_{(it)} \,\beta_{(it)} \, \mathbf{c}^{(it - 1)}$.
+	2 - $\mathbf{c}^{(it)} = \mathbf{r}^{(it)} + \beta_{(it)} \, \mathbf{c}^{(it - 1)}$.
 	
 	3 - $\alpha_{(it)} = \dfrac{{||\mathbf{r}^{(it)}||^2_2}}{({\mathbf{c}^{(it)}}^{\top} \, \mathbf{A}^{\top})(\mathbf{A} \, \mathbf{c}^{(it)})}$.
 	
-	4 - $\hat{\mathbf{p}}^{(it + 1)} = \hat{\mathbf{p}}^{(it)} - \alpha_{(it)} \, \mathbf{c}^{(it)}$.
+	4 - $\hat{\mathbf{p}}^{(it + 1)} = \hat{\mathbf{p}}^{(it)} + \alpha_{(it)} \, \mathbf{c}^{(it)}$.
 	
 	5 - $\mathbf{s}^{(it + 1)} = \mathbf{s}^{(it)} - \alpha_{(it)} \, \mathbf{A} \, \mathbf{c}^{(it)}$.
 	
