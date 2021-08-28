@@ -202,7 +202,7 @@ it is possible to solve the system by constructing a basis of conjugate directio
 \end{equation}
 by applying the conjugate gradient to the normal equations (equation \ref{eq:normal-equations}).
 
-In theory, this method is bound to converge at $N$ iterations maximum, but in a later part of this work we show with numerical results that the convergence is much faster for the linear system we are solving.
+In theory, this method is bound to converge after at most  $N$ iterations, but in a later part of this work we show with numerical results that the convergence is much faster for the linear system we are solving.
 
 A pseudocode for the CGLS method follows:
 
@@ -229,7 +229,7 @@ A pseudocode for the CGLS method follows:
 	
 	8 - Repeat previous steps until convergence.
 	
-	\caption{Conjugate Gradient Least Square pseudocode \citep[][ p. 166]{aster2018parameter}.}
+	\caption{Conjugate Gradient Least Square pseudocode \citep[][ p. 155]{aster2018parameter}.}
 \label{al:cgls-algorithm}
 \end{algorithm}
 
@@ -241,7 +241,9 @@ In this work, we will reduce the computational cost of the equivalent layer by s
 \subsection{Conjugate Gradient Least Square method convergence criteria}
 %======================================================================================
 
-In theory, this method is bound to converge at $N$ iterations maximum, but in a later part of this work we show with numerical results that the convergence is much faster for the linear system we are solving. Setting a minimum tolerance of the residuals is a good option to carry out this algorithm efficiently and still obtaining very good results. Another possibility is to set an invariance to the euclidian norm of residuals between iteractions, wich would increase algorithm runtime, but with smaller residuals. We chose the first option, as we achieve satisfatory results.
+Setting a minimum tolerance of the residuals is a good option to carry out this algorithm efficiently and still obtaining very good results. 
+Another possibility is to set an invariance to the Euclidean norm of residuals between iteractions, wich would increase algorithm runtime, but with smaller residuals. 
+We chose the first option, as we achieve satisfatory results.
 
 %======================================================================================
 \subsection{Non-symmetric Block-Toeplitz Toeplitz-Block structure of matrix $\mathbf{A}$}
@@ -311,7 +313,7 @@ and
 p(i, j) = \; l(i) - l(j) \: ,
 \label{eq:p-y-oriented}
 \end{equation}
-where equation \ref{eq:k-y-oriented} now defines $k(i)$ and $k(j)$ and equation \ref{eq:l-y-oriented} defines $l(i)$ and $l(j)$. Note that equations \ref{eq:q-x-oriented}, \ref{eq:p-x-oriented}, \ref{eq:q-y-oriented} and \ref{eq:q-y-oriented} differs from the ones presented in \cite{takahashi2020convolutional} by the absence of the module.
+where equation \ref{eq:k-y-oriented} now defines $k(i)$ and $k(j)$ and equation \ref{eq:l-y-oriented} defines $l(i)$ and $l(j)$. Note that equations \ref{eq:q-x-oriented}, \ref{eq:p-x-oriented}, \ref{eq:q-y-oriented} and \ref{eq:p-y-oriented} differs from the ones presented in \cite{takahashi2020convolutional} by the absence of the module.
 
 In both $x$- or $y$-\textit{orientation}, matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) can be rewritten by the indices $q = -Q + 1,...,0,..., Q-1$ defining the number of its blocks:
 \begin{equation}
@@ -335,7 +337,8 @@ a^{q}_{P-1} & \cdots     & a^{q}_{1}  & a^{q}_{0}
 \end{equation}
 In general, matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is a non-symmetric BTTB, i.e., its blocks are non-symmetric ($\mathbf{A}^{-Q+1} \neq \mathbf{A}^{Q-1} $) and its elements also are non-symmetric ($a^{q}_{-1} \neq a^{q}_{1}$). Depending on specific values of the main field direction and the equivalent sources magnetization directions, matrix $\mathbf{A}$ can assume other structures, for example, when $\hat{\mathbf{F}} = [0, 0, 1]$ and $\hat{\mathbf{h}} = [0, 0, 1]$ it becomes symmetric. In this work, we are considering the more commom situation for the matrix $\mathbf{A}$.
 
-Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$ $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
+Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
+and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
 
 In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
 
@@ -349,7 +352,10 @@ a_{ij} = c_{m} \, \frac{\mu_{0}}{4\pi} \, (F_x H_{xx} + F_y H_{xy} + F_z H_{xz})
 \label{eq:aij_mag_expand}
 \end{equation}
 
-If we consider that $c_{m} \, \frac{\mu_{0}}{4\pi}$, $\hat{\mathbf{F}}$ (equation \ref{eq:unit_vector_F}) and $\hat{\mathbf{h}}$ (equation\ref{eq:h_hat}) are constants multiplying the second derivatives $\mathbf{H}$ (equation \ref{eq:Hi}), the sensitivity matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is purely the sum of the components $H_{xx} + H_{xy} + H_{xz} + H_{xy} + H_{yy} + H_{yz} + H_{xz} + H_{yz} + H_{zz}$ multiplied by the respectives constants of each component. Thus, despite $\mathbf{A}$ not being a symmetric BTTB matrix, it can be in fact, written by calculating only the first column of these components.
+In equation \ref{eq:aij_mag_expand}, $c_{m} \, \frac{\mu_{0}}{4\pi}$ is a constant.
+If we consider that the components o the vectors 
+$\hat{\mathbf{F}}$ (equation \ref{eq:unit_vector_F}) and $\hat{\mathbf{h}}$ (equation\ref{eq:h_hat}) are constants multiplying the second derivatives $\mathbf{H}$ (equation \ref{eq:Hi}); then, 
+the sensitivity matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is purely the sum of the components $H_{xx} + H_{xy} + H_{xz} + H_{xy} + H_{yy} + H_{yz} + H_{xz} + H_{yz} + H_{zz}$ multiplied by the respectives constants of each component. Thus, despite $\mathbf{A}$ not being a symmetric BTTB matrix, it can be in fact, written by calculating only the first column of these components.
 In the next few sections we will describe each component $\mathbf{H}$ as its own matrix.
 
 %======================================================================================
@@ -394,7 +400,7 @@ and
 \end{equation}
 where $\Delta z = z_j - z_i$, $\Delta k_{ij} =k(i) - k(j)$ (equations \ref{eq:k-x-oriented} or \ref{eq:k-y-oriented}) and $\Delta l_{ij} = l(i) - l(j)$ (equations \ref{eq:l-x-oriented} or \ref{eq:l-y-oriented}).
 The principal components $\mathbf{H_{xx}}$, $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$ (equations \ref{eq:hxx_mag}, \ref{eq:hyy_mag} and \ref{eq:hzz_mag}, respectively) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are symmetric-Block-Toeplitz symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xx}}$, $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$ are Toeplitz and symmetric by its blocks and each of the blocks are symmetric Toeplitz matrices. 
-For example, $\mathbf{H_{xx}}$ can be described by the \textit{block indice} $q$ that represent the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xx}$, $q = 0, \dots, Q - 1$:
+For example, $\mathbf{H_{xx}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xx}$, $q = 0, \dots, Q - 1$:
 \begin{equation}
 \mathbf{H_{xx}} = \begin{bmatrix}
 \mathbf{H}^{0}_\mathbf{xx}  & \mathbf{H}^{1}_\mathbf{xx} & \cdots         & \mathbf{H}^{Q-1}_\mathbf{xx} \\
@@ -414,7 +420,7 @@ h^{q}_{P-1} & \cdots    & h^{q}_{1} & h^{q}_{0}
 \end{bmatrix}_{P \times P} \: .
 \label{eq:Hxx_block}
 \end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{x}$, $P = N_{y}$ and $q$ and $p$ can be defined by the functions:
+In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
 \begin{equation}
 q(i, j) = \; \mid l(i) - l(j) \mid
 \label{eq:Hxx-q-x-oriented}
@@ -454,7 +460,7 @@ By substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{eq:Hi}, w
 \end{equation}
 
 The component $\mathbf{H_{xy}}$ (equation \ref{eq:hxy_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are skew symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xy}}$ is Toeplitz and skew symmetric by its blocks and each of the blocks are skew symmetric Toeplitz matrices. 
-This way, matrix $\mathbf{H_{xy}}$ can be described by the \textit{block indice} $q$ that represent the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xy}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
+This way, matrix $\mathbf{H_{xy}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xy}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
 \begin{equation}
 	\mathbf{H_{xy}} = \begin{bmatrix}
 		\mathbf{H}^{0}_\mathbf{xy}  & \mathbf{H}^{-1}_\mathbf{xy} & \cdots         & \mathbf{H}^{-Q+1}_\mathbf{xy} \\
@@ -474,7 +480,7 @@ And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_
 	\end{bmatrix}_{P \times P} \: .
 	\label{eq:Hxy_block}
 \end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{x}$, $P = N_{y}$ and $q$ and $p$ can be defined by the functions:
+In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
 \begin{equation}
 	q(i, j) = \; l(i) - l(j) 
 	\label{eq:Hxy-q-x-oriented}
@@ -514,7 +520,7 @@ By substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{eq:Hi}, t
 \end{equation}
 
 The component $\mathbf{H_{xz}}$ (equation \ref{eq:hxz_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xz}}$ is Toeplitz and skew symmetric by its blocks and each of the blocks are symmetric Toeplitz matrices. 
-Thus, matrix $\mathbf{H_{xz}}$ can be described by the \textit{block indice} $q$ that represent the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xz}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
+Thus, matrix $\mathbf{H_{xz}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xz}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
 \begin{equation}
 	\mathbf{H_{xz}} = \begin{bmatrix}
 		\mathbf{H}^{0}_\mathbf{xz}  & \mathbf{H}^{-1}_\mathbf{xz} & \cdots         & \mathbf{H}^{-Q+1}_\mathbf{xz} \\
@@ -534,7 +540,7 @@ And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_
 	\end{bmatrix}_{P \times P} \: .
 	\label{eq:Hxz_block}
 \end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{x}$, $P = N_{y}$ and $q$ and $p$ can be defined by the functions:
+In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
 \begin{equation}
 	q(i, j) = \; l(i) - l(j) 
 	\label{eq:Hxz-q-x-oriented}
@@ -574,7 +580,7 @@ Finally, by substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{
 \end{equation}
 
 The component $\mathbf{H_{yz}}$ (equation \ref{eq:hyz_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{yz}}$ is Toeplitz and symmetric by its blocks and each of the blocks are skew symmetric Toeplitz matrices.
-Thus, matrix $\mathbf{H_{yz}}$ can be described by the \textit{block indice} $q$ that represent the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{yz}$, $q = 0, \dots, Q - 1$:
+Thus, matrix $\mathbf{H_{yz}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{yz}$, $q = 0, \dots, Q - 1$:
 \begin{equation}
 	\mathbf{H_{yz}} = \begin{bmatrix}
 		\mathbf{H}^{0}_\mathbf{yz}  & \mathbf{H}^{1}_\mathbf{yz} & \cdots         & \mathbf{H}^{Q-1}_\mathbf{yz} \\
@@ -594,7 +600,7 @@ And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_
 	\end{bmatrix}_{P \times P} \: .
 	\label{eq:Hyz_block}
 \end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{x}$, $P = N_{y}$ and $q$ and $p$ can be defined by the functions:
+In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_x}$ and $q$ and $p$ can be defined by the functions:
 \begin{equation}
 	q(i, j) = \; \mid l(i) - l(j) \mid
 	\label{eq:Hyz-q-x-oriented}
@@ -624,9 +630,10 @@ Being a symmetric matrix by blocks, the values of $\mathbf{H_{yz}}$ from oposing
 \subsection{CGLS matrix-vector substitution}
 %======================================================================================
 
-As pointed earlier in this work, the main improvement inside the CGLS method (Algorithm \ref{al:cgls-algorithm}) for estimating the parameter vector $\hat{\mathbf{p}}$ (equation \ref{eq:estimated-p-parameter-space}) is to substitute the matrix-vector multiplication $\mathbf{A}^{\top} \mathbf{s}^{(0)}$ out of the loop and the two matrix-vector multiplications inside the loop at steps 3 an 6, $\mathbf{A} \, \mathbf{c}^{(it)}$ and $\mathbf{A}^{\top} \, \mathbf{s}^{(it + 1)}$, that is necessary at each iteration and takes most of its runtime.
+As pointed earlier in this work, the main improvement inside the CGLS method (Algorithm \ref{al:cgls-algorithm}) for estimating the parameter vector $\hat{\mathbf{p}}$ (equation \ref{eq:estimated-p-parameter-space}) is to substitute the matrix-vector multiplication $\mathbf{A}^{\top} \mathbf{s}^{(0)}$ out of the loop and the two matrix-vector multiplications inside the loop at steps 3 an 6, $\mathbf{A} \, \mathbf{c}^{(it)}$ and $\mathbf{A}^{\top} \, \mathbf{s}^{(it + 1)}$.
+The latter two matrix-vector multiplications are accomplished at each iteration, thus taking most of CGLS method runtime.
 
-Our method consists in calculating the six first columns of the second derivatives of $\mathbf{H}$ (equation \ref{eq:Hi}) and embbed them into the first six columns of the block-circulant circulant-block (BCCB) matrices related to the $\mathbf{H}$ components. Thus, it is possible to calculate the first column of the BCCB matrix embbeded from matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) by multiplying each component with its respective constants and summing as shown in equation \ref{eq:aij_mag_expand}. In \cite{takahashi2020convolutional}, Appendix A, the authors demonstrated in details how to transform a symmetric BTTB matrix into a BCCB matrix $\mathbf{C}$. The process here is the same and that work can be referenced to achieve the same results.
+Our method consists in calculating the six first columns of the second derivatives of $\mathbf{H}$ (equation \ref{eq:Hi}) and embedding them into the first six columns of the block-circulant circulant-block (BCCB) matrices related to the $\mathbf{H}$ components. Thus, it is possible to calculate the first column of the BCCB matrix embbeded from matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) by multiplying each component with its respective constants and summing as shown in equation \ref{eq:aij_mag_expand}. In \cite{takahashi2020convolutional}, Appendix A, the authors demonstrated in details how to transform a symmetric BTTB matrix into a BCCB matrix $\mathbf{C}$. The process here is the same and that work can be referenced to achieve the same results.
 
 A new auxuliary linear system is constructed to carry the matrix-vector product:
 \begin{equation}
@@ -667,7 +674,7 @@ and
 \end{bmatrix}_{2P \times 1}
 \label{eq:vq-vector} \quad ,
 \end{equation}
-where $\mathbf{C}$ (equation \ref{eq:w_Cv}) is a $4N \times 4N$ non-symmetric (BCCB) resulted from transforming $\mathbf{A}$ (equation \ref{eq:aij_mag}). Without having to calculate the whole BCCB matrix, its first column can be used to carry the multiplication of this new system (equation \ref{eq:w_Cv}). Appendix A and C in \cite{takahashi2020convolutional} shows how to use the 2D-FFT to compute the eigenvalues of matrix $\mathbf{C}$, store in a $2Q \times 2P$ matrix using the $vec$-operator and to carry the matrix-vector product. Denoting matrix $\mathbf{L}$ as the eigenvalues matrix follows:
+where $\mathbf{C}$ (equation \ref{eq:w_Cv}) is a $4N \times 4N$ non-symmetric (BCCB) resulted from transforming $\mathbf{A}$ (equation \ref{eq:aij_mag}). Without having to calculate the whole BCCB matrix, its first column can be used to carry the multiplication of this new system (equation \ref{eq:w_Cv}). Appendix A and C in \cite{takahashi2020convolutional} shows how to use the 2D-FFT to compute the eigenvalues of matrix $\mathbf{C}$, store in a $2Q \times 2P$ matrix using the $vec$-operator and to carry the matrix-vector product. Denoting the matrix $\mathbf{L}$ as the eigenvalues matrix follows:
 \begin{equation}
 	\mathbf{F}_{2Q}^{\ast} \left[ 
 	\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
@@ -703,9 +710,9 @@ where $\kappa$ depends on the FFT algorithm. By default, in this work we will us
 
 Figure \ref{fig:flops} shows a comparative between the methods varying the number of observation points up to $1,000,000$, where it is possible to observe a reduction of $10^7$ orders of magnitude to estimate parameter vector $\mathbf{\hat{p}}$ in relation to the non-iterative classical method and $10^3$ orders of magnitude in relation to the standart CGLS algorithm using $50$ iterations. A more detailed, step by step, flops count of the classical and CGLS algorithm can be found in Appendix A.
 
-In figure \ref{fig:solve_time} we show the time necessary to construct matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) and solve the linear system up to $10,000$ points of observation. With this dataset the classical method takes more than sixty-three seconds, the CGLS more than twelve seconds, while our method takes only half a second. The cpu used for this test was a intel core i7-7700HQ@2.8GHz.
+In Figure \ref{fig:solve_time} we show the time necessary to construct matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) and solve the linear system up to $10,000$ points of observation. With this dataset the classical method takes more than sixty-three seconds, the CGLS more than twelve seconds, while our method takes only half a second. The cpu used for this test was a intel core i7-7700HQ@2.8GHz.
 
-In figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
+In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
 
 In Table \ref{tab:RAM-usage} there is comparison between how much RAM memory is adressed to store the sensitivity matrix for each of the methods. The classical approach and the CGLS have to store the whole matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}), this means that a dataset  with for example $N = 10,000$ observation points, the sensitivity matrix has $N^2 = 100,000,000$ elements and takes approximately $763$ Megabytes of memory (8 bytes per element). For our method, it is necessary to store the first six columns of each of the components from matrix $\mathbf{H}$ (equation \ref{eq:Hi}) embedded into the BCCB matrices. With the same dataset $N = 10,000$ it needs $1.831$ Megabytes. After completing the steps to store the eigenvalues of matrix $\mathbf{C}$ (equation \ref{eq:w_Cv}) it takes only $0.6104$ Megabytes. Here, we are considering 16 bytes per element as the eigenvalues are complex numbers resulting from the 2D FFT. For a bigger dataset as $N = 1,000,000$ the amount of RAM necessary goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively, showing the necessity to find improved and efficient methods for the equivalent layer technique as the one presented in this work. We remember that throughout our work we are always considering $N = M$.
 

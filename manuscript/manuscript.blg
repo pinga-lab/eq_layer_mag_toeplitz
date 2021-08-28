@@ -1,28 +1,16 @@
-This is BibTeX, Version 0.99d
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+This is BibTeX, Version 0.99d (TeX Live 2019/dev/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: manuscript.aux
-Reallocating 'name_of_file' (item size: 1) to 13 items.
 A level-1 auxiliary file: abstract.aux
-Reallocating 'name_of_file' (item size: 1) to 17 items.
 A level-1 auxiliary file: introduction.aux
-Reallocating 'name_of_file' (item size: 1) to 16 items.
 A level-1 auxiliary file: methodology.aux
-Reallocating 'name_of_file' (item size: 1) to 19 items.
 A level-1 auxiliary file: synthetic_data.aux
-Reallocating 'name_of_file' (item size: 1) to 15 items.
 A level-1 auxiliary file: field_data.aux
-Reallocating 'name_of_file' (item size: 1) to 16 items.
 A level-1 auxiliary file: conclusions.aux
-Reallocating 'name_of_file' (item size: 1) to 20 items.
 A level-1 auxiliary file: aknowledgements.aux
-Reallocating 'name_of_file' (item size: 1) to 12 items.
 A level-1 auxiliary file: figures.aux
-Reallocating 'name_of_file' (item size: 1) to 23 items.
 A level-1 auxiliary file: Flops_computations.aux
-Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: seg.bst
-Reallocating 'name_of_file' (item size: 1) to 11 items.
-Reallocating 'name_of_file' (item size: 1) to 11 items.
 A level-1 auxiliary file: tables.aux
 Database file #1: references.bib
 I was expecting a `,' or a `}'---line 542 of file references.bib
@@ -32,45 +20,45 @@ I was expecting a `,' or a `}'---line 542 of file references.bib
 I'm skipping whatever remains of this entry
 You can't pop an empty literal stack for entry chan-jin2007
 while executing---line 1586 of file seg.bst
-You've used 33 entries,
+You've used 31 entries,
             2639 wiz_defined-function locations,
-            906 strings with 11050 characters,
-and the built_in function-call counts, 12650 in all, are:
-= -- 1377
-> -- 400
-< -- 23
-+ -- 147
-- -- 127
-* -- 1110
-:= -- 2166
-add.period$ -- 33
-call.type$ -- 33
-change.case$ -- 231
-chr.to.int$ -- 33
-cite$ -- 33
-duplicate$ -- 456
-empty$ -- 976
-format.name$ -- 178
-if$ -- 2595
+            895 strings with 10745 characters,
+and the built_in function-call counts, 11885 in all, are:
+= -- 1293
+> -- 380
+< -- 21
++ -- 139
+- -- 121
+* -- 1042
+:= -- 2037
+add.period$ -- 31
+call.type$ -- 31
+change.case$ -- 218
+chr.to.int$ -- 31
+cite$ -- 31
+duplicate$ -- 428
+empty$ -- 915
+format.name$ -- 168
+if$ -- 2437
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 38
-newline$ -- 103
-num.names$ -- 97
-pop$ -- 167
+missing$ -- 36
+newline$ -- 97
+num.names$ -- 91
+pop$ -- 160
 preamble$ -- 1
-purify$ -- 230
+purify$ -- 217
 quote$ -- 0
-skip$ -- 335
+skip$ -- 314
 stack$ -- 0
-substring$ -- 1073
-swap$ -- 28
+substring$ -- 1001
+swap$ -- 26
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 188
+type$ -- 176
 warning$ -- 0
-while$ -- 109
+while$ -- 102
 width$ -- 0
-write$ -- 362
+write$ -- 340
 (There were 2 error messages)
