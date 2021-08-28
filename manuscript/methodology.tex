@@ -8,7 +8,7 @@ The Earth's magnetic field is commonly divided in three parts: main field, crust
 
 The combination of the main field and crustal field is known as internal field or total-field. Taking the difference between the main field given by a model (e.g. IGRF) and this internal field, at the same location, we have the total-field anomaly.
 
-Let $(x_i, y_i, z_i), i =  1,2,3,...N$, be a observed dataset in a region considering a right-handed Cartesian coordinate system with the $x$-axis pointing north, $y$-axis pointing east and $z$-axis pointing downward. The total-field anomaly at the $i$th observation can be approximated to:
+Let $\Delta T(x_i, y_i, z_i), i =  1,...,N$, be a observed dataset in a region considering a right-handed Cartesian coordinate system with the $x$-axis pointing north, $y$-axis pointing east and $z$-axis pointing downward. The total-field anomaly at the $i$th observation can be approximated to:
 \begin{equation}
 	\Delta T(x_i, y_i, z_i) = \hat{\mathbf{F}}^{\top} \mathbf{B}(x_i, y_i, z_i) \: ,
 	\label{eq:tfanomaly}
@@ -31,7 +31,7 @@ where, $\mathbf{B}(x_i, y_i, z_i)$ is the crustal field, $\hat{\mathbf{F}}^{\top
 \end{equation}
 where $I_{0}$ is the inclination and $D_{0}$ the declination of the main field, respectively.
 
-Considering a uniform magnetized body with volume $v$ and a total magnetization vector $\mathbf{m}$, the induced magnetic field is:
+Considering a uniform magnetized body with volume $v$ and a total magnetization vector $\mathbf{m}$, the induced magnetic field at the $i$th observation is:
 \begin{equation}
 	\mathbf{B}(x_i, y_i, z_i) = c_{m} \, \frac{\mu_{0}}{4\pi} \: \mathbf{M}(x_i, y_i, z_i) \: 
 	\mathbf{m} \: ,
@@ -62,14 +62,14 @@ with respect to $x$, $y$ and $z$:
 	\phi(x_i,y_i,z_i) = \int\int\limits_{v}\int \frac{1}{r} \: dv,
 	\label{eq:phi}
 \end{equation}
-where the function $\dfrac{1}{r}$ is given by:
+where 
 
 \begin{equation}
-	\dfrac{1}{\sqrt{(x_i - x_j)^{2} + 
+	\dfrac{1}{r} = \dfrac{1}{\sqrt{(x_i - x_j)^{2} + 
 			(y_i - y_j)^{2} + (z_i - z_j)^{2}}} \,
 	\label{eq:r}
 \end{equation}
-and $x_j, y_j, z_j$ are the $j$th Cartesian coordinates within the volume elements of the magnetized body with volume $v$, where the integral (equation \ref{eq:phi}) is conducted.
+and $x_j, y_j, z_j$ are the $j$th Cartesian coordinates within the volume element of the magnetized body with volume $v$, where the integral (equation \ref{eq:phi}) is conducted.
 
 Rewriting the equation \ref{eq:tfanomaly} using the magnetic induction given by equation \ref{eq:induction-general} the total-field anomaly $\Delta T(x, y, z)$ is given by:
 \begin{equation}
@@ -143,31 +143,38 @@ H_{zz}
 \right] \: ,
 \label{eq:Hi}
 \end{equation}
-and the physical property $p(x_j, y_j, z_{c})$ represents the magnetic dipole moment distribution over the layer and has unit of $Am^2$.
+and the physical property $p(x_j, y_j, z_{c})$ represents the $j$th magnetic dipole moment (in $Am^2$) produced by the $j$th dipole locate over the equivalent layer at the $j$th Cartesian coordinates 
+$(x_j, y_j, z_{c})$.
 
 Discretizing equation \ref{eq:tf-p-continuous-mag-positive} we get:
 \begin{equation}
 \Delta T(x_{i}, y_{i}, z_{i}) = \sum_{j=1}^{M} p_j a_{ij}\: ,
 \label{eq:integral-sum_mag}
 \end{equation}
-where $j = 1,2,3,...,M$ are the equivalent sources discretized and distributed across the layer and $a_{ij}$ is given by:
+where the subscript $j$ denotes a discrete equivalent source, totaling $M$ equivalent sources 
+that are distributed over the layer and $a_{ij}$ is given by:
 \begin{equation}
 a_{ij}
 = c_{m} \, \frac{\mu_{0}}{4\pi} \, \hat{\mathbf{F}}^{\top} \mathbf{H}_{ij} \: \hat{\mathbf{h}} \: .
 \label{eq:aij_mag}
 \end{equation}
-Equation \ref{eq:integral-sum_mag} can be written as:
+Equation \ref{eq:integral-sum_mag} can be written in matrix notation as:
 \begin{equation}
 \mathbf{d}(\mathbf{p}) = \mathbf{A} \mathbf{p} \: ,
 \label{eq:predicted-data-vector_mag}
 \end{equation}
-where $\mathbf{d}(\mathbf{p})$ is the vector of total-field anomaly, $\mathbf{A}$ is a matrix containing the elements given by equation \ref{eq:aij_mag}, also known as the sensitivity matrix and $\mathbf{p}$ is the vector containing the dipole moments of each equivalent source. By using the normal equations:
+where $\mathbf{d}(\mathbf{p})$ is the $N-$dimensional vector of total-field anomaly 
+$(\Delta T(x_i, y_i, z_i), i =  1,...,N)$, $\mathbf{A}$ is a matrix containing the elements given by equation \ref{eq:aij_mag}, also known as the sensitivity matrix and $\mathbf{p}$ is the vector containing the dipole moments of each equivalent source. 
+
+Let $\mathbf{d}^{o}$ be an $N-$dimensional vector that contains the observed total-field anomaly.
+By solving the least-squares normal equation associated with equation \ref{eq:predicted-data-vector_mag}, 
+we get
 \begin{equation}
 	\mathbf{A}^{\top}\mathbf{A}{\mathbf{p}} = 
-	\mathbf{A}^{\top} \mathbf{d}^{o} \:
+	\mathbf{A}^{\top} \mathbf{d}^{o} \: ,
 	\label{eq:normal-equations}
 \end{equation} 
-which is a conventional manner of solving linear systems, the estimative of the dipole moment parameters vector can be calculated from the total-field anomaly as:
+and we estimate the parameter vector that contains the unknown dipole moments over the equivalent layer, i.e.,
 \begin{equation}
 \hat{\mathbf{p}} = \left( \mathbf{A}^{\top}\mathbf{A} %+ 
 %\mu \, \mathbf{I} 
@@ -175,7 +182,8 @@ which is a conventional manner of solving linear systems, the estimative of the 
 \mathbf{A}^{\top} \mathbf{d}^{o} \:
 \label{eq:estimated-p-parameter-space}
 \end{equation}
-where $\mathbf{d}^{o}$ is the observed total-field anomaly. Equation \ref{eq:estimated-p-parameter-space} will be referenced throughout this work as the classical method for solving the equivalent layer.
+
+Equation \ref{eq:estimated-p-parameter-space} will be referenced throughout this work as the classical method for solving the equivalent layer.
 
 %======================================================================================
 \subsection{Conjugate Gradient Least Square method (CGLS)}
