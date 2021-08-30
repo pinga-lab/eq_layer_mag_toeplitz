@@ -1,0 +1,149 @@
+\append{Computations with the 2D DFT}
+
+
+In the present Appendix, we deduce equation \ref{eq:DFT-system}
+by using the row-ordered $vec$-operator (here designated simply as $vec$-operator).
+This equation can be efficiently computed by using the 2D 
+fast Fourier Transform. 
+This operator was implicitly used by \citet[][ p. 31]{jain1989} to 
+show the relationship between Kronecker products and separable 
+transformations. The $vec$-operator defined here 
+transforms a matrix into a column vector by stacking its rows. 
+
+Let $\mathbf{M}$ be an arbitrary $N \times M$ matrix given by:
+\begin{equation}
+\mathbf{M} = \begin{bmatrix}
+\mathbf{m}^{\top}_{1} \\ 
+\vdots \\
+\mathbf{m}^{\top}_{N}
+\end{bmatrix} \: ,
+\label{eq:matrix-M}
+\end{equation}
+where $\mathbf{m}_{i}$, $i = 1, \dots, N$, are $M \times 1$ vectors containing 
+the rows of $\mathbf{M}$.
+The elements of this matrix can be rearranged into a column vector by using the
+$vec$-operator \citep[][ p. 31]{jain1989} as follows:
+\begin{equation}
+vec \left( \mathbf{M} \right) = \begin{bmatrix}
+\mathbf{m}_{1} \\
+\vdots \\
+\mathbf{m}_{N}
+\end{bmatrix}_{NM \times 1} \: .
+\label{eq:vec-operator}
+\end{equation}
+This rearrangement is known as lexicographic ordering \citep[][ p. 150]{jain1989}.
+
+Two important properties of the $vec$-operator (equation \ref{eq:vec-operator}) 
+are necessary to us. 
+To define the first one, consider an 
+$N \times M$ matrix $\mathbf{H}$ given by
+\begin{equation}
+\mathbf{H} = \mathbf{P} \circ \mathbf{Q} \: ,
+\label{eq:matrix-H}
+\end{equation}
+where $\mathbf{P}$ and $\mathbf{Q}$ are arbitrary $N \times M$ matrices and 
+``$\circ$" represents the Hadamard product \citep[][ p. 298]{horn_johnson1991}.
+By applying the $vec$-operator to $\mathbf{H}$ (equation \ref{eq:matrix-H}), 
+it can be shown that
+\begin{equation}
+vec \left( \mathbf{H} \right) = 
+vec \left( \mathbf{P} \right) \circ vec \left( \mathbf{Q} \right) \: .
+\label{eq:vec-matrix-H}
+\end{equation}
+To define the second important property of $vec$-operator, 
+consider an $N \times M$ matrix $\mathbf{S}$ defined by 
+the separable transformation \citet[][ p. 31]{jain1989}:
+\begin{equation}
+\mathbf{S} = \mathbf{P \, M \, Q} \: ,
+\label{eq:matrix-S}
+\end{equation}
+where $\mathbf{P}$ and $\mathbf{Q}$ are arbitrary $N \times N$ and $M \times M$ 
+matrices, respectively.
+By implicitly applying the $vec$-operator to 
+the $\mathbf{S}$ (equation \ref{eq:matrix-S}), 
+\citet[][ p. 31]{jain1989} show that:
+\begin{equation}
+vec \left( \mathbf{S} \right) = 
+\left( \mathbf{P} \otimes \mathbf{Q}^{\top} \right) 
+vec \left( \mathbf{M} \right) \: ,
+\label{eq:vec-matrix-S}
+\end{equation}
+where ``$\otimes$" denotes the Kronecker product \citep{neudecker1969}.
+It is important to stress the difference between equation \ref{eq:vec-matrix-S}
+and that presented by \citet{neudecker1969}, which is more commonly found in 
+the literature.
+While that equation uses a $vec$-operator that transforms a matrix into a column 
+vector by stacking its columns, equation \ref{eq:vec-matrix-S} 
+uses the $vec$-operator defined by equation \ref{eq:vec-operator}, which 
+transforms a matrix into a column vector by stacking its rows.
+
+Now, let us deduce equation \ref{eq:DFT-system} by 
+using the above-defined properties (equation \ref{eq:vec-matrix-H}
+and \ref{eq:vec-matrix-S}).
+We start calling attention to the right side of equation \ref{eq:vec-DFT-system}.
+Consider that vector $\mathbf{w}$ (equation \ref{eq:vec-DFT-system}) 
+is obtained by applying the $vec$-operator (equation \ref{eq:vec-operator}) to a matrix 
+$\mathbf{W}$, whose 2D DFT $\tilde{\mathbf{W}}$ is represented by the 
+following separable transformation \citep[][ p. 146]{jain1989}:
+\begin{equation}
+\tilde{\mathbf{W}} = \mathbf{F}_{2Q} \, \mathbf{W} \, \mathbf{F}_{2P} \: ,
+\label{eq:2D-DFT-W}
+\end{equation}
+where $\mathbf{F}_{2Q}$ and $\mathbf{F}_{2P}$ are the $2Q \times 2Q$ and $2P \times 2P$ 
+unitary DFT matrices. 
+Using equation \ref{eq:vec-matrix-S} and the symmetry of unitary DFT 
+matrices, we rewrite the right side of equation \ref{eq:vec-DFT-system} 
+as follows:
+\begin{equation}
+vec \left( \tilde{\mathbf{W}} \right) = 
+\left( \mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) 
+vec \left( \mathbf{W} \right) \: .
+\label{eq:right_side_DFT_system_1}
+\end{equation}
+Similarly, consider that $\mathbf{v}$ (equation \ref{eq:vec-DFT-system}) 
+is obtained by applying the $vec$-operator (equation \ref{eq:vec-operator}) to a matrix 
+$\mathbf{V}$, whose 2D DFT (equation \ref{eq:2D-DFT-W}) is 
+represented by $\tilde{\mathbf{V}}$. Using equation \ref{eq:vec-matrix-S} and the symmetry 
+of unitary DFT matrices, we can rewrite the 
+left side of equation \ref{eq:vec-DFT-system} as follows:
+\begin{equation}
+\boldsymbol{\Lambda} \, vec \left( \tilde{\mathbf{V}} \right) = 
+\boldsymbol{\Lambda}
+\left( \mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) 
+vec \left( \mathbf{V} \right) \: .
+\label{eq:left_side_DFT_system_1}
+\end{equation}
+Note that both sides of equation \ref{eq:left_side_DFT_system_1}
+are defined as the product of the diagonal matrix $\boldsymbol{\Lambda}$ (equation \ref{eq:C-diagonalized}) 
+and a vector. In this case, the matrix-vector product can be conveniently replaced by
+\begin{equation}
+\boldsymbol{\lambda} \circ vec \left( \tilde{\mathbf{V}} \right) = 
+\boldsymbol{\lambda} \circ
+\left( \mathbf{F}_{2Q} \otimes \mathbf{F}_{2P} \right) 
+vec \left( \mathbf{V} \right) \: ,
+\label{eq:left_side_DFT_system_2}
+\end{equation}
+where $\boldsymbol{\lambda}$ is a $4QP \times 1$ vector containing the diagonal of 
+$\boldsymbol{\Lambda}$ (equation \ref{eq:C-diagonalized}).
+Then, consider that $\boldsymbol{\lambda}$ is obtained by applying the $vec$-operator 
+(equation \ref{eq:vec-operator}) to a $2Q \times 2P$ matrix $\mathbf{L}$, we can use 
+equations \ref{eq:vec-matrix-H} and \ref{eq:vec-matrix-S} to rewrite equation 
+\ref{eq:left_side_DFT_system_2} as follows:
+\begin{equation}
+vec \left( \mathbf{L} \circ \tilde{\mathbf{V}} \right) = 
+vec \left[ \mathbf{L} \circ 
+\left( \mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+\right] \: .
+\label{eq:left_side_DFT_system_3}
+\end{equation}
+Equations \ref{eq:2D-DFT-W}, \ref{eq:right_side_DFT_system_1} and 
+\ref{eq:left_side_DFT_system_3} show that equation \ref{eq:vec-DFT-system}
+is obtained by applying the $vec$-operator to 
+\begin{equation}
+\mathbf{L} \circ \left( \mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) = 
+\mathbf{F}_{2Q} \, \mathbf{W} \, \mathbf{F}_{2P} \: .
+\label{eq:DFT-system-preliminary}
+\end{equation}
+Finally, we premultiply both sides of equation \ref{eq:DFT-system-preliminary} by 
+$\mathbf{F}_{2Q}^{\ast}$ and then postmultiply both sides of the result by 
+$\mathbf{F}_{2P}^{\ast}$ to deduce equation \ref{eq:DFT-system}.

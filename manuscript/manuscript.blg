@@ -1,0 +1,64 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/dev/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: manuscript.aux
+A level-1 auxiliary file: abstract.aux
+A level-1 auxiliary file: introduction.aux
+A level-1 auxiliary file: methodology.aux
+A level-1 auxiliary file: synthetic_data.aux
+A level-1 auxiliary file: field_data.aux
+A level-1 auxiliary file: conclusions.aux
+A level-1 auxiliary file: aknowledgements.aux
+A level-1 auxiliary file: figures.aux
+A level-1 auxiliary file: Flops_computations.aux
+The style file: seg.bst
+A level-1 auxiliary file: tables.aux
+Database file #1: references.bib
+I was expecting a `,' or a `}'---line 542 of file references.bib
+ : 
+ : @article{mendoncca2020subspace,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You can't pop an empty literal stack for entry chan-jin2007
+while executing---line 1586 of file seg.bst
+You've used 25 entries,
+            2639 wiz_defined-function locations,
+            868 strings with 10039 characters,
+and the built_in function-call counts, 9442 in all, are:
+= -- 1017
+> -- 309
+< -- 16
++ -- 110
+- -- 98
+* -- 822
+:= -- 1636
+add.period$ -- 25
+call.type$ -- 25
+change.case$ -- 175
+chr.to.int$ -- 25
+cite$ -- 25
+duplicate$ -- 344
+empty$ -- 729
+format.name$ -- 133
+if$ -- 1938
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 30
+newline$ -- 79
+num.names$ -- 75
+pop$ -- 134
+preamble$ -- 1
+purify$ -- 174
+quote$ -- 0
+skip$ -- 252
+stack$ -- 0
+substring$ -- 755
+swap$ -- 20
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 140
+warning$ -- 0
+while$ -- 80
+width$ -- 0
+write$ -- 274
+(There were 2 error messages)
