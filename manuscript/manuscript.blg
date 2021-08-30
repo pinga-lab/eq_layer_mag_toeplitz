@@ -20,45 +20,45 @@ I was expecting a `,' or a `}'---line 542 of file references.bib
 I'm skipping whatever remains of this entry
 You can't pop an empty literal stack for entry chan-jin2007
 while executing---line 1586 of file seg.bst
-You've used 31 entries,
+You've used 25 entries,
             2639 wiz_defined-function locations,
-            895 strings with 10745 characters,
-and the built_in function-call counts, 11885 in all, are:
-= -- 1293
-> -- 380
-< -- 21
-+ -- 139
-- -- 121
-* -- 1042
-:= -- 2037
-add.period$ -- 31
-call.type$ -- 31
-change.case$ -- 218
-chr.to.int$ -- 31
-cite$ -- 31
-duplicate$ -- 428
-empty$ -- 915
-format.name$ -- 168
-if$ -- 2437
+            868 strings with 10039 characters,
+and the built_in function-call counts, 9442 in all, are:
+= -- 1017
+> -- 309
+< -- 16
++ -- 110
+- -- 98
+* -- 822
+:= -- 1636
+add.period$ -- 25
+call.type$ -- 25
+change.case$ -- 175
+chr.to.int$ -- 25
+cite$ -- 25
+duplicate$ -- 344
+empty$ -- 729
+format.name$ -- 133
+if$ -- 1938
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 36
-newline$ -- 97
-num.names$ -- 91
-pop$ -- 160
+missing$ -- 30
+newline$ -- 79
+num.names$ -- 75
+pop$ -- 134
 preamble$ -- 1
-purify$ -- 217
+purify$ -- 174
 quote$ -- 0
-skip$ -- 314
+skip$ -- 252
 stack$ -- 0
-substring$ -- 1001
-swap$ -- 26
+substring$ -- 755
+swap$ -- 20
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 176
+type$ -- 140
 warning$ -- 0
-while$ -- 102
+while$ -- 80
 width$ -- 0
-write$ -- 340
+write$ -- 274
 (There were 2 error messages)
