@@ -44,6 +44,10 @@ Emilia, D.~A.,  1973, Equivalent sources used as an analytic base for
   processing total magnetic field profiles: Geophysics, {\bf 38}, no. 2,
   339--348.
 
+\bibitem[Golub and Loan, 2013]{golub-vanloan2013}
+Golub, G.~H., and C.~F.~V. Loan,  2013, Matrix computations (johns hopkins
+  studies in the mathematical sciences), 4 ed.: Johns Hopkins University Press.
+
 \bibitem[Hansen and Miyazaki, 1984]{hansen-miyazaki1984}
 Hansen, R.~O., and Y. Miyazaki,  1984, Continuation of potential fields between
   arbitrary surfaces: Geophysics, {\bf 49}, no. 6, 787--795.
@@ -83,16 +87,6 @@ Li, Y., and D.~W. Oldenburg,  1996, 3-d inversion of magnetic data: Geophysics,
 Liu, S., X. Hu, H. Zhang, M. Geng, and B. Zuo,  2017, 3d magnetization vector
   inversion of magnetic data: Improving and comparing methods: Pure and Applied
   Geophysics, {\bf 174}, 4421--4444.
-
-\bibitem[Mendon{\c{c}}a, 2020]{mendoncca2020subspace}
-Mendon{\c{c}}a, C.~A.,  2020, Subspace method for solving large-scale
-  equivalent layer and density mapping problems: Geophysics, {\bf 85},
-  G57--G68.
-
-\bibitem[Mendon\c{c}a and Silva, 1994]{mendonca-silva1994}
-Mendon\c{c}a, C.~A., and J.~B.~C. Silva,  1994, The equivalent data concept
-  applied to the interpolation of potential field data: Geophysics, {\bf 59},
-  no. 5, 722--732.
 
 \bibitem[Oliveira{ }Jr. et~al., 2013]{oliveirajr-etal2013}
 Oliveira{ }Jr., V.~C., V.~C.~F. Barbosa, and L. Uieda,  2013, Polynomial
