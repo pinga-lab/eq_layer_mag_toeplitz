@@ -36,44 +36,55 @@
 %% Synthetic data part I
 
 \plot{model_mag_synthetic}{width=\textwidth}{
-	{Observed synthetic magnetic field data. A regular grid of $80 \times 80$ points was used, totaling $N = 6,\, 400$ observation points. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+	{Observed synthetic magnetic field data. A regular grid of $80 \times 80$ points was used, totaling $N = 6,\, 400$ observation points. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.
+The black lines represent the horizontal projection of the sources.}
 	\label{fig:model_mag_synthetic}
 }
 
 \plot{predicted_synthetic_mag}{width=8cm}{
-	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}). (b) Residuals between the observed (\ref{fig:model_mag_synthetic}) and the predicted data (panel a), with mean $0.3712$ nT and standart deviation of $0.2798$ nT. This process took $17.6$ seconds.}
+	{ Synthetic test with regular grid - (a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}). (b) Data residuals,  defined as the difference between the observed (Figure \ref{fig:model_mag_synthetic}) and the predicted data (panel a). The black lines represent the horizontal projection of the sources. The total time for the inversion was $17.6$ seconds.}
 	\label{fig:predicted_synthetic_mag}
 }
 
 \plot{predicted_bccb_mag}{width=8cm}{
-	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product. (b) Residuals between the observed (\ref{fig:model_mag_synthetic}) and the predicted data (panel a), with mean $0.5150$ nT and standart deviation of $0.4363$ nT. This process took $0.18$ seconds.}
+	{Synthetic test with regular grid - (a) Predicted data using our method with the fast BTTB matrix-vector product. (b) Data residuals,  defined as the difference between the observed (Figure \ref{fig:model_mag_synthetic}) and the predicted data (panel a). The black lines represent the horizontal projection of the sources. 
+The total time for the inversion was $0.18$ seconds.}
 	\label{fig:predicted_bccb_mag}
 }
 
 \plot{convergence_synthetic_mag}{width=\textwidth}{
-	{Convergence analysis of the CGLS method for this synthetic application of the magnetic equivalent layer using the fast BTTB matrix-vector product.}
+	{Synthetic test with regular grid - Convergence analysis of our method with the fast BTTB matrix-vector product.}
 	\label{fig:convergence_synthetic_mag}
 }
 
 %% Synthetic data part II
 
+
 \plot{model_mag_synthetic_irregular_10}{width=8cm}{
-	{(a) Synthetic magnetic field grid visualization. A irregular grid of $100 \times 50$ points was used, totaling $N = 5,\, 000$ observation points. Standart deviations of $10\%$ in the $x$-direction and $10\%$ in the $y$-direction were applied. (b) Observed synthetic magnetic field data using this irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively.}
+	{ Synthetic test with irregular grid -
+	(a) Simulated irregular grid with  $N = 5,\, 000$ observation points (dots)  built up from 
+a regular $100 \times 50$ grid in the $x-$ and $y-$directions,  with a grid spacing of
+$\Delta x$ of $101.01$ m and $\Delta y$ of $163.265$ m  along the $x$- and $y$-directions, respectively.
+The $x$- and $y$-coordinates of the observations in the irregular grid were contamined by the pseudorandom, zero-mean Gaussian noise with standart deviations of $10\%$ of $\Delta x$ and $\Delta y$ 
+in both $x$- and $y$-directions. (b) Observed synthetic magnetic field data using the irregular grid in panel a. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\times\sqrt{2}$ A/m, respectively. 
+The black lines represent the horizontal projection of the sources.}
 	\label{fig:model_mag_synthetic_irregular_10}
 }
 
 \plot{predicted_synthetic_mag_irregular_10}{width=8cm}{
-	{(a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $0.3628$ nT and standart deviation of $0.2727$ nT.}
+	{Synthetic test with irregular grid - (a) Predicted data using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) for the irregular grid in Figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Data residuals,  defined as the difference between the observed (Figure \ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $0.3628$ nT and standart deviation of $0.2727$ nT.
+The black lines represent the horizontal projection of the sources.}
 	\label{fig:predicted_synthetic_mag_irregular_10}
 }
 
 \plot{predicted_bccb_mag_irregular_10}{width=8cm}{
-	{(a) Predicted data using the CGLS method with the fast BTTB matrix-vector product for for the irregular grid in figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $0.6024$ nT and standart deviation of $0.4998$ nT.}
+	{Synthetic test with irregular grid - (a) Predicted data using our method with the fast BTTB matrix-vector product  for the irregular grid in Figure \ref{fig:model_mag_synthetic_irregular_10}a. (b) Data residuals,  defined as the difference between the observed (Figure \ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (panel a), with mean $0.6024$ nT and standart deviation of $0.4998$ nT.
+The black lines represent the horizontal projection of the sources.}
 	\label{fig:predicted_bccb_mag_irregular_10}
 }
 
 \plot{convergence_synthetic_mag_irregular_10}{width=\textwidth}{
-	{Convergence analysis of the CGLS method for the synthetic application of the magnetic equivalent layer using an irregular grid with $10\%$ of pertubation on the $x$-\textit{direction} and $y$-\textit{direction}.}
+	{Synthetic test with irregular grid -  Convergence analysis of our method with the fast BTTB matrix-vector product using an irregular grid with $10\%$ of pertubation on the $x$- and $y$-coordinates as shown in Figure \ref{fig:model_mag_synthetic_irregular_10}a.}
 	\label{fig:convergence_synthetic_mag_irregular_10}
 }
 
