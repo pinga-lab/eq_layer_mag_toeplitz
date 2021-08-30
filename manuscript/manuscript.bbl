@@ -5,31 +5,18 @@
 Aster, R.~C., B. Borchers, and C.~H. Thurber,  2018, Parameter estimation and
   inverse problems: Elsevier.
 
-\bibitem[Bhattacharyya, 1980]{bhattacharyya1980generalized}
-Bhattacharyya, B.,  1980, A generalized multibody model for inversion of
-  magnetic anomalies: Geophysics, {\bf 45}, 255--270.
-
 \bibitem[Blakely, 1996]{blakely1996}
 Blakely, R.~J.,  1996, Potential theory in gravity and magnetic applications, 1
   ed.: Cambridge University Press.
 
-\bibitem[Bott, 1960]{bott1960use}
-Bott, M.,  1960, The use of rapid digital computing methods for direct gravity
-  interpretation of sedimentary basins: Geophysical Journal International, {\bf
-  3}, 63--67.
-
 \bibitem[Bott, 1967]{bott1967solution}
---------, 1967, Solution of the linear inverse problem in magnetic
+Bott, M.,  1967, Solution of the linear inverse problem in magnetic
   interpretation with application to oceanic magnetic anomalies: Geophysical
   Journal International, {\bf 13}, 313--323.
 
 \bibitem[Chan and Jin, 2007]{chan-jin2007}
 Chan, R. H.-F., and X.-Q. Jin,  2007, An introduction to iterative {Toeplitz}
   solvers: SIAM, {\bf 5}.
-
-\bibitem[Cribb, 1976]{cribb1976application}
-Cribb, J.,  1976, Application of the generalized linear inverse to the
-  inversion of static potential data: Geophysics, {\bf 41}, 1365--1369.
 
 \bibitem[Dampney, 1969]{dampney1969}
 Dampney, C. N.~G.,  1969, The equivalent source technique: Geophysics, {\bf
@@ -71,41 +58,18 @@ Li, Y., M. Nabighian, and D.~W. Oldenburg,  2014, Using an equivalent source
   with positivity for low-latitude reduction to the pole without striation:
   Geophysics, {\bf 79}, J81--J90.
 
-\bibitem[Li and Oldenburg, 1996]{li19963}
-Li, Y., and D.~W. Oldenburg,  1996, 3-d inversion of magnetic data: Geophysics,
-  {\bf 61}, 394--408.
-
 \bibitem[Li and Oldenburg, 2010]{li-oldenburg2010}
---------, 2010, Rapid construction of equivalent sources using wavelets:
-  Geophysics, {\bf 75}, no. 3, L51--L59.
-
-\bibitem[Liu et~al., 2017]{liu20173d}
-Liu, S., X. Hu, H. Zhang, M. Geng, and B. Zuo,  2017, 3d magnetization vector
-  inversion of magnetic data: Improving and comparing methods: Pure and Applied
-  Geophysics, {\bf 174}, 4421--4444.
-
-\bibitem[Mendon{\c{c}}a, 2020]{mendoncca2020subspace}
-Mendon{\c{c}}a, C.~A.,  2020, Subspace method for solving large-scale
-  equivalent layer and density mapping problems: Geophysics, {\bf 85},
-  G57--G68.
-
-\bibitem[Mendon\c{c}a and Silva, 1994]{mendonca-silva1994}
-Mendon\c{c}a, C.~A., and J.~B.~C. Silva,  1994, The equivalent data concept
-  applied to the interpolation of potential field data: Geophysics, {\bf 59},
-  no. 5, 722--732.
+Li, Y., and D.~W. Oldenburg,  2010, Rapid construction of equivalent sources
+  using wavelets: Geophysics, {\bf 75}, no. 3, L51--L59.
 
 \bibitem[Oliveira{ }Jr. et~al., 2013]{oliveirajr-etal2013}
 Oliveira{ }Jr., V.~C., V.~C.~F. Barbosa, and L. Uieda,  2013, Polynomial
   equivalent layer: Geophysics, {\bf 78}, no. 1, G1--G13.
 
-\bibitem[Parker and Huestis, 1974]{parker1974inversion}
-Parker, R., and S. Huestis,  1974, The inversion of magnetic anomalies in the
-  presence of topography: Journal of Geophysical Research, {\bf 79},
-  1587--1593.
-
-\bibitem[Pilkington and Crossley, 1986]{pilkington1986determination}
-Pilkington, M., and D. Crossley,  1986, Determination of crustal interface
-  topography from potential fields: Geophysics, {\bf 51}, 1277--1284.
+\bibitem[Peters, 1949]{Peters1949}
+Peters, L.~J.,  1949, {THE} {DIRECT} {APPROACH} {TO} {MAGNETIC}
+  {INTERPRETATION} {AND} {ITS} {PRACTICAL} {APPLICATION}: {GEOPHYSICS}, {\bf
+  14}, 290--320.
 
 \bibitem[Renaut et~al., 2020]{renaut2020fast}
 Renaut, R.~A., J.~D. Hogue, S. Vatankhah, and S. Liu,  2020, A fast methodology
