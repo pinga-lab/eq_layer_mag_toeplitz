@@ -1,42 +1,109 @@
 \section{Application to synthetic data}
 
-The synthetic data application of the fast equivalent layer for magnetic data was conducted on a regular grid of  $80 \times 80$ points, totaling $N = 6,\, 400$ observation points. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\sqrt{2}$ A/m, respectively. The main field has inclination and declination of $10^{\circ}$ and $37^{\circ}$, respectively. Figure \ref{fig:model_mag_synthetic}a shows the synthetic data created for this test.
+The synthetic data application of the fast equivalent layer for magnetic data was conducted on a regular grid of  $80 \times 80$ points, totaling $N = 6,\, 400$ observation points. Three bodies were modeled: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2\sqrt{2}$ A/m, respectively. The main field has inclination and declination of $10^{\circ}$ and $37^{\circ}$, respectively. Figure \ref{fig:model_mag_synthetic} shows the synthetic data created for this test.
 
-Using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) a predicted data was estimated in figure \ref{fig:predicted_synthetic_mag}a. The residuals between the observed (\ref{fig:model_mag_synthetic}b) and the predicted data (\ref{fig:predicted_synthetic_mag}a), with mean $0.3712$ nT and standart deviation of $0.2798$ nT is shown in figure \ref{fig:predicted_synthetic_mag}b. This process took $17.10$ seconds.
+Using a classical linear inversion method (equation \ref{eq:estimated-p-parameter-space}) a predicted data was estimated in Figure \ref{fig:predicted_synthetic_mag}a. The data residuals,  defined as the difference between the observed (Figure \ref{fig:model_mag_synthetic}) and the predicted data 
+(Figure \ref{fig:predicted_synthetic_mag}a), with mean of $0.3712$ nT and standart deviation of $0.2798$ nT are shown in Figure \ref{fig:predicted_synthetic_mag}b. This process took $17.10$ seconds.
 
-Using the CGLS method with the fast BTTB matrix-vector product a predicted data was estimated in figure \ref{fig:predicted_bccb_mag}a. The residuals between the observed (\ref{fig:model_mag_synthetic}b) and the predicted data (\ref{fig:predicted_bccb_mag}a), with mean $0.5150$ nT and standart deviation of $0.4363$ nT is shown in figure \ref{fig:predicted_bccb_mag}b. This process took $0.18$ seconds.
+Using the CGLS method with the fast BTTB matrix-vector product a predicted data was estimated in Figure \ref{fig:predicted_bccb_mag}a. The data residuals, defined as the difference  between the observed (Figure \ref{fig:model_mag_synthetic}) and the predicted data (Figure \ref{fig:predicted_bccb_mag}a), with mean of $0.5150$ nT and standart deviation of $0.4363$ nT is shown in Figure \ref{fig:predicted_bccb_mag}b. 
+This process took $0.18$ seconds.
 
-In figure \ref{fig:convergence_synthetic_mag} we have the convergence analysis of the CGLS method to estimate the equivalent sources parameter vector $\mathbf{d}(\hat{\mathbf{p}})$ used for this synthetic test. The squared euclidian norm of residuals decreases as expected, with good results at 50 iterations, stabilizing afterwards. This result shows that it is not necessary to run the conjugate gradient least square method at $N$ iterations to get a theoretically exactly solution (which in practice would never occur due to roundoff errors), as this could be very demanding to process even with a small layer with $N = 6,\, 400$ equivalent sources. 
+Figure \ref{fig:convergence_synthetic_mag} shows the convergence of our method to estimate the equivalent sources parameter vector $\mathbf{d}(\hat{\mathbf{p}})$. 
+The Euclidean norm of the data residuals decreases as expected when the
+convergence criterion was satisfied, close to iteration 50. 
+This result shows that, in practice, it is not necessary to run the conjugate gradient least square method at $N$ iterations to get an exactly solution.
+Actually, the exactly solution  would never occur due to roundoff errors.
+Hence, by setting the convergence to  $N$ iterations besides being unnecessary it also demands large computer processing time, even in this synthetic test with a small layer 
+($N = 6,\, 400$ equivalent sources). 
 
 %======================================================================================
-\subsection*{Tests with irregulars grids}
+\subsection*{Tests with data on irregular grids}
 %======================================================================================
 
-As shown in theory, a regular grid of observation points is needed to arise the BTTB matrix. In this section, we show the results when this algorithm is used directly into irregular grids of $N = 5 \, 000$ observation points. 
+As shown in the methodology, a regular grid of observation points is needed to arise the BTTB matrix. In this section, we show the results when our method is applied directly to irregular grids of $N = 5 \, 000$ observation points. 
 First, we set up a regular grid of $100 \times 50$ observation points in the $x$- and $y$-directions with a grid spacing of $\Delta x$ of $101.01$ m along the $x$-axis and $\Delta y$ of
-$163.265$ m along the $y$-axis. Next, the $x$ and $y$ coordinates of the observations were also contaminated with pseudorandom Gaussian noise with zero mean and standard deviations of $10\%$, $30\%$ and $50\%$ of the $\Delta x$ and $\Delta y$ spacing.
+$163.265$ m along the $y$-axis. Next, the $x$ and $y$ coordinates of the observations were also contaminated with pseudorandom Gaussian noise with zero mean and standard deviations of $10\%$, $30\%$ and $50\%$ of the 
+$\Delta x$ and $\Delta y$ spacing.
 
-Figure \ref{fig:model_mag_synthetic_irregular_10}a shows an irregular grid with standart deviations of $10\%$ along both $x$- and $y$-direction of the observation points. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_10}a) has mean $0.3628$ nT, standart deviation of $0.2727$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_10}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_10}a) has mean $0.6024$ nT, standart deviation of $0.4998$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_10}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_10} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases as expected, with good results at 50 iterations, stabilizing afterwards.
+Figure \ref{fig:model_mag_synthetic_irregular_10}a shows an irregular grid with standart deviations of $10\%$ along both $x$- and $y$-directions of the observation points. 
+By using the classical approach, Figure \ref{fig:predicted_synthetic_mag_irregular_10}b shows the data residuals,  defined as the difference between the observed  (Figure \ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (Figure \ref{fig:predicted_synthetic_mag_irregular_10}a), with mean of $0.3628$ nT, standart deviation of $0.2727$ nT. 
+By using our method, Figure \ref{fig:predicted_bccb_mag_irregular_10}b shows the data residuals, difference between the observed (Figure \ref{fig:model_mag_synthetic_irregular_10}b) and the predicted data (Figure \ref{fig:predicted_bccb_mag_irregular_10}a), with mean of $0.6024$ nT and standart deviation of $0.4998$ nT.
+Figure \ref{fig:convergence_synthetic_mag_irregular_10} shows the convergence of our method in which the Euclidean norm of the data residuals decreases until it achieves an invariance close to iteration 50. 
 
-Figure \ref{fig:model_mag_synthetic_irregular_20}a shows an irregular grid with standart deviations of $20\%$ along both $x$- and $y$-direction of the observation points. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_20}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_20}a) has mean $0.3630$ nT, standart deviation of $0.2731$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_20}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_20}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_20}a) has mean $0.7147$ nT, standart deviation of $0.5622$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_20}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_20} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases as expected and stabilizing afterwards.
+Figure \ref{fig:model_mag_synthetic_irregular_20}a shows an irregular grid with standart deviations of $20\%$ along both $x$- and $y$-directions of the observation points. 
+Figure \ref{fig:predicted_synthetic_mag_irregular_20}b shows the data residuals 
+using the classical approach.
+The data residuals are defined as the difference between the observed 
+(Figure \ref{fig:model_mag_synthetic_irregular_20}b) and the predicted data 
+(Figure \ref{fig:predicted_synthetic_mag_irregular_20}a) having mean of $0.3630$ nT, standart deviation of $0.2731$ nT. 
+Using our method, the data residuals (difference between the observed, 
+Figure \ref{fig:model_mag_synthetic_irregular_20}b, and the predicted data 
+Figure \ref{fig:predicted_bccb_mag_irregular_20}a)  
+have mean of  $0.7147$ nT, standart deviation of $0.5622$ nT are  shown in 
+Figure \ref{fig:predicted_bccb_mag_irregular_20}b.
+The  Euclidean norm of the data residuals obtained by our method (Figure \ref{fig:convergence_synthetic_mag_irregular_20}) decreases as expected and close to iteration 50 congerves to a constant value. 
 
-Figure \ref{fig:model_mag_synthetic_irregular_30}a shows an irregular grid with standart deviations of $30\%$ along both $x$- and $y$-direction of the observation points. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_30}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_30}a) has mean $0.3634$ nT, standart deviation of $0.2735$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_30}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_30}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_30}a) has mean $0.9788$ nT, standart deviation of $0.7462$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_30}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_30} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases as expected in the begining, but starts increasing and not converging afterwards.
+Figure \ref{fig:model_mag_synthetic_irregular_30}a shows an irregular grid with standart deviations of $30\%$ along both $x$- and $y$-directions of the observation points. 
+Using the classical approach, the data residuals (difference between the observed, 
+Figure \ref{fig:model_mag_synthetic_irregular_30}b, and the predicted data 
+Figure \ref{fig:predicted_synthetic_mag_irregular_30}a, have mean of $0.3634$ nT, standart deviation of $0.2735$ nT and are shown in Figure \ref{fig:predicted_synthetic_mag_irregular_30}b. 
+Using our method, the data residuals (difference between the observed,
+Figure \ref{fig:model_mag_synthetic_irregular_30}b, and the predicted data, 
+Figure \ref{fig:predicted_bccb_mag_irregular_30}a)  have mean of $0.9788$ nT, standart deviation of $0.7462$ nT and are shown in Figure \ref{fig:predicted_bccb_mag_irregular_30}b.
+Figure \ref{fig:convergence_synthetic_mag_irregular_30} shows the convergence analysis of our method.
+Similar to the previous results, in the begining of the iterations, the Euclidean norm of the data residuals obtained by our method decreases; however it starts increasing without achieving an invariance.
 
-This results show that, when this approach is used in irregular grids, there is a limit of how much deviation the observation points can have before it starts to produce errors in predicted data. This is confirmed with the convergence analysis, when the irregularity is too large, the linear system stops converging.
 
-Another set of tests were also made with the same previous grid configuration, but now with deviations in the $z$-\textit{direction}, i.e., the observation points were no longer in a plane. In the previous tests, the total-field anomaly was computed at $900$ m height. The $z $coordinate of the observations were contaminated with
-pseudorandom Gaussian noise with zero mean and standard deviations of $5\%$, $10\%$, and $20\%$ of the $900$ height.
+%======================================================================================
+\subsection*{Tests with data over a undulating observation surface.}
+%======================================================================================
 
-Figure \ref{fig:model_mag_synthetic_irregular_z5}a shows a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the z coordinates were corrupted with a standard deviation of  $5\%$ of the height. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z5}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_z5}a) has mean $0.3712$ nT, standart deviation of $0.2870$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_z5}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z5}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_z5}a) has mean $0.9542$ nT, standart deviation of $0.8943$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_z5}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_z5} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases as expected, with good results at 50 iterations, stabilizing afterwards.
+Another set of tests were also accomplished with the same previous regular grid configuration, but now with deviations in the $z$-coordinates, i.e., the observation points were no longer in a plane. 
+In the previous tests, the total-field anomaly was computed at $900$ m height. 
+The next tests, the $z$-coordinate of the observations were contaminated with 
+pseudorandom Gaussian noise with zero mean and standard deviations of $5\%$, $10\%$, and $20\%$ of the $900$ m height.
 
-Figure \ref{fig:model_mag_synthetic_irregular_z10}a shows  a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the z coordinates were corrupted with a standard deviation of  $10\%$ of the height. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z10}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_z10}a) has mean $0.3865$ nT, standart deviation of $0.3216$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_z10}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z10}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_z10}a) has mean $1.6105$ nT, standart deviation of $1.6231$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_z10}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_z10} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases as expected, with good results at 50 iterations, stabilizing afterwards.
+Figure \ref{fig:model_mag_synthetic_irregular_z5}a shows a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the $z$-coordinates were corrupted with a standard deviation of  $5\%$ of the $900$ m height. 
+Using the classical approach, the data residuals (difference between the observed 
+Figure \ref{fig:model_mag_synthetic_irregular_z5}b, and the predicted data, 
+Figure \ref{fig:predicted_synthetic_mag_irregular_z5}a) have mean of $0.3712$ nT, standart deviation of $0.2870$ nT and are shown in Figure \ref{fig:predicted_synthetic_mag_irregular_z5}b. 
+Using our method, the data residuals (difference between the observed, 
+Figure  \ref{fig:model_mag_synthetic_irregular_z5}b, and the predicted data,
+Figure \ref{fig:predicted_bccb_mag_irregular_z5}a) have mean of $0.9542$ nT, standart deviation of $0.8943$ nT and are shown in Figure \ref{fig:predicted_bccb_mag_irregular_z5}b.
+In Figure \ref{fig:convergence_synthetic_mag_irregular_z5},  the Euclidean norm of the data residuals using our method decreases and  congerves to a constant value at the iteration 50. 
 
-Figure \ref{fig:model_mag_synthetic_irregular_z20}a shows  a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the z coordinates were corrupted with a standard deviation of  $20\%$ of the height. Using the classical approach the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z20}b) and the predicted data (\ref{fig:predicted_synthetic_mag_irregular_z20}a) has mean $0.4155$ nT, standart deviation of $0.4005$ nT and is shown in figure \ref{fig:predicted_synthetic_mag_irregular_z20}b. Using the new approach of this work the residuals between the observed (\ref{fig:model_mag_synthetic_irregular_z20}b) and the predicted data (\ref{fig:predicted_bccb_mag_irregular_z20}a) has mean $6.6220$ nT, standart deviation of $5.901$ nT and is shown in figure \ref{fig:predicted_bccb_mag_irregular_z20}b.
-In figure \ref{fig:convergence_synthetic_mag_irregular_z20} we have the convergence analysis of the CGLS method to estimate the equivalent sources used for this synthetic test. The squared euclidian norm decreases slower than previous tests and starts increasing afterwards showing that the convergence is not possible.
+Figure \ref{fig:model_mag_synthetic_irregular_z10}a shows a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the $z$-coordinates were corrupted with a standard deviation of  $10\%$ of the $900$ m height.  
+Using the classical approach, the data residuals, defined as the difference between the observed 
+(Figure \ref{fig:model_mag_synthetic_irregular_z10}b) and the predicted data  (Figure\ref{fig:predicted_synthetic_mag_irregular_z10}a), have mean of $0.3865$ nT, standart deviation of $0.3216$ nT and are shown in Figure \ref{fig:predicted_synthetic_mag_irregular_z10}b. 
+Using our method, Figure \ref{fig:predicted_bccb_mag_irregular_z10}b shows the data residuals 
+(difference between the observed, Figure \ref{fig:model_mag_synthetic_irregular_z10}b, and the predicted data, Figure \ref{fig:predicted_bccb_mag_irregular_z10}a) with mean of $1.6105$ nT and 
+standart deviation of $1.6231$ nT. 
+Likewise,  Figure \ref{fig:convergence_synthetic_mag_irregular_z10}  shows that the Euclidean norm of the data residuals, which were obtained by using our method, decreases up to the iteration 50 and 
+and reaches an invariance in the subsequent iterations.  
 
-Once again, we observe that while the classical linear inversion method can predict the data even with high irregularities in the observation points grid, the method presented in this work stars to create errors in the estimative. Through the convergence graphs it is possible to see the increase of the squared euclidian norm of the residuals, but the sensitivity to uncertainties in the z coordinates of the observations is higher than the the sensitivity to uncertainties in the $x$ and $y$ coordinates of the observations. With an average of $20\%$ of deviation in the $z$-\textit{direction} the system stopped converging while only at an average deviation of $30\%$ in the $x$-\textit{direction} and $30\%$ in the $y$-\textit{direction} that the same convergence problem occured.
+
+Figure \ref{fig:model_mag_synthetic_irregular_z20}a shows  a regular grid of $100 \times 50$ in the $x$- and $y$-directions located on an uneven surface of observations where  the z coordinates were corrupted with a standard deviation of  $20\%$ of the $900$ m height.  
+Figure \ref{fig:predicted_synthetic_mag_irregular_z20}b shows, using the classical approach, the data residuals (difference between the observed, Figure \ref{fig:model_mag_synthetic_irregular_z20}b, and the predicted data, Figure\ref{fig:predicted_synthetic_mag_irregular_z20}a) with  mean of $0.4155$ nT and 
+standart deviation of $0.4005$ nT. 
+By using our method,  the data residuals (difference  between the observed,
+Figure \ref{fig:model_mag_synthetic_irregular_z20}b, and the predicted data,
+Figure \ref{fig:predicted_bccb_mag_irregular_z20}a) are the worst results
+(Figure \ref{fig:predicted_bccb_mag_irregular_z20}b)
+with mean of $6.6220$ nT and standart deviation of $5.901$ nT.
+The convergence analysis (Figure \ref{fig:convergence_synthetic_mag_irregular_z20})
+reveals the inadequacy of our method in dealing with rugged  surface of observations, as 
+the Euclidean norm of the data residuals decreases slower than previous tests and starts increasing afterwards. 
+Under this condition, the convergence is not achieved. 
+
+
+Although our method is formulated to deal with magnetic observations measured on a regular grid, in 
+the $x$- and $y$-directions, and on a planar surface, the synthetic results show that our method is 
+robust in dealing either with irregular grids in the horizontal directions or with uneven surface.
+However, the robustness of our method has limitations.
+The performance limitation of our method depends on the degree of the 
+departure of the $x$- and $y$-coordinates of the data from there corresponding coordinates on a regular grid
+and from the amplitude of the undulating observation surface.
+High departures of the $x$- and $y$-coordinates  from a regular grid and large variations in the data elevation ($z$-coordinates of the data) are associated with unacceptable data fittings (large data residuals) as shown in Figures \ref{fig:predicted_bccb_mag_irregular_30}b and \ref{fig:predicted_bccb_mag_irregular_z20}b, respectively.
+However, the poor performance of our method in cases of irregular grid and uneven observation surface can be detected easily because, besides it leads to poor data fitting, it does not converge as shown in
+Figures \ref{fig:convergence_synthetic_mag_irregular_30}  and \ref{fig:convergence_synthetic_mag_irregular_z20}.
+Our results suggest that the sensitivity of our method to uncertainties in the $z$-coordinates of the observations is higher than its sensitivity to uncertainties in the $x$- and $y$-coordinates of the observations. 
