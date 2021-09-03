@@ -110,7 +110,7 @@ referenced throughout this work as the \textit{classical solution}.
 
 The computational cost required for estimating the classical solution can be very high
 when dealing with large datasets. In the following subsections, we will show how to 
-explore the structure of the sensitivity matrix $\mathbf{A}$ and use this to
+explore the structure of the sensitivity matrix $\mathbf{A}$ and 
 efficiently solve the least-squares normal equations (equation \ref{eq:normal-equations}).
 
 
@@ -129,8 +129,13 @@ a_{ij} = a^{xx}_{ij} + a^{xy}_{ij} + a^{xz}_{ij} + a^{yy}_{ij} + a^{yz}_{ij} + a
 \end{equation}
 where
 \begin{equation}
-a^{\alpha\beta}_{ij} = c_{m} \, \frac{\mu_{0}}{4\pi} 
-\left( F_{\alpha} h_{\beta} + F_{\beta} h_{\alpha} \right) h^{\alpha\beta}_{ij}
+a^{\alpha\beta}_{ij} = 
+\begin{cases}
+c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{\alpha} u_{\beta} \right) h^{\alpha\beta}_{ij} \: &, \quad \alpha = \beta \\
+c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{\alpha} u_{\beta} + F_{\beta} u_{\alpha} \right) h^{\alpha\beta}_{ij} \: &, \quad \alpha \ne \beta \\
+\end{cases}
 \: , \quad \alpha, \beta = x, y, z \: ,
 \label{eq:aij_alpha_beta}
 \end{equation}
@@ -227,34 +232,133 @@ h^{xz}_{ij} =
 and
 \begin{equation}
 h^{yz}_{ij} = 
-\frac{3 \left( \Delta l_{ij} \, \Delta_{y} \right) \Delta_{z}}{r_{ij}^{5}}
+\frac{3 \left( \Delta l_{ij} \, \Delta_{y} \right) \Delta_{z}}{r_{ij}^{5}} \: ,
 \label{eq:hyz_regular}
 \end{equation}
-where $\Delta_{z} = z_{c} - z_{0}$, $\Delta k_{ij} = k(i) - k(j)$ (equations \ref{eq:k-x-oriented} or \ref{eq:k-y-oriented}), $\Delta l_{ij} = l(i) - l(j)$ (equations \ref{eq:l-x-oriented} or \ref{eq:l-y-oriented}) and
+where $\Delta_{z} = z_{c} - z_{0}$, 
+\begin{equation}
+\Delta k_{ij} = \frac{x_{i} - x_{j}}{\Delta_{x}} = k(i) - k(j) \: ,
+\label{eq:Delta_kij}
+\end{equation}
+\begin{equation}
+\Delta l_{ij} = \frac{y_{i} - y_{j}}{\Delta_{y}} = l(i) - l(j)
+\label{eq:Delta_lij}
+\end{equation}
+and 
 \begin{equation}
 \frac{1}{r_{ij}} = 
 \frac{1}{\sqrt{\left( \Delta k_{ij} \, \Delta_{x} \right)^{2} + \left( \Delta l_{ij} \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
 \label{eq:1_rij_regular}
 \end{equation}
+Note that the integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ (equations 
+\ref{eq:k-x-oriented}--\ref{eq:l-y-oriented}) defining $\Delta k_{ij}$ (equation
+\ref{eq:Delta_kij}), $\Delta l_{ij}$ (equation \ref{eq:Delta_lij}) and 
+$\tfrac{1}{r_{ij}}$ (equation \ref{eq:1_rij_regular}) assume different 
+forms depending on the grid orientation.
+Despite of that, it can be shown that
+\begin{equation}
+\Delta k_{ij} = - \Delta k_{ji} \: ,
+\label{eq:Delta_kij_symmetry}
+\end{equation}
+\begin{equation}
+\Delta l_{ij} = - \Delta l_{ji}
+\label{eq:Delta_lij_symmetry}
+\end{equation}
+and 
+\begin{equation}
+\frac{1}{r_{ij}} = \frac{1}{r_{ji}}
+\label{eq:1_rij_symmetry}
+\end{equation}
+for any grid orientation.
 
 %==================================================================================
 \subsection{Matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ in terms of block indices $q$ and $p$}
 %==================================================================================
 
 By using equations \ref{eq:hxx_regular}--\ref{eq:1_rij_regular} to compute 
-$a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}), we obtain well-structured 
-block matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}).
-All of them are formed by a grid of $Q \times Q$, where each block has $P \times P$ 
-elements. The blocks disposed along the same block diagonal are equal to each other.
-In each block, the elements disposed on the same diagonal are also equal to each other.
-Such matrices are called Block-Toeplitz Toeplitz-Block (BTTB) and they can be conveniently
+$a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}), we can show that 
+matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}) assume
+well-defined structures that can be conveniently
 represented by using \textit{block indices} $q$ and $p$ \citep{takahashi2020convolutional}.
-Here, each block is represented by $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$, 
-$q = -Q+1,...,0,..., Q-1$, and their elements by $a^{\alpha\beta}_{qp}$, 
-$p = -P+1,...,0,...,P-1$. 
-Positive (negative) indices $q$ represent blocks $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ 
-located below (above) the main block diagonal of $\mathbf{A}_{\boldsymbol{\alpha\beta}}$.
-Similarly, positive (negative) indices $p$ represent elements $a^{\alpha\beta}_{qp}$ 
+These indices are defined by the integer functions $\Delta k_{ij}$ and $\Delta l_{ij}$ 
+(equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}), in terms of the indices $i$ 
+of the observation points $(x_{i}, y_{i}, z_{0})$ and $j$ of the equivalent sources
+$(x_{j}, y_{j}, z_{c})$.
+For $x$-\textit{oriented grids}, $Q = N_{y}$, $P = N_{x}$ and the block indices
+$q$ and $p$ are given by:
+\begin{equation}
+q \equiv q(i, j) = \Delta l_{ij}
+\label{eq:q-x-oriented}
+\end{equation}
+and
+\begin{equation}
+p \equiv p(i, j) = \Delta k_{ij} \: ,
+\label{eq:p-x-oriented}
+\end{equation}
+where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
+are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
+\ref{eq:k-x-oriented} and \ref{eq:l-x-oriented}.
+For $y$-\textit{oriented grids}, $Q = N_{x}$, $P = N_{y}$ and the block indices
+$q$ and $p$ are given by:
+\begin{equation}
+q \equiv q(i, j) = \Delta k_{ij}
+\label{eq:q-y-oriented}
+\end{equation}
+and
+\begin{equation}
+p \equiv p(i, j) = \Delta l_{ij} \: ,
+\label{eq:p-y-oriented}
+\end{equation}
+where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
+are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
+\ref{eq:k-y-oriented} and \ref{eq:l-y-oriented}.
+Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} differ from those presented by
+\citet{takahashi2020convolutional} in the absence of the module.
+
+In order to describe matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation
+\ref{eq:A_expand}) in terms of block indices, we have to verify that:
+(i) each pair of indices $i$ and $j$ produce a pair of block indices $q$ and $p$;
+(ii) each element $a^{\alpha\beta}_{ij}$, defined by indices $i$ and $j$, can be 
+represented by the alternative notation $a^{\alpha\beta}_{qp}$, defined in terms of
+the associated block indices $q$ and $p$;
+(iii) different combinations of indices $i$ and $j$ result in the same block indices $q$ and $p$; 
+(iv) elements $a^{\alpha\beta}_{ij}$ having the same associated block indices $q$ and $p$
+also have the same numerical value;
+(v) matrix $\mathbf{A}_{\boldsymbol{\alpha\beta}}$ is formed by a grid of $Q \times Q$ blocks
+$\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$, where each block has $P \times P$ elements
+$a^{\alpha\beta}_{qp}$ with the same block index $q$;
+(vi) blocks $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ disposed along the same block diagonal 
+of $\mathbf{A}_{\boldsymbol{\alpha\beta}}$ have the same block index $q$ and are equal to each other;
+(vii) in each block $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$, the elements $a^{\alpha\beta}_{qp}$
+having the same block index $p$ are arranged along the same diagonal and are equal to each other.
+
+Item (i) is a direct consequence of evaluating equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}
+for a given pair of indices $i$ and $j$. Item (ii) can be verified by substituting
+the block indices $q$ and $p$ (equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}) 
+into the second derivatives $h^{\alpha\beta}_{ij}$ 
+(equations \ref{eq:hxx_regular}--\ref{eq:hyz_regular}) and then use them to
+define the elements $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}). The result
+will be the elements $a^{\alpha\beta}_{qp}$. Item (iii) can be shown by first verifying that
+different combinations of indices $i$ and $j$ result in the same integer functions
+$\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}).
+Then, by using equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}, we conclude that
+different combinations of $i$ and $j$ result in the same indices $q$ and $p$.
+Item (iv) can be shown by noting that, according to equations 
+\ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}, elements $a^{\alpha\beta}_{ij}$ having the same 
+associated block indices $q$ and $p$ also have the same associated integer functions 
+$\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}).
+As a consequence, the associated second derivatives $h^{\alpha\beta}_{ij}$ 
+(equations \ref{eq:hxx_regular}--\ref{eq:hyz_regular}) have the same numerical values
+and elements $a^{\alpha\beta}_{ij}$ as well. Items (v)-(vii) can be shown by computing the 
+block indices $q$ and $p$ (equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}) for a small 
+data grid formed by, say, $N_{x} = 3$, $N_{y} = 2$, and generalizing the result for larger grids.
+
+From equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}, we can show that
+the block index $q$ assume integer values varying from $-Q+1$ to $Q-1$, while 
+$p$ varies from $-P+1$ to $P-1$. Positive (negative) indices $q$ are associated with blocks
+$\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ located below (above) the main block diagonal 
+of $\mathbf{A}_{\boldsymbol{\alpha\beta}}$.
+Similarly, positive (negative) indices $p$ are associated with elements $a^{\alpha\beta}_{qp}$ 
 located below (above) the main diagonal of $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$.
 According to this notation, $q$ defines the block $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$
 and $p$ the diagonal where the element $a^{\alpha\beta}_{qp}$ is located within this block, so that
@@ -279,49 +383,10 @@ a^{\alpha\beta}_{q(P-1)} & \cdots     & a^{\alpha\beta}_{q1}  & a^{\alpha\beta}_
 \end{bmatrix}_{P \times P} \: .
 \label{eq:Aq_block}
 \end{equation}
-It is important to stress that $a^{\alpha\beta}_{qp}$ (equation \ref{eq:Aq_block}), 
-$q = -Q+1,...,0,..., Q-1$, $p = -P+1,...,0,...,P-1$, represents an alternative notation
-to describe the elements $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}) of the matrix
-components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}) in terms of 
-the block indices $q$ and $p$. This notation allows us to verify that: (i) different combinations
-of indices $i$ and $j$ result in elements $a^{\alpha\beta}_{ij}$ having the same numerical 
-value; (ii) these elements are located on the diagonal $p$ of a block 
-$\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ (equation \ref{eq:Aq_block}); (iii) the same block 
-$\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ appears along the block diagonal $q$ of the 
-matrix component $\mathbf{A}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:BTTB_A_alpha_beta}).
-
-The relationship between a given element $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta})
-and an element $a^{\alpha\beta}_{qp}$ is defined by the block indices $q$ and $p$ 
-and the integer functions $\Delta k_{ij}$ and $\Delta l_{ij}$ 
-(equations \ref{eq:hxx_regular}--\ref{eq:1_rij_regular}).
-For $x$-\textit{oriented grids}, $Q = N_{y}$, $P = N_{x}$ and the block indices
-$q$ and $p$ are given by:
-\begin{equation}
-q(i, j) = \Delta l_{ij} = l(i) - l(j)
-\label{eq:q-x-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \Delta k_{ij} =  k(i) - k(j) \: ,
-\label{eq:p-x-oriented}
-\end{equation}
-where $k(i)$ and $k(j)$ are given by equation \ref{eq:k-x-oriented} and 
-$l(i)$ and $l(j)$ by equation \ref{eq:l-x-oriented}.
-For $y$-\textit{oriented grids}, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are given by:
-\begin{equation}
-q(i, j) = \Delta k_{ij} = k(i) - k(j) 
-\label{eq:q-y-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \Delta l_{ij} = l(i) - l(j) \: ,
-\label{eq:p-y-oriented}
-\end{equation}
-where $k(i)$ and $k(j)$ are given by equation \ref{eq:k-y-oriented} and 
-$l(i)$ and $l(j)$ by equation \ref{eq:l-y-oriented}.
-Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} differ from those presented by
-\citet{takahashi2020convolutional} in the absence of the module.
+This well-defined structure (equations \ref{eq:BTTB_A_alpha_beta} and \ref{eq:Aq_block}) 
+assumed by matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ 
+(equation \ref{eq:A_expand}) is called Block-Toeplitz Toeplitz-Block (BTTB) 
+\citep[e.g., ][ p. 67]{chan-jin2007}.
 
 % in review ==========>
 
@@ -329,67 +394,67 @@ Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} differ from those present
 \subsection{Structure of matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$}
 %==================================================================================
 
+Equations \ref{eq:BTTB_A_alpha_beta} and \ref{eq:Aq_block} define the general BTTB
+structure of all matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$, but 
+there are some differences between them.
+The integer functions $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and
+\ref{eq:Delta_lij}) play a crucial role in defining the individual structures of matrix components 
+$\mathbf{A}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:BTTB_A_alpha_beta}).
+These integer functions may assume positive and negative values depending on the relative
+position of the observation point $(x_{i}, y_{i}, z_{0})$ and the equivalent source 
+$(x_{j}, y_{j}, z_{c})$. 
+%It is important noting that the structure of a given matrix component 
+%$\mathbf{A}_{\boldsymbol{\alpha\beta}}$ is controlled by the numerator of the second derivatives
+%$h^{\alpha\beta}_{ij}$ (equations \ref{eq:hxx_regular}--\ref{eq:hyz_regular}),
+%$\alpha, \beta = x, y, z$, which are defined by the integer functions $\Delta k_{ij}$ and 
+%$\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}).
+
+Let us consider the matrix component $\mathbf{A}_{\boldsymbol{xx}}$, with elements
+$a^{xx}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+$h^{xx}_{ij}$ (equation \ref{eq:hxx_regular}). It can be easily verified from equations
+\ref{eq:Delta_kij_symmetry} and \ref{eq:1_rij_symmetry} that $h^{xx}_{ij} = h^{xx}_{ji}$.
+As a consequence, $a^{xx}_{ij} = a^{xx}_{ji}$ and $\mathbf{A}_{\boldsymbol{xx}}$ is symmetric.
+Now, let us investigate the elements $a^{xx}_{qp}$ forming the blocks $\mathbf{A}_{\boldsymbol{xx}}^{q}$.
+For $x$-oriented grids, the block indices $q$ and $p$ are defined by equations \ref{eq:q-x-oriented} and 
+\ref{eq:p-x-oriented} and $a^{xx}_{qp}$ can be written as follows:
+\begin{equation}
+a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right)^{2}}{r_{qp}^{5}} - 
+\frac{1}{r_{qp}^{3}} \: ,
+\label{eq:aqp_xx_x_oriented}
+\end{equation}
+where
+\begin{equation}
+\frac{1}{r_{qp}} = 
+\frac{1}{\sqrt{\left( p \, \Delta_{x} \right)^{2} + \left( q \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
+\label{eq:1_rqp_x_oriented}
+\end{equation}
+For $y$-oriented grids, the block indices $q$ and $p$ are defined by equations \ref{eq:q-y-oriented} and 
+\ref{eq:p-y-oriented} and $a^{xx}_{qp}$ can be written as follows:
+\begin{equation}
+a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right)^{2}}{r_{qp}^{5}} - 
+\frac{1}{r_{qp}^{3}} \: ,
+\label{eq:aqp_xx_y_oriented}
+\end{equation}
+where
+\begin{equation}
+\frac{1}{r_{qp}} = 
+\frac{1}{\sqrt{\left( q \, \Delta_{x} \right)^{2} + \left( p \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
+\label{eq:1_rqp_y_oriented}
+\end{equation}
+From equations \ref{eq:aqp_xx_x_oriented}--\ref{eq:1_rqp_y_oriented}, we can easily verify that
+$a^{xx}_{qp} = a^{xx}_{(-q)p}$ and that $a^{xx}_{qp} = a^{xx}_{q(-p)}$ for any grid orientation.
+It means that the blocks $\mathbf{A}_{\boldsymbol{xx}}^{q} = \mathbf{A}_{\boldsymbol{xx}}^{(-q)}$
+and that they are symmetric. From this results we conclude the matrix component 
+$\mathbf{A}_{\boldsymbol{xx}}$ is symmetric-Block-Toeplitz symmetric-Toeplitz-Block for any 
+grid orientation.
+The same reasoning can be used to show that matrices $\mathbf{A}_{\boldsymbol{yy}}$ and
+$\mathbf{A}_{\boldsymbol{zz}}$ also have this structure.
+
 PAREI AQUI
 
-In general, matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is a non-symmetric BTTB, i.e., its blocks are non-symmetric ($\mathbf{A}^{-Q+1} \neq \mathbf{A}^{Q-1} $) and its elements also are non-symmetric ($a^{q}_{-1} \neq a^{q}_{1}$). Depending on specific values of the main field direction and the equivalent sources magnetization directions, matrix $\mathbf{A}$ can assume other structures, for example, when $\hat{\mathbf{F}} = [0, 0, 1]$ and $\hat{\mathbf{u}} = [0, 0, 1]$ it becomes symmetric. In this work, we are considering the more commom situation for the matrix $\mathbf{A}$.
-
-Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
-and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
-
-In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
-
-%======================================================================================
-%\subsection{Structure of matrices components $\mathbf{H_{xx}}$, $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$}
-%======================================================================================
-
-
-
-The principal components $\mathbf{H_{xx}}$, $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$ (equations \ref{eq:hxx_mag}, \ref{eq:hyy_mag} and \ref{eq:hzz_mag}, respectively) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are symmetric-Block-Toeplitz symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xx}}$, $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$ are Toeplitz and symmetric by its blocks and each of the blocks are symmetric Toeplitz matrices. 
-For example, $\mathbf{H_{xx}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xx}$, $q = 0, \dots, Q - 1$:
-\begin{equation}
-\mathbf{H_{xx}} = \begin{bmatrix}
-\mathbf{H}^{0}_\mathbf{xx}  & \mathbf{H}^{1}_\mathbf{xx} & \cdots         & \mathbf{H}^{Q-1}_\mathbf{xx} \\
-\mathbf{H}^{1}_\mathbf{xx}  & \mathbf{H}^{0}_\mathbf{xx} & \ddots         & \vdots           \\ 
-\vdots           & \ddots         & \ddots         & \mathbf{H}^{1}_\mathbf{xx}   \\
-\mathbf{H}^{Q-1}_\mathbf{xx} & \cdots         & \mathbf{H}^{1}_\mathbf{xx} & \mathbf{H}^{0}_\mathbf{xx}                
-\end{bmatrix}_{N \times N} \: .
-\label{eq:BTTB_Hxx}
-\end{equation}
-And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_{p}$, $p = 0, \dots, P - 1$:
-\begin{equation}
-\mathbf{H}^{q}_\mathbf{xx} = \{h^{q}_p\} = \begin{bmatrix}
-h^{q}_{0}   & h^{q}_{1} & \cdots    & h^{q}_{P-1} \\
-h^{q}_{1}   & h^{q}_{0} & \ddots    & \vdots           \\ 
-\vdots      & \ddots    & \ddots    & h^{q}_{1}   \\
-h^{q}_{P-1} & \cdots    & h^{q}_{1} & h^{q}_{0}                 
-\end{bmatrix}_{P \times P} \: .
-\label{eq:Hxx_block}
-\end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
-\begin{equation}
-q(i, j) = \; \mid l(i) - l(j) \mid
-\label{eq:Hxx-q-x-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; \mid k(i) - k(j) \mid \quad ,
-\label{eq:Hxx-p-x-oriented}
-\end{equation}
-where $l(i)$ and $l(j)$ are defined by equation \ref{eq:l-x-oriented} 
-and $k(i)$ and $k(j)$ are defined by equation \ref{eq:k-x-oriented}.
-For $y$-oriented grids, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are defined, respectively, by the following integer functions 
-of the matrix indices $i$ and $j$:
-\begin{equation}
-q(i, j) = \; \mid k(i) - k(j) \mid 
-\label{eq:Hxx-q-y-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; \mid l(i) - l(j) \mid \quad ,
-\label{eq:Hxx-p-y-oriented}
-\end{equation}
-This struture can also describe matrices $\mathbf{H_{yy}}$ and $\mathbf{H_{zz}}$ in the same manner and they are identical to the structure of the gravity sensitivity matrix from \cite{takahashi2020convolutional}.
+% <========== in review
 
 %======================================================================================
 %\subsection{Structure of the components matrices $\mathbf{H_{xy}}$}
@@ -571,7 +636,12 @@ p(i, j) = \; l(i) - l(j) \quad ,
 \end{equation}
 Being a symmetric matrix by blocks, the values of $\mathbf{H_{yz}}$ from oposing diagonals blocks are equal, but each block have skew symmetric oposing diagonals, i.e., $h^{q}_{-1} = - h^{q}_{1}$.
 
-% <========== in review
+In general, matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is a non-symmetric BTTB, i.e., its blocks are non-symmetric ($\mathbf{A}^{-Q+1} \neq \mathbf{A}^{Q-1} $) and its elements also are non-symmetric ($a^{q}_{-1} \neq a^{q}_{1}$). Depending on specific values of the main field direction and the equivalent sources magnetization directions, matrix $\mathbf{A}$ can assume other structures, for example, when $\hat{\mathbf{F}} = [0, 0, 1]$ and $\hat{\mathbf{u}} = [0, 0, 1]$ it becomes symmetric. In this work, we are considering the more commom situation for the matrix $\mathbf{A}$.
+
+Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
+and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
+
+In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
 
 %======================================================================================
 \subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
