@@ -13,14 +13,14 @@ The main geomagnetic field has inclination and declination of $10^{\circ}$ and $
 
 Using the classical method (equation \ref{eq:estimated-p-parameter-space}) a predicted data
 (not shown) was estimated and the data residuals are shown in Figure \ref{fig:synthetic_residuals_convergence_comparison}a, 
-with mean of $0.3712$ nT and standart deviation of $0.2798$ nT.
+with mean of $0.3627$ nT and standart deviation of $0.2724$ nT.
 This process took $17.10$ seconds.
 
 From now on, we use the phrase "data residuals" to define the difference between the observed (second column in Figure \ref{fig:synthetic_data_comparison}) and the predicted data (not shown) obtained by the classical method or by the convolutional equivalent layer (our method). 
 
 
-Using our method, the running time to estimate the data residuals (Figure \ref{fig:synthetic_residuals_convergence_comparison}b), with mean of $0.5150$ nT and standart deviation of $0.4363$ nT, was $0.18$ seconds.
-The data residuals have mean of $0.5150$ nT and standart deviation of $0.4363$ nT 
+Using our method, the running time to estimate the data residuals (Figure \ref{fig:synthetic_residuals_convergence_comparison}b), with mean of $0.5223$ nT and standart deviation of $0.4323$ nT. The processing time was $0.18$ seconds.
+%The data residuals have mean of $0.5150$ nT and standart deviation of $0.4363$ nT 
 
 Figure \ref{fig:synthetic_residuals_convergence_comparison}c shows the convergence of our method. 
 The Euclidean norm of the data residuals decreases as expected when the
@@ -99,9 +99,9 @@ over the undulating observation surface shown in Figure \ref{fig:synthetic_data_
 The data residuals either using classical approach 
 (Figure \ref{fig:synthetic_residuals_convergence_comparison}j) or
 using our method (Figure \ref{fig:synthetic_residuals_convergence_comparison}k) reveal acceptable data fitting.
-Using the classical approach, the data residuals have mean of $0.3865$ nT 
-and standart deviation of $0.3216$ nT.
-Using our method, the data residuals have mean of $1.6105$ nT and standart deviation of $1.6231$ nT. 
+Using the classical approach, the data residuals have mean of $0.3712$ nT 
+and standart deviation of $0.2870$ nT.
+Using our method, the data residuals have mean of $0.9542$ nT and standart deviation of $0.8943$ nT. 
 
 Likewise,  Figure \ref{fig:synthetic_residuals_convergence_comparison}l shows that the Euclidean norm of the data residuals, which were obtained by using our method, decreases up to the iteration 50 and 
 and reaches an invariance in the subsequent iterations.  
@@ -115,8 +115,8 @@ The noise-corrupted total-field anomaly calculated on a regular grid  of $100 \t
 over the undulating observation surface (Figure \ref{fig:synthetic_data_comparison}m)
 is shown in Figure \ref{fig:synthetic_data_comparison}n.
 
-Figure \ref{fig:synthetic_residuals_convergence_comparison}m shows, using the classical approach, the data residuals yielded an good data fitting, with  mean of $0.4155$ nT and standart deviation of $0.4005$ nT. 
-By using our method,  the data residuals Figure \ref{fig:synthetic_residuals_convergence_comparison}n yielded a poor data  fitting with mean of $6.622$ nT and standart deviation of $5.901$ nT.
+Figure \ref{fig:synthetic_residuals_convergence_comparison}m shows, using the classical approach, the data residuals yielded an good data fitting, with  mean of $0.3865$ nT and standart deviation of $0.3216$ nT. 
+By using our method,  the data residuals Figure \ref{fig:synthetic_residuals_convergence_comparison}n yielded a poor data  fitting with mean of $1.6109$ nT and standart deviation of $1.6231$ nT.
 The convergence analysis (Figure\ref{fig:synthetic_residuals_convergence_comparison}o)
 reveals the inadequacy of our method in dealing with rugged  surface of observations, as 
 the Euclidean norm of the data residuals decreases slower than previous tests 
