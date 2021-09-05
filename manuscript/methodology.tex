@@ -280,13 +280,13 @@ By using equations \ref{eq:hxx_regular}--\ref{eq:1_rij_regular} to compute
 $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}), we can show that 
 matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}) assume
 well-defined structures that can be conveniently
-represented by using \textit{block indices} $q$ and $p$ \citep{takahashi2020convolutional}.
+represented with \textit{block indices} $q$ and $p$ \citep{takahashi2020convolutional}.
 These indices are defined by the integer functions $\Delta k_{ij}$ and $\Delta l_{ij}$ 
 (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}), in terms of the indices $i$ 
 of the observation points $(x_{i}, y_{i}, z_{0})$ and $j$ of the equivalent sources
 $(x_{j}, y_{j}, z_{c})$.
-For $x$-\textit{oriented grids}, $Q = N_{y}$, $P = N_{x}$ and the block indices
-$q$ and $p$ are given by:
+For $x$-\textit{oriented grids} (Figure \ref{fig:regular-grids}), $Q = N_{y}$, $P = N_{x}$ 
+and the block indices $q$ and $p$ are given by:
 \begin{equation}
 q \equiv q(i, j) = \Delta l_{ij}
 \label{eq:q-x-oriented}
@@ -299,8 +299,8 @@ p \equiv p(i, j) = \Delta k_{ij} \: ,
 where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
 are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
 \ref{eq:k-x-oriented} and \ref{eq:l-x-oriented}.
-For $y$-\textit{oriented grids}, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are given by:
+For $y$-\textit{oriented grids} (Figure \ref{fig:regular-grids}), $Q = N_{x}$, $P = N_{y}$ and 
+the block indices $q$ and $p$ are given by:
 \begin{equation}
 q \equiv q(i, j) = \Delta k_{ij}
 \label{eq:q-y-oriented}
@@ -329,7 +329,7 @@ $\Delta l_{ij}$ (equation \ref{eq:Delta_lij}) and $\tfrac{1}{r_{ij}}$
 (equation \ref{eq:1_rij_regular}). The matrices $\Delta\mathbf{K}$ and $\Delta\mathbf{L}$ 
 having elements $ij$ 
 defined by $\Delta k_{ij}$ and $\Delta l_{ij}$, respectively, assume different forms, depending on
-the grid orientation. For $x$-oriented grids, they are given by:
+the grid orientation. For $x$-oriented grids (Figure \ref{fig:regular-grids}), they are given by:
 \begin{equation}
 \Delta\mathbf{K} = \begin{bmatrix}
 0 &  -1 &  -2 &   0 &  -1 &  -2 \\
@@ -353,7 +353,7 @@ and
 \end{bmatrix} \: .
 \label{eq:DL-matrix-x-oriented}
 \end{equation}
-For $y$-oriented grids, they are given by:
+For $y$-oriented grids (Figure \ref{fig:regular-grids}), they are given by:
 \begin{equation}
 \Delta\mathbf{K} = \begin{bmatrix}
 0 &   0 &  -1 &  -1 &  -2 &  -2 \\
@@ -377,7 +377,6 @@ and
 \end{bmatrix} \: .
 \label{eq:DL-matrix-y-oriented}
 \end{equation}
-
 These examples (equations \ref{eq:DK-matrix-x-oriented}--\ref{eq:DL-matrix-y-oriented})
 show that different combinations of indices $i$ and $j$ result in integer functions 
 $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
@@ -411,7 +410,9 @@ also illustrate that, regardless of grid orientation, (i) the block index $q$ is
 inside each block; (ii) blocks disposed along the same block diagonal are equal to each other; 
 (iii) the block index $p$ is constant on each diagonal of a given block; 
 (iv) elements of a given block located on the same diagonal are also equal do each other.
-Based on this well-defined structure of block indices, we can define 
+The results obtained with the small grid shown in Figure \ref{fig:regular-grids}
+can be easily generalized for larger grids.
+Based on the well-defined structure of block indices, we can define 
 matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ in a general form
 \begin{equation}
 \mathbf{A}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
@@ -437,8 +438,6 @@ of matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$
 (equation \ref{eq:A_expand}) is called Block-Toeplitz Toeplitz-Block (BTTB) 
 \citep[e.g., ][ p. 67]{chan-jin2007}.
 
-% in review ==========>
-
 %=====================================================================================================
 \subsection{Detailed structure of matrices $\mathbf{A_{xx}}$, $\mathbf{A_{yy}}$ and $\mathbf{A_{zz}}$}
 %=====================================================================================================
@@ -450,10 +449,15 @@ Let us consider the matrix component $\mathbf{A}_{\boldsymbol{xx}}$, with elemen
 $a^{xx}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
 $h^{xx}_{ij}$ (equation \ref{eq:hxx_regular}). It can be easily verified from equations
 \ref{eq:Delta_kij_symmetry} and \ref{eq:1_rij_symmetry} that $h^{xx}_{ij} = h^{xx}_{ji}$.
-As a consequence, $a^{xx}_{ij} = a^{xx}_{ji}$ and we conclude that $\mathbf{A}_{\boldsymbol{xx}}$ 
-is symmetric.
+As a consequence, $a^{xx}_{ij} = a^{xx}_{ji}$, which means that 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xx}} = \left( \mathbf{A}_{\boldsymbol{xx}} \right)^{\top}
+\label{eq:Axx_symmetry}
+\end{equation}
+for any grid orientation.
 Now, let us investigate the elements $a^{xx}_{qp}$ forming the blocks $\mathbf{A}_{\boldsymbol{xx}}^{q}$.
-For $x$-oriented grids, the block indices $q$ and $p$ are defined by equations \ref{eq:q-x-oriented} and 
+For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+by equations \ref{eq:q-x-oriented} and 
 \ref{eq:p-x-oriented} and $a^{xx}_{qp}$ can be rewritten as follows:
 \begin{equation}
 a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
@@ -467,7 +471,8 @@ where
 \frac{1}{\sqrt{\left( p \, \Delta_{x} \right)^{2} + \left( q \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
 \label{eq:1_rqp_x_oriented}
 \end{equation}
-For $y$-oriented grids, the block indices $q$ and $p$ are defined by equations \ref{eq:q-y-oriented} and 
+For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+defined by equations \ref{eq:q-y-oriented} and 
 \ref{eq:p-y-oriented} and $a^{xx}_{qp}$ can be rewritten as follows:
 \begin{equation}
 a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
@@ -482,205 +487,160 @@ where
 \label{eq:1_rqp_y_oriented}
 \end{equation}
 From equations \ref{eq:aqp_xx_x_oriented}--\ref{eq:1_rqp_y_oriented}, we can easily verify that
-$a^{xx}_{qp} = a^{xx}_{(-q)p}$ and, consequently, that 
-$\mathbf{A}_{\boldsymbol{xx}}^{q} = \mathbf{A}_{\boldsymbol{xx}}^{(-q)}$. We can also verify 
-that $a^{xx}_{qp} = a^{xx}_{q(-p)}$ and, consequently, that the blocks 
-$\mathbf{A}_{\boldsymbol{xx}}^{q}$ are symmetric. Note that these symmetries are valid for 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xx}}^{q} = \mathbf{A}_{\boldsymbol{xx}}^{(-q)}
+\label{eq:Axx_q_external_block_symmetry}
+\end{equation}
+and
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xx}}^{q} = \left(\mathbf{A}_{\boldsymbol{xx}}^{q} \right)^{\top} \: .
+\label{eq:Axx_q_internal_block_symmetry}
+\end{equation}
+Note that these symmetries are valid for 
 any grid orientation.
 From this results we conclude the matrix component 
-$\mathbf{A}_{\boldsymbol{xx}}$ is symmetric-Block-Toeplitz symmetric-Toeplitz-Block for any 
-grid orientation.
+$\mathbf{A}_{\boldsymbol{xx}}$ is \textit{symmetric-Block-Toeplitz symmetric-Toeplitz-Block} 
+for any grid orientation.
 The same reasoning can be used to show that matrices $\mathbf{A}_{\boldsymbol{yy}}$ and
 $\mathbf{A}_{\boldsymbol{zz}}$ also have this symmetric structure.
 
+%==========================================================
+\subsection{Detailed structure of matrix $\mathbf{A_{xy}}$}
+%==========================================================
+
+Let $\mathbf{A}_{\boldsymbol{xy}}$ be a matrix component with elements
+$a^{xy}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+$h^{xy}_{ij}$ (equation \ref{eq:hxy_regular}). It can be easily verified from equations
+\ref{eq:Delta_kij_symmetry}--\ref{eq:1_rij_symmetry} that $h^{xy}_{ij} = h^{xy}_{ji}$.
+As a consequence, $a^{xy}_{ij} = a^{xy}_{ji}$, which means that 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xy}} = \left( \mathbf{A}_{\boldsymbol{xy}} \right)^{\top}
+\label{eq:Axy_symmetry}
+\end{equation}
+for any grid orientation.
+For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+by equations \ref{eq:q-x-oriented} and 
+\ref{eq:p-x-oriented} and $a^{xy}_{qp}$ can be rewritten as follows:
+\begin{equation}
+a^{xy}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{y} + F_{y} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right)\left( q \, \Delta_{y} \right)}{r_{qp}^{5}}
+\: ,
+\label{eq:aqp_xy_x_oriented}
+\end{equation}
+with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_x_oriented}.
+For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+defined by equations \ref{eq:q-y-oriented} and 
+\ref{eq:p-y-oriented} and $a^{xy}_{qp}$ can be rewritten as follows:
+\begin{equation}
+a^{xy}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{y} + F_{y} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right)\left( p \, \Delta_{y} \right)}{r_{qp}^{5}} \: ,
+\label{eq:aqp_xy_y_oriented}
+\end{equation}
+with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_y_oriented}.
+From equations \ref{eq:1_rqp_x_oriented}, \ref{eq:1_rqp_y_oriented}, \ref{eq:aqp_xy_x_oriented} 
+and \ref{eq:aqp_xy_y_oriented}, we can show that
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xy}}^{q} = -\mathbf{A}_{\boldsymbol{xy}}^{(-q)}
+\label{eq:Axy_q_external_block_symmetry}
+\end{equation}
+and 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xy}}^{q} = -\left( \mathbf{A}_{\boldsymbol{xy}}^{q} \right)^{\top} \: .
+\label{eq:Axy_q_internal_block_symmetry}
+\end{equation}
+Note that these symmetries are valid for any grid orientation.
+From this results we conclude the matrix component 
+$\mathbf{A}_{\boldsymbol{xy}}$ is \textit{skew symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block} 
+for any grid orientation.
+
+%==================================================================================
+\subsection{Detailed structure of matrices $\mathbf{A_{xz}}$ and $\mathbf{A_{yz}}$}
+%==================================================================================
+
+Let $\mathbf{A}_{\boldsymbol{xz}}$ be a matrix component with elements
+$a^{xz}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+$h^{xz}_{ij}$ (equation \ref{eq:hxz_regular}). It can be easily verified from equations
+\ref{eq:Delta_kij_symmetry}--\ref{eq:1_rij_symmetry} that $h^{xz}_{ij} = -h^{xz}_{ji}$.
+As a consequence, $a^{xz}_{ij} = -a^{xz}_{ji}$, which means that 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xz}} = -\left( \mathbf{A}_{\boldsymbol{xz}} \right)
+\label{eq:Axz_symmetry}
+\end{equation} 
+for any grid orientation.
+For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+by equations \ref{eq:q-x-oriented} and 
+\ref{eq:p-x-oriented} and $a^{xz}_{qp}$ can be rewritten as follows:
+\begin{equation}
+a^{xz}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{z} + F_{z} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right) \Delta_{z}}{r_{qp}^{5}}
+\: ,
+\label{eq:aqp_xz_x_oriented}
+\end{equation}
+with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_x_oriented}.
+In this case, we can see that
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xz}}^{q} = \mathbf{A}_{\boldsymbol{xz}}^{(-q)}
+\label{eq:Axz_q_external_block_symmetry_x_oriented}
+\end{equation}
+and 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xz}}^{q} = -\left( \mathbf{A}_{\boldsymbol{xz}}^{q} \right)^{\top} \: .
+\label{eq:Axz_q_internal_block_symmetry_x_oriented}
+\end{equation}
+This structure is called \textit{symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block} and is 
+valid only for $x$-oriented grids.
+For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+defined by equations \ref{eq:q-y-oriented} and 
+\ref{eq:p-y-oriented} and $a^{xz}_{qp}$ can be rewritten as follows:
+\begin{equation}
+a^{xz}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+\left( F_{x} u_{z} + F_{z} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right) \Delta_{z}}{r_{qp}^{5}} \: ,
+\label{eq:aqp_xz_y_oriented}
+\end{equation}
+with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_y_oriented}.
+Now, we conclude that
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xz}}^{q} = -\mathbf{A}_{\boldsymbol{xz}}^{(-q)}
+\label{eq:Axz_q_external_block_symmetry_y_oriented}
+\end{equation}
+and 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{xz}}^{q} = \left( \mathbf{A}_{\boldsymbol{xz}}^{q} \right)^{\top} \: .
+\label{eq:Axz_q_internal_block_symmetry_y_oriented}
+\end{equation}
+This structure is called \textit{skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block} and is 
+valid only for $y$-oriented grids.
+
+The same reasoning can be followed to show that
+\begin{equation}
+\mathbf{A}_{\boldsymbol{yz}} = -\left( \mathbf{A}_{\boldsymbol{yz}} \right)
+\label{eq:Ayz_symmetry}
+\end{equation} 
+for any grid orientation. Besides, we can also show that
+\begin{equation}
+\mathbf{A}_{\boldsymbol{yz}}^{q} = -\mathbf{A}_{\boldsymbol{yz}}^{(-q)}
+\label{eq:Ayz_q_external_block_symmetry_x_oriented}
+\end{equation}
+and 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{yz}}^{q} = \left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
+\label{eq:Ayz_q_internal_block_symmetry_x_oriented}
+\end{equation}
+for $x$-oriented grids, while
+\begin{equation}
+\mathbf{A}_{\boldsymbol{yz}}^{q} = \mathbf{A}_{\boldsymbol{yz}}^{(-q)}
+\label{eq:Ayz_q_external_block_symmetry_y_oriented}
+\end{equation}
+and 
+\begin{equation}
+\mathbf{A}_{\boldsymbol{yz}}^{q} = -\left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
+\label{eq:Ayz_q_internal_block_symmetry_y_oriented}
+\end{equation}
+for $y$-oriented grids.
+
 PAREI AQUI
 
-%======================================================================================
-%\subsection{Structure of the components matrices $\mathbf{H_{xy}}$}
-%======================================================================================
-
-By substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{eq:Hi}, we can also describe the elements of $\mathbf{H_{xy}}$, as:
-\begin{equation}
-h^{xy}_{ij} = \frac{3 (\Delta k_{ij} \, \Delta x )(\Delta l_{ij} \, \Delta y )}{\left[ 
-	\left( \Delta k_{ij} \, \Delta x \right)^{2} + 
-	\left( \Delta l_{ij} \, \Delta y \right)^{2} + 
-	\left( \Delta z \right)^{2} \right]^{\frac{5}{2}}} \: ,
-\label{eq:hxy_mag}
-\end{equation}
-
-The component $\mathbf{H_{xy}}$ (equation \ref{eq:hxy_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are skew symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xy}}$ is Toeplitz and skew symmetric by its blocks and each of the blocks are skew symmetric Toeplitz matrices. 
-This way, matrix $\mathbf{H_{xy}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xy}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
-\begin{equation}
-\mathbf{H_{xy}} = \begin{bmatrix}
-\mathbf{H}^{0}_\mathbf{xy}  & \mathbf{H}^{-1}_\mathbf{xy} & \cdots         & \mathbf{H}^{-Q+1}_\mathbf{xy} \\
-\mathbf{H}^{1}_\mathbf{xy}  & \mathbf{H}^{0}_\mathbf{xy} & \ddots         & \vdots           \\ 
-\vdots           & \ddots         & \ddots         & \mathbf{H}^{-1}_\mathbf{xy}   \\
-\mathbf{H}^{Q-1}_\mathbf{xy} & \cdots         & \mathbf{H}^{1}_\mathbf{xy} & \mathbf{H}^{0}_\mathbf{xy}                
-\end{bmatrix}_{N \times N} \: .
-\label{eq:BTTB_Hxy}
-\end{equation}
-And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_{p}$, $p = -P + 1, \dots, 0, \dots, P - 1$:
-\begin{equation}
-\mathbf{H}^{q}_\mathbf{xy} =  \{h^{q}_p\} = \begin{bmatrix}
-h^{q}_{0}   & h^{q}_{-1} & \cdots    & h^{q}_{-P+1} \\
-h^{q}_{1}   & h^{q}_{0} & \ddots    & \vdots           \\ 
-\vdots      & \ddots    & \ddots    & h^{q}_{-1}   \\
-h^{q}_{P-1} & \cdots    & h^{q}_{1} & h^{q}_{0}                 
-\end{bmatrix}_{P \times P} \: .
-\label{eq:Hxy_block}
-\end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
-\begin{equation}
-q(i, j) = \; l(i) - l(j) 
-\label{eq:Hxy-q-x-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; k(i) - k(j) \quad ,
-\label{eq:Hxy-p-x-oriented}
-\end{equation}
-where $l(i)$ and $l(j)$ are defined by equation \ref{eq:l-x-oriented} 
-and $k(i)$ and $k(j)$ are defined by equation \ref{eq:k-x-oriented}.
-For $y$-oriented grids, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are defined, respectively, by the following integer functions 
-of the matrix indices $i$ and $j$:
-\begin{equation}
-q(i, j) = \;  k(i) - k(j)  
-\label{eq:Hxy-q-y-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \;  l(i) - l(j)  \quad ,
-\label{eq:Hxy-p-y-oriented}
-\end{equation}
-Important to clarify that in this case, as a skew symmetric matrix, the values of oposing diagonals have oposing signals, e.g., $\mathbf{H}^{-1}_\mathbf{xy} = -\mathbf{H}^{1}_\mathbf{xy}$ and $h^{q}_{-1} = -h^{q}_{1} $.
-
-%======================================================================================
-%\subsection{Structure of the components matrices $\mathbf{H_{xz}}$}
-%======================================================================================
-
-By substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{eq:Hi}, the elements of $\mathbf{H_{xz}}$, are given by:
-\begin{equation}
-h^{xz}_{ij} = \frac{3 (\Delta k_{ij} \, \Delta x)(\Delta z)}{\left[ 
-	\left( \Delta k_{ij} \, \Delta x \right)^{2} + 
-	\left( \Delta l_{ij} \, \Delta y \right)^{2} + 
-	\left( \Delta z \right)^{2} \right]^{\frac{5}{2}}} \: ,
-\label{eq:hxz_mag}
-\end{equation}
-
-The component $\mathbf{H_{xz}}$ (equation \ref{eq:hxz_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{xz}}$ is Toeplitz and skew symmetric by its blocks and each of the blocks are symmetric Toeplitz matrices. 
-Thus, matrix $\mathbf{H_{xz}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{xz}$, $q = -Q + 1, \dots, 0, \dots, Q - 1$:
-\begin{equation}
-\mathbf{H_{xz}} = \begin{bmatrix}
-\mathbf{H}^{0}_\mathbf{xz}  & \mathbf{H}^{-1}_\mathbf{xz} & \cdots         & \mathbf{H}^{-Q+1}_\mathbf{xz} \\
-\mathbf{H}^{1}_\mathbf{xz}  & \mathbf{H}^{0}_\mathbf{xz} & \ddots         & \vdots           \\ 
-\vdots           & \ddots         & \ddots         & \mathbf{H}^{-1}_\mathbf{xz}   \\
-\mathbf{H}^{Q-1}_\mathbf{xz} & \cdots         & \mathbf{H}^{1}_\mathbf{xz} & \mathbf{H}^{0}_\mathbf{xz}                
-\end{bmatrix}_{N \times N} \: .
-\label{eq:BTTB_Hxz}
-\end{equation}
-And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_{p}$, $p = 0, \dots, P - 1$:
-\begin{equation}
-\mathbf{H}^{q}_\mathbf{xz} =  \{h^{q}_p\} = \begin{bmatrix}
-h^{q}_{0}   & h^{q}_{1} & \cdots    & h^{q}_{P-1} \\
-h^{q}_{1}   & h^{q}_{0} & \ddots    & \vdots           \\ 
-\vdots      & \ddots    & \ddots    & h^{q}_{1}   \\
-h^{q}_{P-1} & \cdots    & h^{q}_{1} & h^{q}_{0}                 
-\end{bmatrix}_{P \times P} \: .
-\label{eq:Hxz_block}
-\end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
-\begin{equation}
-q(i, j) = \; l(i) - l(j) 
-\label{eq:Hxz-q-x-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; \mid k(i) - k(j) \mid \quad ,
-\label{eq:Hxz-p-x-oriented}
-\end{equation}
-where $l(i)$ and $l(j)$ are defined by equation \ref{eq:l-x-oriented} 
-and $k(i)$ and $k(j)$ are defined by equation \ref{eq:k-x-oriented}.
-For $y$-oriented grids, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are defined, respectively, by the following integer functions 
-of the matrix indices $i$ and $j$:
-\begin{equation}
-q(i, j) = \;  k(i) - k(j)  
-\label{eq:Hxz-q-y-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; \mid l(i) - l(j) \mid \quad ,
-\label{eq:Hxz-p-y-oriented}
-\end{equation}
-In this case as a skew symmetric matrix by blocks, the values of oposing diagonals blocks have oposing signals, e.g., $\mathbf{H}^{-1}_\mathbf{xz} = -\mathbf{H}^{1}_\mathbf{xz}$ but each block is a symmetric matrix.
-
-%======================================================================================
-%\subsection{Structure of the components matrices $\mathbf{H_{yz}}$}
-%======================================================================================
-
-Finally, by substituting equations \ref{eq:xi} and \ref{eq:yi} in equation \ref{eq:Hi}, we can also describe the elements of $\mathbf{H_{yz}}$, as:
-\begin{equation}
-h^{yz}_{ij} = \frac{3 (\Delta l_{ij} \, \Delta y )(\Delta z)}{\left[ 
-	\left( \Delta k_{ij} \, \Delta x \right)^{2} + 
-	\left( \Delta l_{ij} \, \Delta y \right)^{2} + 
-	\left( \Delta z \right)^{2} \right]^{\frac{5}{2}}} \: ,
-\label{eq:hyz_mag}
-\end{equation}
-
-The component $\mathbf{H_{yz}}$ (equation \ref{eq:hyz_mag}) of matrix $\mathbf{H}$ (equation \ref{eq:Hi}) are symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block matrices. This means that $\mathbf{H_{yz}}$ is Toeplitz and symmetric by its blocks and each of the blocks are skew symmetric Toeplitz matrices.
-Thus, matrix $\mathbf{H_{yz}}$ can be described by the \textit{block index} $q$ that represents the block diagonals of this matrix as a grid of $Q \times Q$ blocks $\mathbf{H}^{q}_\mathbf{yz}$, $q = 0, \dots, Q - 1$:
-\begin{equation}
-\mathbf{H_{yz}} = \begin{bmatrix}
-\mathbf{H}^{0}_\mathbf{yz}  & \mathbf{H}^{1}_\mathbf{yz} & \cdots         & \mathbf{H}^{Q-1}_\mathbf{yz} \\
-\mathbf{H}^{1}_\mathbf{yz}  & \mathbf{H}^{0}_\mathbf{yz} & \ddots         & \vdots           \\ 
-\vdots           & \ddots         & \ddots         & \mathbf{H}^{1}_\mathbf{yz}   \\
-\mathbf{H}^{Q-1}_\mathbf{yz} & \cdots         & \mathbf{H}^{1}_\mathbf{yz} & \mathbf{H}^{0}_\mathbf{yz}                
-\end{bmatrix}_{N \times N} \: .
-\label{eq:BTTB_Hyz}
-\end{equation}
-And each diagonal of the blocks are represented by $P \times P$ elements $h^{q}_{p}$, $p = -P + 1, \dots, 0, \dots, P - 1$:
-\begin{equation}
-\mathbf{H}^{q}_\mathbf{yz} =  \{h^{q}_p\} = \begin{bmatrix}
-h^{q}_{0}   & h^{q}_{-1} & \cdots    & h^{q}_{-P+1} \\
-h^{q}_{1}   & h^{q}_{0} & \ddots    & \vdots           \\ 
-\vdots      & \ddots    & \ddots    & h^{q}_{-1}   \\
-h^{q}_{P-1} & \cdots    & h^{q}_{1} & h^{q}_{0}                 
-\end{bmatrix}_{P \times P} \: .
-\label{eq:Hyz_block}
-\end{equation}
-In a $x$-\textit{oriented grid} $Q = N_{y}$, $P = N_{x}$ and $q$ and $p$ can be defined by the functions:
-\begin{equation}
-q(i, j) = \; \mid l(i) - l(j) \mid
-\label{eq:Hyz-q-x-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; k(i) - k(j) \quad ,
-\label{eq:Hyz-p-x-oriented}
-\end{equation}
-where $l(i)$ and $l(j)$ are defined by equation \ref{eq:l-x-oriented} 
-and $k(i)$ and $k(j)$ are defined by equation \ref{eq:k-x-oriented}.
-For $y$-oriented grids, $Q = N_{x}$, $P = N_{y}$ and the block indices
-$q$ and $p$ are defined, respectively, by the following integer functions 
-of the matrix indices $i$ and $j$:
-\begin{equation}
-q(i, j) = \; \mid k(i) - k(j) \mid
-\label{eq:Hyz-q-y-oriented}
-\end{equation}
-and
-\begin{equation}
-p(i, j) = \; l(i) - l(j) \quad ,
-\label{eq:Hyz-p-y-oriented}
-\end{equation}
-Being a symmetric matrix by blocks, the values of $\mathbf{H_{yz}}$ from oposing diagonals blocks are equal, but each block have skew symmetric oposing diagonals, i.e., $h^{q}_{-1} = - h^{q}_{1}$.
-
-In general, matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) is a non-symmetric BTTB, i.e., its blocks are non-symmetric ($\mathbf{A}^{-Q+1} \neq \mathbf{A}^{Q-1} $) and its elements also are non-symmetric ($a^{q}_{-1} \neq a^{q}_{1}$). Depending on specific values of the main field direction and the equivalent sources magnetization directions, matrix $\mathbf{A}$ can assume other structures, for example, when $\hat{\mathbf{F}} = [0, 0, 1]$ and $\hat{\mathbf{u}} = [0, 0, 1]$ it becomes symmetric. In this work, we are considering the more commom situation for the matrix $\mathbf{A}$.
-
-Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
-and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
-
-In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
+% in review ==========>
 
 %======================================================================================
 \subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
@@ -735,11 +695,14 @@ product out of the loop and two matrix-vector products per iteration (in steps 3
 In the following subsections, we will show how to compute these three matrix-vector products 
 efficiently by exploring the structure of the sensitivity matrix $\mathbf{A}$.
 
-PAREI AQUI
-
 %======================================================================================
 \subsection{CGLS matrix-vector substitution}
 %======================================================================================
+
+Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
+and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
+
+In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
 
 As pointed earlier in this work, the main improvement inside the CGLS method (Algorithm \ref{al:std-cgls-algorithm}) for estimating the parameter vector $\hat{\mathbf{p}}$ (equation \ref{eq:estimated-p-parameter-space}) is to substitute the matrix-vector multiplication $\mathbf{A}^{\top} \mathbf{s}^{(0)}$ out of the loop and the two matrix-vector multiplications inside the loop at steps 3 an 6, $\mathbf{A} \, \mathbf{c}^{(it)}$ and $\mathbf{A}^{\top} \, \mathbf{s}^{(it + 1)}$, that is necessary at each iteration and takes most of its runtime.
 
@@ -826,7 +789,7 @@ In Figure \ref{fig:sources_time} a comparison between the time to complete the t
 
 In Table \ref{tab:RAM-usage} there is comparison between how much RAM memory is adressed to store the sensitivity matrix for each of the methods. The classical approach and the CGLS have to store the whole matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}), this means that a dataset  with for example $N = 10,000$ observation points, the sensitivity matrix has $N^2 = 100,000,000$ elements and takes approximately $763$ Megabytes of memory (8 bytes per element). For our method, it is necessary to store the first six columns of each of the components from matrix $\mathbf{H}$ (equation \ref{eq:Hi}) embedded into the BCCB matrices. With the same dataset $N = 10,000$ it needs $1.831$ Megabytes. After completing the steps to store the eigenvalues of matrix $\mathbf{C}$ (equation \ref{eq:w_Cv}) it takes only $0.6104$ Megabytes. Here, we are considering 16 bytes per element as the eigenvalues are complex numbers resulting from the 2D FFT. For a bigger dataset as $N = 1,000,000$ the amount of RAM necessary goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively, showing the necessity to find improved and efficient methods for the equivalent layer technique as the one presented in this work. We remember that throughout our work we are always considering $N = M$.
 
-
+% <========== in review
 
 
 
