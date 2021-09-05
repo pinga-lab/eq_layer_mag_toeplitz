@@ -432,6 +432,42 @@ def lsqr_eq_bccb_mag_tikho_0(x,y,z,zj,shape,data,F,h,itmax):
 
     return p_lsqr, datap
 
+def sensibility_matrix(x,y,z,zj,F,h,N):
+    '''
+    Calculates a full NxN matrix given by
+    the first derivative of the function
+    1/r.
+
+    input
+    x, y: numpy array - the x, y coordinates of
+    the grid and equivalent layer points.
+	z: numpy array - the height of observation points.
+    h: numpy array - the depth of the equivalent layer.
+    N: scalar - number of observation points.
+
+    output
+    A: matrix - full NxN matrix given by
+    the first derivative of the function
+    1/r.
+    '''
+    A = np.empty((N, N), dtype=np.float)
+    for i in range (N):
+        a = (x-x[i])
+        b = (y-y[i])
+        c = (zj-z[i])
+        r = (a*a+b*b+c*c)
+        r3 = r**(-1.5)
+        r5 = r**(2.5)
+        Hxx = -r3+3*(a*a)/r5
+        Hxy = 3*(a*b)/r5
+        Hxz = 3*(a*c)/r5
+        Hyy = -r3+3*(b*b)/r5
+        Hyz = 3*(b*c)/r5
+        Hzz = -r3+3*(c*c)/r5
+        A[i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
+        F[2]*Hyz)*h[1] + (F[0]*Hxz+F[1]*Hyz+F[2]*Hzz)*h[2])
+    return A
+
 def classic_mag(x,y,z,zj,F,h,N,data):
     '''
     Calculates the estimate physical property distribution of
