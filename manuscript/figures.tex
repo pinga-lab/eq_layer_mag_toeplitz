@@ -45,57 +45,57 @@
 
 %% Synthetic data part I
 
-\plot{synthetic_data_comparison}{width=\textwidth}{
+\plot{synthetic_data_comparison_v2}{width=\textwidth}{
 {Synthetic tests: the simulated airborne magnetic surveys  - 
-The first column shows the grids of observation points or the undulating observation surfaces that simulate airborne magnetic surveys. 
-The second column shows the noise-corrupted total-field anomaly produced by the synthetic sources and calculated on the simulate airborne magnetic survey shown in the first column. 
-The third column shows the  noise-free total-field anomaly produced by the synthetic sources 
-at $z = −1,300$ m.
-The results shown in these three columns were obtained by using the simulated airborne magnetic surveys as follows: 
-(a)-(c) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-(d)-(f) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(g)-(i) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(j)-(l) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(m)-(o) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The first row shows the grids of observation points or the undulating observation surfaces that simulate the airborne magnetic surveys. 
+The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. 
+The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
+at $z = −1,300$ m (the true upward-continued total-field anomalies).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
 The black lines represent the horizontal projection of the sources
 .}
-\label{fig:synthetic_data_comparison}
+\label{fig:synthetic_data_comparison_v2}
 }
 
-\plot{synthetic_residuals_convergence_comparison}{width=\textwidth}{
+\plot{synthetic_residuals_convergence_comparison_v2}{width=\textwidth}{
 {Synthetic tests: the data residuals and convergence - 
-The first column shows the data residuals using the classical method.
-The second and third columns show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
-The results shown in these three columns were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison}, i.e.:
-(a)-(c) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-(d)-(f) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(g)-(i) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(j)-(l) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(m)-(o) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The first row shows the data residuals using the classical method.
+The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
 The black lines represent the horizontal projection of the sources
 .}
-\label{fig:synthetic_residuals_convergence_comparison}
+\label{fig:synthetic_residuals_convergence_comparison_v2}
 }
 
 
-\plot{synthetic_upward_residuals_comparison}{width=\textwidth}{
-{Synthetic tests: the data residuals of the upward-continued total-field anomalies (second column 
-of the Figure \ref{fig:synthetic_data_comparison}).
+\plot{synthetic_upward_residuals_comparison_v2}{width=\textwidth}{
+{Synthetic tests: the data residuals of the upward-continued total-field anomalies (second row 
+in Figure \ref{fig:synthetic_data_comparison_v2}).
 The data residuals of the upward-continued total-field anomalies are defined as the difference between 
 the noise-free total-field anomaly produced by the synthetic sources at $z = −1,300$ m 
-(third  column of the Figure \ref{fig:synthetic_data_comparison}) and
+(third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and
 the predicted total-field anomaly at $z = −1,300$ m  obtained by using three methods:
-the classical method (first column); the convolutional equivalent layer (second column); and 
-the classic approach in the Fourier domain (third column).
-The results shown in these three columns were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison}, i.e.:
-(a)-(c) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-(d)-(f) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(g)-(i) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-(j)-(l) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(m)-(o) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+the classical method (first row); the convolutional equivalent layer (second row); and 
+the classic approach in the Fourier domain (third row).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
 The black lines represent the horizontal projection of the sources
 .}
-\label{fig:synthetic_upward_residuals_comparison}
+\label{fig:synthetic_upward_residuals_comparison_v2}
 }
 
 %% Field Data
