@@ -103,12 +103,19 @@ total-field anomaly data $\mathbf{d}^{o}$ is solving the least-squares normal eq
 \label{eq:normal-equations}
 \end{equation}
 Equation \ref{eq:normal-equations} is usually solved by first computing the Cholesky 
-factor of matrix $\mathbf{A}^{\top}\mathbf{A}$ and then using it to solve the linear 
-system \citep[][ p. 262]{golub-vanloan2013}. 
+factor $\mathbf{G}$ of matrix $\mathbf{A}^{\top}\mathbf{A}$ and then using it to solve the linear 
+systems \citep[][ p. 262]{golub-vanloan2013}:
+\begin{equation}
+\begin{split}
+\mathbf{G} \mathbf{w} &= \mathbf{A}^{\top}\mathbf{d}^{o} \\
+\mathbf{G}^{\top} \tilde{\mathbf{p}} &= \mathbf{w}
+\end{split} \: ,
+\label{eq:classical-method}
+\end{equation}
+where $\mathbf{w}$ is a dummy variable.
 This approach to estimate the parameter vector will be 
 referenced throughout this work as the \textit{classical method}.
-
-The computational cost required for estimating the classical solution can be very high
+The computational cost associated with the classical method can be very high
 when dealing with large datasets. In the following subsections, we will show how to 
 explore the structure of the sensitivity matrix $\mathbf{A}$ and 
 efficiently solve the least-squares normal equations (equation \ref{eq:normal-equations}).
@@ -638,8 +645,6 @@ and
 \end{equation}
 for $y$-oriented grids (\textit{symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block}).
 
-% in review ==========>
-
 %======================================================================================
 %\subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
 \subsection{Convolutional equivalent layer}
@@ -690,62 +695,73 @@ product out of the loop and two matrix-vector products per iteration (in steps 3
 These products can be efficiently computed by using the 2D FFT, as a discrete convolution
 (see Appendix A). \citet{takahashi2020convolutional} used this approach
 to develop an efficient algorithm for gravity data processing. This modified approach in which
-the standard CGLS method is modified to compute the matrix-vector products efficiently will be 
+the standard CGLS method is modified to efficiently compute the matrix-vector products will be 
 referenced throughout this work as the \textit{convolutional equivalent layer method}.
-
-
-PAREI AQUI
-
-
-
-
-
-
-%======================================================================================
-\subsection{CGLS matrix-vector substitution}
-%======================================================================================
-
-Also differently for the symmetric sensitivity matrix described by \cite{takahashi2020convolutional}, the non-symmetric BTTB matrix cannot be reconstructed only by its first column. The construction of the matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) needs four columns: the first and last columns of the first column of blocks and the first and last columns of the last column of blocks. This has a physical implication in the equivalent layer which is not possible to use only one equivalent source to reprduce all elements of matrix $\mathbf{A}$, such as in the gravity case as demonstrared by \cite{takahashi2020convolutional}. Rather, in the magnetic case it takes four equivalent sources positioned at each corner of the equivalent layer. Figure \ref{fig:4_equivalent_sources} shows the positioning of the equivalent sources in a regular grid $N_x = 4$
-and $N_y = 3$ necessary to calculate the four columns capable of recover the matrix $\mathbf{A}$.
-
-In this work, we propose a different approach, by calculating the first column of all six different components of second derivatives matrices from $\mathbf{H}_{ij}$ (equation \ref{eq:Hi}). These matrices are, in fact, symmetrics or skew-symmetrics BTTBs, meaning that the first column has all elements of each matrix.
-
-As pointed earlier in this work, the main improvement inside the CGLS method (Algorithm \ref{al:std-cgls-algorithm}) for estimating the parameter vector $\hat{\mathbf{p}}$ (equation \ref{eq:estimated-p-parameter-space}) is to substitute the matrix-vector multiplication $\mathbf{A}^{\top} \mathbf{s}^{(0)}$ out of the loop and the two matrix-vector multiplications inside the loop at steps 3 an 6, $\mathbf{A} \, \mathbf{c}^{(it)}$ and $\mathbf{A}^{\top} \, \mathbf{s}^{(it + 1)}$, that is necessary at each iteration and takes most of its runtime.
-
-Our method consists in calculating the six first columns of the second derivatives of $\mathbf{H}$ (equation \ref{eq:Hi}) and embedding them into the first six columns of the block-circulant circulant-block (BCCB) matrices related to the $\mathbf{H}$ components. Thus, it is possible to calculate the first column of the BCCB matrix embbeded from matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) by multiplying each component with its respective constants and summing as shown in equation \ref{eq:aij_mag_expand}. In \cite{takahashi2020convolutional}, Appendix A, the authors demonstrated in details how to transform a symmetric BTTB matrix into a BCCB matrix $\mathbf{C}$. The process here is the same and that work can be referenced to achieve the same results.
-
-
 
 %======================================================================================
 \subsection{Computational performance}
 %======================================================================================
 
-To compare the efficiency of our algorithm we will use a numerical approach and calculate the floating-point operations (\emph{flops}), i.e., count the number of mathematical operations necessary to complete the estimative of parameter vector $\mathbf{\hat{p}}$ of the normal equations (equation \ref{eq:estimated-p-parameter-space}) and both the CGLS methods (algorithm \ref{al:std-cgls-algorithm}) for calculating the matrix-vector product by its standart way and our approach.
+In this sections we compare the efficiency of the classical (equation \ref{eq:classical-method}), 
+standard CGLS (Algorithm \ref{al:std-cgls-algorithm}) and the convolutional equivalent 
+layer method (Algorithm \ref{al:std-cgls-algorithm} with matrix-vector products computed 
+according to Appendix A). To do this, we compute the total number of 
+\textit{flops} associated to them \citep[][ p. 12]{golub-vanloan2013}.
 
-The \emph{flops} needed to solve the linear system in equation \ref{eq:estimated-p-parameter-space} using the Cholesky factorization is:
+For the classical method, we have $\tfrac{1}{2} N^3$ flops to compute the lower triangle of
+$\mathbf{A}^{\top}\mathbf{A}$; $\tfrac{1}{3} N^3$ flops to compute the Cholesky factor
+$\mathbf{G}$ of $\mathbf{A}^{\top}\mathbf{A}$ \citep[][ p.~164]{golub-vanloan2013};
+$2 \, N^2$ flops to compute the matrix-vector product $\mathbf{A}^{\top} \mathbf{d}^{o}$;
+and $2 \, N^2$ flops to solve the triangular systems given by equation \ref{eq:classical-method}
+\citep[][ p.~106]{golub-vanloan2013}. The resultant flop count for the classical method is
 \begin{equation}
-f_{classical} =  \dfrac{7}{3} N^{3} + 6 N^{2}\: ,
-\label{eq:flops-normal-cholesky}
+f_{classical} =  \dfrac{5}{6} N^{3} + 4 \, N^{2}\: .
+\label{eq:flops-classical-method}
 \end{equation}
-where $N$ is the total number of observation points and also the size of estimated parameter vector $\mathbf{\hat{p}}$.
 
-For the more efficient CGLS algorithm the estimative can be done in:
+%======================================================================================
+%\subsection{CGLS flops count}
+%======================================================================================
+
+For the standard CGLS method (Algorithm \ref{al:std-cgls-algorithm}) we have $2 \, N^2$ to compute
+the matrix-vector product $\mathbf{A}^{\top} \mathbf{s}_{(it)}$ out of the loop;
+$4 \, N$ in step 1; $2 \, N$ in step 2; $2 \, N^2 + 2 \, N$ in step 3; $2 \, N$ in step 4;
+$2 \, N$ in step 5; and $2 \, N^2$ in step 6. The resultant flop count is given by:
 \begin{equation}
 f_{cgls} =  2 N^{2} + it \, (4 N^{2} + 12 N) \: .
-\label{eq:flops-cgls}
+\label{eq:flops-standard-cgls}
 \end{equation}
-However, our approach reduces further to:
-\begin{equation}
-f_{ours} =  \kappa  \, 16 N \log_2(4 N) + 24 N + it \, (\kappa  \, 16 N \log_2 (4 N) + 60 N) \: ,
-\label{eq:flops-cgls-bccb}
-\end{equation}
-where $\kappa$ depends on the FFT algorithm. By default, in this work we will use $\kappa = 5$ for the \emph{radix-2} algorithm \citep{vanloan1992}.
 
-Figure \ref{fig:flops} shows a comparative between the methods varying the number of observation points up to $1,000,000$, where it is possible to observe a reduction of $10^7$ orders of magnitude to estimate parameter vector $\mathbf{\hat{p}}$ in relation to the non-iterative classical method and $10^3$ orders of magnitude in relation to the standart CGLS algorithm using $50$ iterations. A more detailed, step by step, flops count of the classical and CGLS algorithm can be found in Appendix A.
+%======================================================================================
+%\subsection{Our modified CGLS flops count}
+%======================================================================================
+
+To compute the flops count of our method, we need only to replace the flops associated with 
+matrix-vector products in the standard CGLS method by those associated with
+2D convolution defined in Appendix A, which consists of $\kappa  \, 4 N \log_2(4N)$ flops to
+compute the 2D FFT for each matrix $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ (equation 
+\ref{eq:L_alpha_beta}); $\kappa  \, 4 N \log_2(4N)$ flops to compute 
+$\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P}$ via 2D FFT; $24 \, N$ flops to compute the 
+Hadamard product $\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right)$; 
+and $\kappa  \, 4 N \log_2(4N)$ flops to compute the IDFT in equation 
+\ref{eq:2d-discrete-convolution-complete}. We use $\kappa = 5$ for the \emph{radix-2} algorithm
+\citep[][ p.~15]{vanloan1992}. By replacing these flops into Algorithm \ref{al:std-cgls-algorithm},
+we obtain the complete number of flops
+\begin{equation}
+f_{conv} =  \kappa  \, 16 N \log_2(4 N) + 24 N + it \, (\kappa  \, 16 N \log_2 (4 N) + 60 N) \: .
+\label{eq:flops-convolutional-method}
+\end{equation}
+
+% in review ==========>
+
+PAREI AQUI
+
+Figure \ref{fig:flops} shows a comparative between the methods varying the number of observation points up to $1,000,000$, where it is possible to observe a reduction of $10^7$ orders of magnitude to estimate parameter vector $\mathbf{\hat{p}}$ in relation to the non-iterative classical method and $10^3$ orders of magnitude in relation to the standart CGLS algorithm using $50$ iterations. 
+%A more detailed, step by step, flops count of the classical and CGLS algorithm can be found in Appendix A.
 
 In Figure \ref{fig:solve_time} we show the time necessary to construct matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) and solve the linear system up to $10,000$ points of observation. With this dataset the classical method takes more than sixty-three seconds, the CGLS more than twelve seconds, while our method takes only half a second. The cpu used for this test was a intel core i7-7700HQ@2.8GHz.
 
-In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
+%In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
 
 In Table \ref{tab:RAM-usage} there is comparison between how much RAM memory is adressed to store the sensitivity matrix for each of the methods. The classical approach and the CGLS have to store the whole matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}), this means that a dataset  with for example $N = 10,000$ observation points, the sensitivity matrix has $N^2 = 100,000,000$ elements and takes approximately $763$ Megabytes of memory (8 bytes per element). For our method, it is necessary to store the first six columns of each of the components from matrix $\mathbf{H}$ (equation \ref{eq:Hi}) embedded into the BCCB matrices. With the same dataset $N = 10,000$ it needs $1.831$ Megabytes. After completing the steps to store the eigenvalues of matrix $\mathbf{C}$ (equation \ref{eq:w_Cv}) it takes only $0.6104$ Megabytes. Here, we are considering 16 bytes per element as the eigenvalues are complex numbers resulting from the 2D FFT. For a bigger dataset as $N = 1,000,000$ the amount of RAM necessary goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively, showing the necessity to find improved and efficient methods for the equivalent layer technique as the one presented in this work. We remember that throughout our work we are always considering $N = M$.
 
