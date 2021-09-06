@@ -102,11 +102,11 @@ total-field anomaly data $\mathbf{d}^{o}$ is solving the least-squares normal eq
 \mathbf{A}^{\top} \mathbf{d}^{o} \: .
 \label{eq:normal-equations}
 \end{equation}
-This equation is usually solved by first computing the Cholesky factor of matrix
-$\mathbf{A}^{\top}\mathbf{A}$ and then using it to solve the linear system
-\citep[][ p. 262]{golub-vanloan2013}. 
-The estimated parameter vector obtained by following this approach will be 
-referenced throughout this work as the \textit{classical solution}.
+Equation \ref{eq:normal-equations} is usually solved by first computing the Cholesky 
+factor of matrix $\mathbf{A}^{\top}\mathbf{A}$ and then using it to solve the linear 
+system \citep[][ p. 262]{golub-vanloan2013}. 
+This approach to estimate the parameter vector will be 
+referenced throughout this work as the \textit{classical method}.
 
 The computational cost required for estimating the classical solution can be very high
 when dealing with large datasets. In the following subsections, we will show how to 
@@ -313,8 +313,9 @@ p \equiv p(i, j) = \Delta l_{ij} \: ,
 where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
 are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
 \ref{eq:k-y-oriented} and \ref{eq:l-y-oriented}.
-Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} differ from those presented by
-\citet{takahashi2020convolutional} in the absence of the module.
+Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} show that $q$ varies from $-Q+1$
+to $Q-1$ and $p$ from $-P+1$ to $P-1$, regardless of the grid orientation. They differ 
+from those presented by \citet{takahashi2020convolutional} due to the absence of the module.
 
 % in review ==========>
 
@@ -393,8 +394,6 @@ $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}).
 This approach allows identifying elements $a^{\alpha\beta}_{ij}$ having the same numerical
 value only by inspecting their associated block indices.
 
-
-
 Note that, for $x$-oriented grids, matrices $\Delta\mathbf{K}$ (equation \ref{eq:DK-matrix-x-oriented})
 and $\Delta\mathbf{L}$ (equation \ref{eq:DL-matrix-x-oriented}) define the block indices
 $p$ (equation \ref{eq:p-x-oriented}) and $q$ (equation \ref{eq:q-x-oriented}), respectively.
@@ -423,16 +422,17 @@ matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ in a general form
 \end{bmatrix}_{N \times N} \: ,
 \label{eq:BTTB_A_alpha_beta}
 \end{equation}
-with blocks $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$ given by
+with blocks $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$, given by
 \begin{equation}
 \mathbf{A}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
 a^{\alpha\beta}_{q0}   & a^{\alpha\beta}_{q(-1)} & \cdots  & a^{\alpha\beta}_{q(-P+1)} \\
 a^{\alpha\beta}_{q1}   & \ddots     & \ddots  & \vdots       \\ 
 \vdots      & \ddots     & \ddots  & a^{\alpha\beta}_{q(-1)}   \\
 a^{\alpha\beta}_{q(P-1)} & \cdots     & a^{\alpha\beta}_{q1}  & a^{\alpha\beta}_{q0}
-\end{bmatrix}_{P \times P} \: .
+\end{bmatrix}_{P \times P} \: ,
 \label{eq:Aq_block}
 \end{equation}
+formed by elements $a^{\alpha\beta}_{qp}$, $p = -P+1, \dots, P-1$.
 This well-defined structure (equations \ref{eq:BTTB_A_alpha_beta} and \ref{eq:Aq_block}) 
 of matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ 
 (equation \ref{eq:A_expand}) is called Block-Toeplitz Toeplitz-Block (BTTB) 
@@ -563,7 +563,7 @@ $h^{xz}_{ij}$ (equation \ref{eq:hxz_regular}). It can be easily verified from eq
 \ref{eq:Delta_kij_symmetry}--\ref{eq:1_rij_symmetry} that $h^{xz}_{ij} = -h^{xz}_{ji}$.
 As a consequence, $a^{xz}_{ij} = -a^{xz}_{ji}$, which means that 
 \begin{equation}
-\mathbf{A}_{\boldsymbol{xz}} = -\left( \mathbf{A}_{\boldsymbol{xz}} \right)
+\mathbf{A}_{\boldsymbol{xz}} = -\left( \mathbf{A}_{\boldsymbol{xz}} \right)^{\top}
 \label{eq:Axz_symmetry}
 \end{equation} 
 for any grid orientation.
@@ -613,7 +613,7 @@ valid only for $y$-oriented grids.
 
 The same reasoning can be followed to show that
 \begin{equation}
-\mathbf{A}_{\boldsymbol{yz}} = -\left( \mathbf{A}_{\boldsymbol{yz}} \right)
+\mathbf{A}_{\boldsymbol{yz}} = -\left( \mathbf{A}_{\boldsymbol{yz}} \right)^{\top}
 \label{eq:Ayz_symmetry}
 \end{equation} 
 for any grid orientation. Besides, we can also show that
@@ -626,7 +626,7 @@ and
 \mathbf{A}_{\boldsymbol{yz}}^{q} = \left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
 \label{eq:Ayz_q_internal_block_symmetry_x_oriented}
 \end{equation}
-for $x$-oriented grids, while
+for $x$-oriented grids (\textit{skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block}), while
 \begin{equation}
 \mathbf{A}_{\boldsymbol{yz}}^{q} = \mathbf{A}_{\boldsymbol{yz}}^{(-q)}
 \label{eq:Ayz_q_external_block_symmetry_y_oriented}
@@ -636,22 +636,20 @@ and
 \mathbf{A}_{\boldsymbol{yz}}^{q} = -\left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
 \label{eq:Ayz_q_internal_block_symmetry_y_oriented}
 \end{equation}
-for $y$-oriented grids.
-
-PAREI AQUI
+for $y$-oriented grids (\textit{symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block}).
 
 % in review ==========>
 
 %======================================================================================
-\subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
+%\subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
+\subsection{Convolutional equivalent layer}
 %======================================================================================
 
-The computational cost associated with the classical method for estimating the parameter 
+The computational cost associated with the classical method to estimate the parameter 
 vector $\mathbf{p}$ by solving the linear system \ref{eq:normal-equations} can be very high 
-or ever prohibitive when dealing with large data sets. In these cases, a well-known alternative
+or even prohibitive when dealing with large data sets. In these cases, a well-known alternative
 is solving the normal equations (equation \ref{eq:normal-equations}) iteratively by 
-using the standard Conjugate Gradient Least Squares (CGLS) method. Below we present a pseudocode 
-for the standard CGLS method:
+using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
 
 \begin{algorithm}[H]
 	Input: $\mathbf{A}$ and $\mathbf{d}^{o}$.
@@ -685,15 +683,23 @@ option to carry out this algorithm efficiently and still obtaining very good res
 Another possibility is to set an invariance to the Euclidean norm of residuals between 
 iterations, which would increase algorithm runtime, but with smaller residuals. 
 We chose the first option, as we achieve satisfactory results. 
-The estimated parameter vector obtained by using the standard CGLS method 
-(Algorithm \ref{al:std-cgls-algorithm}) will be referenced throughout this work as 
-the \textit{standard CGLS solution}.
 
 Note that the standard CGLS solution (Algorithm \ref{al:std-cgls-algorithm}) requires 
 neither inverse matrix nor matrix-matrix product. Instead, it only requires: one matrix-vector 
 product out of the loop and two matrix-vector products per iteration (in steps 3 and 6). 
-In the following subsections, we will show how to compute these three matrix-vector products 
-efficiently by exploring the structure of the sensitivity matrix $\mathbf{A}$.
+These products can be efficiently computed by using the 2D FFT, as a discrete convolution
+(see Appendix A). \citet{takahashi2020convolutional} used this approach
+to develop an efficient algorithm for gravity data processing. This modified approach in which
+the standard CGLS method is modified to compute the matrix-vector products efficiently will be 
+referenced throughout this work as the \textit{convolutional equivalent layer method}.
+
+
+PAREI AQUI
+
+
+
+
+
 
 %======================================================================================
 \subsection{CGLS matrix-vector substitution}
@@ -708,53 +714,7 @@ As pointed earlier in this work, the main improvement inside the CGLS method (Al
 
 Our method consists in calculating the six first columns of the second derivatives of $\mathbf{H}$ (equation \ref{eq:Hi}) and embedding them into the first six columns of the block-circulant circulant-block (BCCB) matrices related to the $\mathbf{H}$ components. Thus, it is possible to calculate the first column of the BCCB matrix embbeded from matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}) by multiplying each component with its respective constants and summing as shown in equation \ref{eq:aij_mag_expand}. In \cite{takahashi2020convolutional}, Appendix A, the authors demonstrated in details how to transform a symmetric BTTB matrix into a BCCB matrix $\mathbf{C}$. The process here is the same and that work can be referenced to achieve the same results.
 
-A new auxuliary linear system is constructed to carry the matrix-vector product:
-\begin{equation}
-\mathbf{w} = \mathbf{C} \mathbf{v} \: ,
-\label{eq:w_Cv}
-\end{equation}
-where
-\begin{equation}
-\mathbf{w} = \begin{bmatrix}
-\mathbf{w}_{0} \\
-\vdots \\
-\mathbf{w}_{Q - 1} \\
-\mathbf{0}_{2N \times 1}
-\end{bmatrix}_{4N \times 1} \quad ,
-\label{eq:w-vector}
-\end{equation}
-\begin{equation}
-\mathbf{w}_{q} = \begin{bmatrix}
-\mathbf{d}_{q}(\mathbf{p}) \\
-\mathbf{0}_{P \times 1}
-\end{bmatrix}_{2P \times 1}
-\label{eq:wq-vector} \quad ,
-\end{equation}
-\begin{equation}
-\mathbf{v} = \begin{bmatrix}
-\mathbf{v}_{0} \\
-\vdots \\
-\mathbf{v}_{Q - 1} \\
-\mathbf{0}_{2N \times 1}
-\end{bmatrix}_{4N \times 1} \quad ,
-\label{eq:v-vector}
-\end{equation}
-and
-\begin{equation}
-\mathbf{v}_{q} = \begin{bmatrix}
-\mathbf{p}_{q} \\
-\mathbf{0}_{P \times 1}
-\end{bmatrix}_{2P \times 1}
-\label{eq:vq-vector} \quad ,
-\end{equation}
-where $\mathbf{C}$ (equation \ref{eq:w_Cv}) is a $4N \times 4N$ non-symmetric (BCCB) resulted from transforming $\mathbf{A}$ (equation \ref{eq:aij_mag}). Without having to calculate the whole BCCB matrix, its first column can be used to carry the multiplication of this new system (equation \ref{eq:w_Cv}). Appendix A and C in \cite{takahashi2020convolutional} shows how to use the 2D-FFT to compute the eigenvalues of matrix $\mathbf{C}$, store in a $2Q \times 2P$ matrix using the $vec$-operator and to carry the matrix-vector product. Denoting the matrix $\mathbf{L}$ as the eigenvalues matrix follows:
-\begin{equation}
-	\mathbf{F}_{2Q}^{\ast} \left[ 
-	\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
-	\right] \mathbf{F}_{2P}^{\ast} = \mathbf{W} \: ,
-	\label{eq:DFT-system}
-\end{equation}
-where the symbol ``$\circ$'' references the Hadamard product, i.e., a element-wise complex multiplication between the eingenvalues and the 2D-FFT of the matrix rearranged along the rows of the parameters $\mathbf{V}$ (equation \ref{eq:v-vector}) using the same $vec$-operator. The resulting inverse 2D-FFT denoted by $\mathbf{F}_{2Q}^{\ast}  \otimes \mathbf{F}_{2P}^{\ast}$ is also a $2Q \times 2P$ matrix ($\mathbf{W}$) that can be rearranged to the predicted data vector $\mathbf{d}(\hat{\mathbf{p}})$ size $N$.
+
 
 %======================================================================================
 \subsection{Computational performance}

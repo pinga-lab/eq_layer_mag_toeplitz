@@ -1,0 +1,211 @@
+\append{BTTB matrix-vector product}
+
+This appendix follows the same approach presented by \citet{takahashi2020convolutional}
+to efficiently compute the product of a BTTB matrix
+$\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equations \ref{eq:A_expand} and \ref{eq:BTTB_A_alpha_beta}) 
+and a generic vector $\mathbf{b}$. Let this matrix-vector product be represented by
+\begin{equation}
+\mathbf{t}_{\boldsymbol{\alpha\beta}} = 
+\mathbf{A_{\boldsymbol{\alpha\beta}}} \, \mathbf{b} \: ,
+\label{eq:t-alpha-beta}
+\end{equation}
+where
+\begin{equation}
+\mathbf{t}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+\mathbf{t}^{0}_{\boldsymbol{\alpha\beta}} \\
+\vdots \\
+\mathbf{t}^{Q-1}_{\boldsymbol{\alpha\beta}} \\
+\end{bmatrix}_{N \times 1} \: ,
+\label{eq:t-alpha-beta-partitioned}
+\end{equation} 
+\begin{equation}
+\mathbf{b} = \begin{bmatrix}
+\mathbf{b}^{0} \\
+\vdots \\
+\mathbf{b}^{Q-1} \\
+\end{bmatrix}_{N \times 1} \: ,
+\label{eq:b-partitioned}
+\end{equation}
+$\mathbf{t}^{q}_{\boldsymbol{\alpha\beta}}$ and $\mathbf{b}^{q}$ are $P \times 1$ vectors 
+and $q$ is the block index (equations \ref{eq:q-x-oriented} and \ref{eq:q-y-oriented}). 
+From equation \ref{eq:t-alpha-beta}, we obtain an auxiliary matrix-vector product given by
+\begin{equation}
+\mathbf{w}_{\boldsymbol{\alpha\beta}} = \mathbf{C}_{\boldsymbol{\alpha\beta}} \, \mathbf{v} \: ,
+\label{eq:w_alpha_beta}
+\end{equation}
+where
+\begin{equation}
+\mathbf{w}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+\mathbf{w}_{\boldsymbol{\alpha\beta}}^{0} \\
+\vdots \\
+\mathbf{w}_{\boldsymbol{\alpha\beta}}^{Q - 1} \\
+\mathbf{0}_{2N \times 1}
+\end{bmatrix}_{4N \times 1} \quad ,
+\label{eq:w_alpha_beta_partitioned}
+\end{equation}
+\begin{equation}
+\mathbf{w}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+\mathbf{t}^{q}_{\boldsymbol{\alpha\beta}} \\
+\mathbf{0}_{P \times 1}
+\end{bmatrix}_{2P \times 1}
+\label{eq:wq-vector} \quad ,
+\end{equation}
+\begin{equation}
+\mathbf{v} = \begin{bmatrix}
+\mathbf{v}^{0} \\
+\vdots \\
+\mathbf{v}^{Q - 1} \\
+\mathbf{0}_{2N \times 1}
+\end{bmatrix}_{4N \times 1} \: ,
+\label{eq:v-vector}
+\end{equation}
+\begin{equation}
+\mathbf{v}^{q} = \begin{bmatrix}
+\mathbf{b}^{q} \\
+\mathbf{0}_{P \times 1}
+\end{bmatrix}_{2P \times 1} \: ,
+\label{eq:vq-vector} 
+\end{equation}
+$\mathbf{0}_{2N \times 1}$ and $\mathbf{0}_{P \times 1}$ are vectors of zeros
+and $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is a $4N \times 4N$ 
+block circulant matrix with circulant blocks (BCCB) \citep[e.g., ][ p. 184]{davis1979}.
+The key point here is that the auxiliary matrix-vector product
+(equation \ref{eq:w_alpha_beta}) represents a 2D discrete convolution and can be 
+efficiently computed by using the 2D Fast Fourier Transform (2D FFT). 
+
+The BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is formed by $2Q \times 2Q$ blocks, 
+where each block $\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$ is a $2P \times 2P$ circulant matrix.
+The entire BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is defined by properly
+downshifting its first block column
+\begin{equation}
+	\left[ \mathbf{C}_{\boldsymbol{\alpha\beta}} \right]_{(0)} = \begin{bmatrix}
+		\mathbf{C}_{\boldsymbol{\alpha\beta}}^{0} \\
+		\vdots \\
+		\mathbf{C}_{\boldsymbol{\alpha\beta}}^{Q-1} \\
+		\mathbf{0}_{2P \times 2P} \\
+		\mathbf{C}_{\boldsymbol{\alpha\beta}}^{-Q+1} \\
+		\vdots \\
+		\mathbf{C}_{\boldsymbol{\alpha\beta}}^{-1}
+	\end{bmatrix}_{4N \times 2P} \: ,
+	\label{eq:C_alpha_beta_first_block_column}
+\end{equation}
+where $\mathbf{0}_{2P \times 2P}$ is a matrix of zeros and 
+each block $\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$,
+is obtained by properly downshifting its first column
+\begin{equation}
+	\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+		a^{\alpha\beta}_{q0} \\
+		\vdots \\
+		a^{\alpha\beta}_{q(P-1)} \\
+		0 \\
+		a^{\alpha\beta}_{q(-P+1)} \\
+		\vdots \\
+		a^{\alpha\beta}_{q(-1)}
+	\end{bmatrix}_{2P \times 1} \: ,
+	\label{eq:cq_alpha_beta}
+\end{equation}
+where $a^{\alpha\beta}_{qp}$, $p = -P+1, \dots, P-1$, are the elements of
+matrix component $\mathbf{A_{\boldsymbol{\alpha\beta}}}$. 
+The BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is diagonalized by
+$\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P}$, where ``$\otimes$" denotes the Kronecker product
+\citep[e.g.,][ p. 242]{horn_johnson1991} and $\mathbf{F}_{2Q}$ and $\mathbf{F}_{2P}$ are 
+the $2Q \times 2Q$ and $2P \times 2P$ unitary DFT matrices \citep[][ p. 31]{davis1979}.
+Due to this property, the auxiliary matrix-vector product (equation \ref{eq:w_alpha_beta}) 
+can be computed as follows \citep{takahashi2020convolutional}:
+\begin{equation}
+\mathbf{F}_{2Q}^{\ast} \left[ 
+\mathbf{L}_{\boldsymbol{\alpha\beta}} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+\right] \mathbf{F}_{2P}^{\ast} = \mathbf{W}_{\boldsymbol{\alpha\beta}} \: ,
+\label{eq:2d-discrete-convolution}
+\end{equation}
+where ``$\circ$" denotes the Hadamard (element-wise) product \citep[e.g.,][ p. 298]{horn_johnson1991},
+``$\ast$" denotes the complex conjugate, 
+$\mathbf{W}_{\boldsymbol{\alpha\beta}}$ and $\mathbf{V}$ are $2Q \times 2P$ matrices obtained
+by rearranging, respectively, vectors $\mathbf{w}_{\boldsymbol{\alpha\beta}}$ 
+(equation \ref{eq:w_alpha_beta_partitioned}) and $\mathbf{v}$ (equation \ref{eq:v-vector})
+along their rows and
+\begin{equation}
+\mathbf{L}_{\boldsymbol{\alpha\beta}} = \sqrt{4QP} \; 
+\mathbf{F}_{2Q} \, \mathbf{G}_{\boldsymbol{\alpha\beta}} \, \mathbf{F}_{2P} \: ,
+\label{eq:L_alpha_beta}
+\end{equation}
+where
+\begin{equation}
+\mathbf{G}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{0} \right)^{\top} \\
+\vdots \\
+\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{Q-1} \right)^{\top} \\
+\mathbf{0}_{Q \times 2P}
+\end{bmatrix}_{2Q \times 2P} \: ,
+\label{eq:G_alpha_beta}
+\end{equation}
+with $\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$, given by equation
+\ref{eq:cq_alpha_beta}.
+Note that matrix $\mathbf{G}_{\boldsymbol{\alpha\beta}}$ 
+(equation \ref{eq:G_alpha_beta}) is formed by the first column 
+$\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q}$ (equation \ref{eq:cq_alpha_beta}) of each 
+circulant block $\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$. It means that all elements
+of matrix $\mathbf{G}_{\boldsymbol{\alpha\beta}}$ can be obtained by using only the first 
+column of $\mathbf{A_{\boldsymbol{\alpha\beta}}}$.
+
+It is important noting that the left side of equation \ref{eq:2d-discrete-convolution} represents 
+the 2D Inverse Discrete Fourier Transform (2D IDFT) of the term in brackets. This term, in turn,
+represents the Hadamard product of $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ 
+(equation \ref{eq:L_alpha_beta}) and the 2D Discrete Fourier Transform (2D DFT) of $\mathbf{V}$.
+Similarly, equation \ref{eq:L_alpha_beta} shows that $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ is
+obtained by computing the 2D DFT of matrix $\mathbf{G}_{\boldsymbol{\alpha\beta}}$
+(equation \ref{eq:G_alpha_beta}). Hence, equations \ref{eq:2d-discrete-convolution} and
+\ref{eq:L_alpha_beta} can be efficiently computed by using the 2D FFT. After that, the elements of
+vector $\mathbf{t}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:t-alpha-beta}) can be
+retrieved from the first quadrant of matrix $\mathbf{W}_{\boldsymbol{\alpha\beta}}$
+(equation \ref{eq:2d-discrete-convolution}).
+
+Now, consider the matrix-vector product
+\begin{equation}
+\mathbf{t} = 
+\mathbf{A} \, \mathbf{b} \: ,
+\label{eq:t}
+\end{equation}
+where 
+\begin{equation}
+\mathbf{t} = \mathbf{t}_{\boldsymbol{xx}} + \mathbf{t}_{\boldsymbol{xy}} + \mathbf{t}_{\boldsymbol{xz}} +
+\mathbf{t}_{\boldsymbol{yy}} + \mathbf{t}_{\boldsymbol{yz}} + \mathbf{t}_{\boldsymbol{zz}}
+\label{eq:t-components}
+\end{equation}
+and $\mathbf{A}$ is the sensitivity matrix given by equation \ref{eq:A_expand}. It can be shown
+that this product can be efficiently computed by
+\begin{equation}
+\mathbf{F}_{2Q}^{\ast} \left[ 
+\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+\right] \mathbf{F}_{2P}^{\ast} = \mathbf{W} \: ,
+\label{eq:2d-discrete-convolution-complete}
+\end{equation}
+where
+\begin{equation}
+\mathbf{W} = \mathbf{W}_{\boldsymbol{xx}} + \mathbf{W}_{\boldsymbol{xy}} + \mathbf{W}_{\boldsymbol{xz}} + \mathbf{W}_{\boldsymbol{yy}} + \mathbf{W}_{\boldsymbol{yz}} + \mathbf{W}_{\boldsymbol{zz}} \: ,
+\label{eq:W}
+\end{equation}
+\begin{equation}
+\mathbf{L} = \mathbf{L}_{\boldsymbol{xx}} + \mathbf{L}_{\boldsymbol{xy}} + \mathbf{L}_{\boldsymbol{xz}} + \mathbf{L}_{\boldsymbol{yy}} + \mathbf{L}_{\boldsymbol{yz}} + \mathbf{L}_{\boldsymbol{zz}}
+\label{eq:L}
+\end{equation}
+and $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ is given by equation \ref{eq:L_alpha_beta}.
+Finally, it can be shown that these equation can also be used to compute the 
+matrix-vector product of $\mathbf{A}$ (equation \ref{eq:A_expand}) and an arbitrary vector 
+$\mathbf{b}$. The only difference is that, in this case, each circulant block 
+$\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$, is obtained by properly
+downshifting the modified vector
+\begin{equation}
+\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+a^{\alpha\beta}_{q0} \\
+\vdots \\
+a^{\alpha\beta}_{q(-P+1)} \\
+0 \\
+a^{\alpha\beta}_{q(P-1)} \\
+\vdots \\
+a^{\alpha\beta}_{q1}
+\end{bmatrix}_{2P \times 1} \: .
+\label{eq:cq_alpha_beta_trnasposed}
+\end{equation}
+
+
