@@ -7,7 +7,7 @@ In this work, our novel fast convolutional equivalent-layer technique  uses only
 We solve the linear system by adapting the method of Conjugate Gradient Least Square to compute fastly the BTTB matrix-vector product of the magnetic forward modeling in the equivalent-layer technique.
 
 The comparisons between the performances of classical equivalent-layer technique  and  fast convolutional equivalent-layer technique using synthetic magnetic data show similar estimates of the physical-property distribution over the equivalent layer.
-The difference in time, however, is noticeable: $2.04$ seconds using the classical approach and $0.083$ seconds using our approach. This difference was obtained with a mid-size mesh of $80 \times 80$ points, greater results can be obtained if more observation points are used.
+The difference in time, however, is noticeable: $2.04$ seconds using the classical approach and $0.083$ seconds using our approach. This difference was obtained with a mid-size mesh of $100 \times 50$ points, greater results can be obtained if more observation points are used.
 
 The comparisons between the performances of classical approach in the Fourier domain and fast convolutional equivalent-layer technique for processing synthetic magnetic data show that the computational time required by the classical Fourier approach is the lowest one.
 However, the classical Fourier approach requires not only expanding the data by using a padding function to avoid the border effects but also it requires the measurement of the data on a regular grid and on a planar observation surface.
