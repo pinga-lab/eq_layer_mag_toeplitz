@@ -1,14 +1,31 @@
 \section{Application to synthetic data}
 
-The convolutional equivalent layer requires that the data be measure on a regular grid and the observation surface be planar.
-Here, we evaluate the performance of the proposed method by applying it to simulate airborne magnetic surveys 
-that i) perfectly obey these conditions to the flight pattern; ii) violate the requirement of a regular grid of the observations; and iii) violate the requirement of a flat observation surface.
-These simulated airborne magnetic surveys are illustraded in Figure \ref{fig:synthetic_data_comparison_v2} 
-and Figures  \ref{fig:synthetic_residuals_convergence_comparison_v2} and  \ref{fig:synthetic_upward_residuals_comparison_v2} show the corresponding results.
+Our convolutional equivalent layer method requires a regular data grid located on a 
+horizontal and flat observation surface.
+Here, we evaluate the performance of our method by applying it to simulated airborne magnetic 
+surveys formed by
+i) a regular data grid on a flat surface;
+ii) irregular data grids on a flat surface; and 
+iii) regular data grid on an undulating surfaces.
+Note that the simulated surveys in (ii) and (iii) violate the premises of our method. 
+The simulated airborne magnetic surveys and the corresponding results 
+are illustrated in Figures \ref{fig:synthetic_data_comparison_v2}, 
+\ref{fig:synthetic_residuals_convergence_comparison_v2} and 
+\ref{fig:synthetic_upward_residuals_comparison_v2}.
 
-The  three rows in Figure \ref{fig:synthetic_data_comparison_v2} show the flight patterns of the simulated airborne magnetic surveys (the upper row), the noise-corrupted total-field anomalies (the middle row) calculated over the flight patterns, and the true upward-continued total-field anomalies at $z = -1, \, 300$ m (the lower row).
+The upper and middle rows in Figure \ref{fig:synthetic_data_comparison_v2} show, respectively, 
+the simulated flight patterns and noise-corrupted total-field anomalies of the airborne magnetic 
+surveys. The lower row in Figure \ref{fig:synthetic_data_comparison_v2} shows the true 
+upward-continued total-field anomalies at $z = -1, \, 300$ m.
 
-In all these tests, the magnetic data (the middle and lower rows in Figure \ref{fig:synthetic_data_comparison_v2})  were produced by three geologic bodies modeled by: two prisms and a sphere with inclination, declination and intensity of $0^{\circ}$ and $45^{\circ}$ and $2.8284$ A/m, respectively. The main geomagnetic field has inclination and declination of $10^{\circ}$ and $37^{\circ}$, respectively. 
+All magnetic data (middle and lower rows in Figure \ref{fig:synthetic_data_comparison_v2}) 
+are produced by the same three synthetic bodies: two prisms and one sphere with 
+constant total-magnetization vector having inclination, declination and intensity of 
+$0^{\circ}$, $45^{\circ}$, and $2.8284$ A/m, respectively. 
+The simulated main geomagnetic field has inclination and declination of $10^{\circ}$ and $37^{\circ}$,
+respectively. 
+
+PAREI AQUI
 
 The  three rows in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}  show the data residuals 
 obtained by using the classical method (the upper row), the data residuals obtained by using the
@@ -114,7 +131,7 @@ reveals the inadequacy of our method in dealing with rugged  surface of observat
 the Euclidean norm of the data residuals decreases slower than previous tests. 
 
 Although our method is formulated to deal with magnetic observations measured on a regular grid, in 
-the $x$- and $y$-directions, and on a planar surface, the synthetic results show that our method is 
+the $x$- and $y$-directions, and on a flat surface, the synthetic results show that our method is 
 robust in dealing either with irregular grids in the horizontal directions or with uneven surface.
 However, the robustness of our method has limitations.
 The performance limitation of our method depends on the degree of the 
