@@ -1,131 +1,129 @@
 \renewcommand{\figdir}{Fig} % figure directory
 
 %% Methodology
-%\plot{Figure1}{width=\textwidth}{
-%	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) defined by 
-%	$N_{x} = 4$ and $N_{y} = 3$. The grids are oriented along the (a) $x$-axis and (b) $y$-axis. The grid 
-%	coordinates are $x_{k}$ and $y_{l}$, where the $k = 1, \dots, N_{x}$ and $l = 1, \dots, N_{y}$ are 
-%	called the grid indices. The insets show the grid indices $k$ and $l$.}
-%	\label{fig:methodology}
-%}
-
-\plot{schematic_regular_grids}{width=\textwidth}{
-	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) with
-		$N_{x} = 3$ and $N_{y} = 2$, where each point has an associated index. This index may represent
-		$i$ or $j$, that are associated with observation points $(x_{i}, y_{i}, z_{0})$ and 
-		equivalent sources $(x_{j}, y_{j}, z_{c})$. Left panel shows an example of $x$-oriented grid,
-		with indices varying along $x$-axis, while right panel shows an example of $y$-oriented grid, 
-		with indices varying along $y$-axis.}
-	\label{fig:regular-grids}
+\plot{Figure1}{width=\textwidth}{
+	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) defined by 
+	$N_{x} = 4$ and $N_{y} = 3$. The grids are oriented along the (a) $x$-axis and (b) $y$-axis. The grid 
+	coordinates are $x_{k}$ and $y_{l}$, where the $k = 1, \dots, N_{x}$ and $l = 1, \dots, N_{y}$ are 
+	called the grid indices. The insets show the grid indices $k$ and $l$.}
+	\label{fig:methodology}
 }
 
-%\plot{4_equivalent_sources}{width=\textwidth}{
-%	{Representation of the four equivalent sources (black dots) needed to reconstruct the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Each of the equivalent sources are located in the corner of the simulated regular grid of $M_x = 4$ and $M_y = 3$ sources. The influence of these sources on each of the observation points (blue dots) i the regular grid of $N_x = 4$ and $N_y = 3$ will give the four columns necessary of matrix $\mathbf{A}$.}
-%	\label{fig:4_equivalent_sources}
-%}
-%
-%%% Computational performance
-%
-%\plot{flops_mag}{width=\textwidth}{
-%	{Number of flops necessary to estimate the parameter vector $\mathbf{\hat{p}}$ using the non-iterative classical method (equation \ref{eq:flops-normal-cholesky}) the CGLS (equation \ref{eq:flops-cgls}) and our modified CGLS method (equation \ref{eq:flops-cgls-bccb}) with $N^{it} = 50$. 
-%	The observation point $N$ varied from $5,000$ to $1,000,000$. The \emph{radix-2} 2D FFT
-%	algorithm was considered for our method, with $\kappa = 5$.}
-%	\label{fig:flops}
-%}
-%
-%\plot{time_comparison_mag}{width=\textwidth}{
-%	{Comparison between the runtime of the equivalent-layer technique using the classical, the CGLS algorithm and our method. The values for the CGLS and our methods were obtained for $N^{it} = 50$ iterations.}
-%	\label{fig:solve_time}
-%}
-%
-%\plot{time_sources_mag}{width=\textwidth}{
-%	{Comparison between the runtime to calculate the first column of the BCCB matrix embbeded from $\mathbf{A}$ (equation \ref{eq:aij_mag}) using only one and using four equivalent sources. Although the time is very similar, with one source a small advantage can be observed as the number of data $N$ increases. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.}
-%	\label{fig:sources_time}
-%}
-%
-%%% Synthetic data part I
-%
-%\plot{synthetic_data_comparison_v2}{width=\textwidth}{
-%{Synthetic tests: the simulated airborne magnetic surveys  - 
-%The first row shows the grids of observation points or the undulating observation surfaces that simulate the airborne magnetic surveys. 
-%The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. 
-%The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
-%at $z = -1,300$ m (the true upward-continued total-field anomalies).
-%The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
-%(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-%(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-%(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
-%The black lines represent the horizontal projection of the sources
-%.}
-%\label{fig:synthetic_data_comparison_v2}
-%}
-%
-%\plot{synthetic_residuals_convergence_comparison_v2}{width=\textwidth}{
-%{Synthetic tests: the data residuals and convergence - 
-%The first row shows the data residuals using the classical method.
-%The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
-%The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
-%(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-%(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-%(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
-%The black lines represent the horizontal projection of the sources
-%.}
-%\label{fig:synthetic_residuals_convergence_comparison_v2}
-%}
-%
-%
-%\plot{synthetic_upward_residuals_comparison_v2}{width=\textwidth}{
-%{Synthetic tests: the data residuals of the upward-continued total-field anomalies (second row 
-%in Figure \ref{fig:synthetic_data_comparison_v2}).
-%The data residuals of the upward-continued total-field anomalies are defined as the difference between 
-%the noise-free total-field anomaly produced by the synthetic sources at $z = -1,300$ m 
-%(third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and
-%the predicted total-field anomaly at $z = -1,300$ m  obtained by using three methods:
-%the classical method (first row); the convolutional equivalent layer (second row); and 
-%the classic approach in the Fourier domain (third row).
-%The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
-%(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
-%(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
-%(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-%(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
-%The black lines represent the horizontal projection of the sources
-%.}
-%\label{fig:synthetic_upward_residuals_comparison_v2}
-%}
-%
-%%% Field Data
-%
-%\plot{carajas_real_data_mag}{width=\textwidth}{
-%	{Observed magnetic field data of the Carajás, Brazil area. The aeromagnetic survey was done with $131$ N-S lines at approximately $-900 m$ height, totaling $N = 6,081,345$ observation points.}
-%	\label{fig:carajas_real_data_mag}
-%}
-%
-%\plot{carajas_real_data_decimated_gridline}{width=8cm}{
-%	{(a) Observed magnetic field data of the Carajás, Brazil area, interpolated for a regular grid of $10,000 \times 131$, totaling $N = 1,310,000$ observation points. (b) Observed magnetic field data of the Carajás, Brazil area, decimated from the flight lines resulting in an irregular grid of $10,000 \times 131$, also totaling $N = 1,310,000$ observation points.}
-%	\label{fig:carajas_real_data_decimated_gridline}
-%}
-%
-%\plot{carajas_tf_predicted_gridline}{width=8cm}{
-%	{(a) Predicted data using our method for the interpolated $10,000 \times 131$ regular grid. (b) Residuals between the observed (\ref{fig:carajas_real_data_decimated_gridline}) and the predicted data (panel a), with mean of $0.07979$ nT and standard deviation of $0.5060$ nT.}
-%	\label{fig:carajas_gz_predito_mag_gridline}
-%}
-%
-%\plot{carajas_tf_predicted_decimated}{width=8cm}{
-%	{(a) Predicted data using our method for the decimated $10,000 \times 131$ irregular grid. (b) Residuals between the observed (\ref{fig:carajas_real_data_decimated_gridline}) and the predicted data (panel b), with mean of $0.07348$ nT and standard deviation of $0.3172$ nT.}
-%	\label{fig:carajas_gz_predito_mag_decimated}
-%}
-%
-%\plot{convergence_carajas_mag_decimated}{width=\textwidth}{
-%	{Convergence analysis of the CGLS method for the field data of Carajás, Brazil using the magnetic equivalent layer with a decimated irregular grid of $10,000 \times 131$ observation points up to 2,000 iterations.}
-%	\label{fig:convergence_carajas_mag_decimated}
-%}
-%
-%\plot{up5000_carajas_mag_decimated}{width=\textwidth}{
-%	{Upward continuation transformation of real data of Carajás, Brazil at $5,000$ meter. It was necessary $2.64$ seconds to complete the process.}
-%	\label{fig:up5000_carajas_decimated_mag}
-%}
+\plot{4_equivalent_sources}{width=\textwidth}{
+	{Representation of the four equivalent sources (black dots) needed to reconstruct the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Each of the equivalent sources are located in the corner of the simulated regular grid of $M_x = 4$ and $M_y = 3$ sources. The influence of these sources on each of the observation points (blue dots) i the regular grid of $N_x = 4$ and $N_y = 3$ will give the four columns necessary of matrix $\mathbf{A}$.}
+	\label{fig:4_equivalent_sources}
+}
+
+%% Computational performance
+
+\plot{flops_mag}{width=\textwidth}{
+	{Number of flops necessary to estimate the parameter vector $\mathbf{\hat{p}}$ using the non-iterative classical method (equation \ref{eq:flops-normal-cholesky}) the CGLS (equation \ref{eq:flops-cgls}) and our modified CGLS method (equation \ref{eq:flops-cgls-bccb}) with $N^{it} = 50$. 
+	The observation point $N$ varied from $5,000$ to $1,000,000$. The \emph{radix-2} 2D FFT
+	algorithm was considered for our method, with $\kappa = 5$.}
+	\label{fig:flops}
+}
+
+\plot{time_comparison_mag}{width=\textwidth}{
+	{Comparison between the runtime of the equivalent-layer technique using the classical, the CGLS algorithm and our method. The values for the CGLS and our methods were obtained for $N^{it} = 50$ iterations.}
+	\label{fig:solve_time}
+}
+
+\plot{time_sources_mag}{width=\textwidth}{
+	{Comparison between the runtime to calculate the first column of the BCCB matrix embbeded from $\mathbf{A}$ (equation \ref{eq:aij_mag}) using only one and using four equivalent sources. Although the time is very similar, with one source a small advantage can be observed as the number of data $N$ increases. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.}
+	\label{fig:sources_time}
+}
+
+%% Synthetic data part I
+
+\plot{synthetic_data_comparison_v2}{width=\textwidth}{
+{Synthetic tests: the simulated airborne magnetic surveys  - 
+The first row shows the grids of observation points or the undulating observation surfaces that simulate the airborne magnetic surveys. 
+The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. 
+The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
+at $z = −1,300$ m (the true upward-continued total-field anomalies).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The black lines represent the horizontal projection of the sources
+.}
+\label{fig:synthetic_data_comparison_v2}
+}
+
+\plot{synthetic_residuals_convergence_comparison_v2}{width=\textwidth}{
+{Synthetic tests: the data residuals and convergence - 
+The first row shows the data residuals using the classical method.
+The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The black lines represent the horizontal projection of the sources
+.}
+\label{fig:synthetic_residuals_convergence_comparison_v2}
+}
+
+
+\plot{synthetic_upward_residuals_comparison_v2}{width=\textwidth}{
+{Synthetic tests: the data residuals of the upward-continued total-field anomalies (second row 
+in Figure \ref{fig:synthetic_data_comparison_v2}).
+The data residuals of the upward-continued total-field anomalies are defined as the difference between 
+the noise-free total-field anomaly produced by the synthetic sources at $z = −1,300$ m 
+(third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and
+the predicted total-field anomaly at $z = −1,300$ m  obtained by using three methods:
+the classical method (first row); the convolutional equivalent layer (second row); and 
+the classic approach in the Fourier domain (third row).
+The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The black lines represent the horizontal projection of the sources
+.}
+\label{fig:synthetic_upward_residuals_comparison_v2}
+}
+
+%% Field Data
+
+\plot{carajas_real_data_mag}{width=\textwidth}{
+	{Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.}
+	\label{fig:carajas_real_data_mag}
+}
+
+\plot{carajas_real_data_decimated_gridline}{width=8cm}{
+	{Observed total-field anomalies over the Carajás Province, northen Brazil, considering: 
+	(a) a regular grid ($10,000 \times 131$, totaling $N = 1,310,000$ observation points) of interpolated values from the original irregularly sampled data (Figure \ref{fig:carajas_real_data_mag}); and  	
+	(b) an irregular grid ($10,000 \times 131$, totaling $N = 1,310,000$ observation points) of decimated values from the the original irregularly sampled data (Figure \ref{fig:carajas_real_data_mag}).}
+	\label{fig:carajas_real_data_decimated_gridline}
+}
+
+\plot{carajas_tf_predicted_gridline}{width=8cm}{
+	{Results using our method applied to the interpolated $10,000 \times 131$ regular grid
+	(Figure \ref{fig:carajas_real_data_decimated_gridline}a) - 
+	(a) Predicted data and (b) Data residuals, defined as the difference between the observed 
+	(Figure \ref{fig:carajas_real_data_decimated_gridline}a) and the predicted data (panel a), with mean of $0.0762$ nT and standart deviation of $0.4886$ nT.}
+	\label{fig:carajas_gz_predito_mag_gridline}
+}
+
+\plot{carajas_tf_predicted_decimated}{width=8cm}{
+	{Results using our method applied to the decimated  $10,000 \times 131$ irregular grid
+	(Figure \ref{fig:carajas_real_data_decimated_gridline}b) - 	
+	(a) Predicted data and (b) Data residuals, defined as the difference between the observed  (Figure \ref{fig:carajas_real_data_decimated_gridline}b) and the predicted data (panel a), with mean of $ 0.0717$ nT and standart deviation of $0.3144$ nT.}
+	\label{fig:carajas_gz_predito_mag_decimated}
+}
+
+\plot{convergence_carajas_mag_decimated}{width=\textwidth}{
+	{Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
+	\label{fig:convergence_carajas_mag_decimated}
+}
+
+\plot{up5000_carajas_mag_decimated}{width=\textwidth}{
+	{Upward continuation transformation of real data of Carajás Province, Brazil at $5, \,000$ m after $2.64$ seconds.}
+	\label{fig:up5000_carajas_decimated_mag}
+}
+
