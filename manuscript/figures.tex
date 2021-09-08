@@ -1,18 +1,28 @@
 \renewcommand{\figdir}{Fig} % figure directory
 
 %% Methodology
-\plot{Figure1}{width=\textwidth}{
-	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) defined by 
-	$N_{x} = 4$ and $N_{y} = 3$. The grids are oriented along the (a) $x$-axis and (b) $y$-axis. The grid 
-	coordinates are $x_{k}$ and $y_{l}$, where the $k = 1, \dots, N_{x}$ and $l = 1, \dots, N_{y}$ are 
-	called the grid indices. The insets show the grid indices $k$ and $l$.}
-	\label{fig:methodology}
+%\plot{Figure1}{width=\textwidth}{
+%	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) defined by 
+%	$N_{x} = 4$ and $N_{y} = 3$. The grids are oriented along the (a) $x$-axis and (b) $y$-axis. The grid 
+%	coordinates are $x_{k}$ and $y_{l}$, where the $k = 1, \dots, N_{x}$ and $l = 1, \dots, N_{y}$ are 
+%	called the grid indices. The insets show the grid indices $k$ and $l$.}
+%	\label{fig:methodology}
+%}
+
+\plot{schematic_regular_grids}{width=\textwidth}{
+	{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) with
+		$N_{x} = 3$ and $N_{y} = 2$, where each point has an associated index. This index may represent
+		$i$ or $j$, that are associated with observation points $(x_{i}, y_{i}, z_{0})$ and 
+		equivalent sources $(x_{j}, y_{j}, z_{c})$. Left panel shows an example of $x$-oriented grid,
+		with indices varying along $x$-axis, while right panel shows an example of $y$-oriented grid, 
+		with indices varying along $y$-axis.}
+	\label{fig:regular-grids}
 }
 
-\plot{4_equivalent_sources}{width=\textwidth}{
-	{Representation of the four equivalent sources (black dots) needed to reconstruct the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Each of the equivalent sources are located in the corner of the simulated regular grid of $M_x = 4$ and $M_y = 3$ sources. The influence of these sources on each of the observation points (blue dots) i the regular grid of $N_x = 4$ and $N_y = 3$ will give the four columns necessary of matrix $\mathbf{A}$.}
-	\label{fig:4_equivalent_sources}
-}
+%\plot{4_equivalent_sources}{width=\textwidth}{
+%	{Representation of the four equivalent sources (black dots) needed to reconstruct the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Each of the equivalent sources are located in the corner of the simulated regular grid of $M_x = 4$ and $M_y = 3$ sources. The influence of these sources on each of the observation points (blue dots) i the regular grid of $N_x = 4$ and $N_y = 3$ will give the four columns necessary of matrix $\mathbf{A}$.}
+%	\label{fig:4_equivalent_sources}
+%}
 
 %% Computational performance
 
@@ -40,7 +50,7 @@
 The first row shows the grids of observation points or the undulating observation surfaces that simulate the airborne magnetic surveys. 
 The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. 
 The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
-at $z = −1,300$ m (the true upward-continued total-field anomalies).
+at $z = -1,300$ m (the true upward-continued total-field anomalies).
 The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
 (a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
 (b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
@@ -72,9 +82,9 @@ The black lines represent the horizontal projection of the sources
 {Synthetic tests: the data residuals of the upward-continued total-field anomalies (second row 
 in Figure \ref{fig:synthetic_data_comparison_v2}).
 The data residuals of the upward-continued total-field anomalies are defined as the difference between 
-the noise-free total-field anomaly produced by the synthetic sources at $z = −1,300$ m 
+the noise-free total-field anomaly produced by the synthetic sources at $z = -1,300$ m 
 (third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and
-the predicted total-field anomaly at $z = −1,300$ m  obtained by using three methods:
+the predicted total-field anomaly at $z = -1,300$ m  obtained by using three methods:
 the classical method (first row); the convolutional equivalent layer (second row); and 
 the classic approach in the Fourier domain (third row).
 The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
