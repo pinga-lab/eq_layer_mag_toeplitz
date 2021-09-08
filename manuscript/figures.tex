@@ -27,21 +27,24 @@
 %% Computational performance
 
 \plot{flops_mag}{width=\textwidth}{
-	{Number of flops necessary to estimate the parameter vector $\mathbf{\hat{p}}$ using the non-iterative classical method (equation \ref{eq:flops-normal-cholesky}) the CGLS (equation \ref{eq:flops-cgls}) and our modified CGLS method (equation \ref{eq:flops-cgls-bccb}) with $N^{it} = 50$. 
-	The observation point $N$ varied from $5,000$ to $1,000,000$. The \emph{radix-2} 2D FFT
-	algorithm was considered for our method, with $\kappa = 5$.}
+	{Number of flops associated with classical method (equation \ref{eq:flops-classical-method}), 
+	the standard CGLS method (equation \ref{eq:flops-standard-cgls}) and our method (equation 
+	\ref{eq:flops-convolutional-method}, all of them with $N^{it} = 50$. 
+	The number of observation points $N$ varies from $5,000$ to $1,000,000$.}
 	\label{fig:flops}
 }
 
 \plot{time_comparison_mag}{width=\textwidth}{
-	{Comparison between the runtime of the equivalent-layer technique using the classical, the CGLS algorithm and our method. The values for the CGLS and our methods were obtained for $N^{it} = 50$ iterations.}
+	{Comparison between the runtime of the equivalent-layer technique using the classical method, 
+	standard CGLS method and our method. The values for the standard CGLS and our method use
+	$N^{it} = 50$ iterations.}
 	\label{fig:solve_time}
 }
 
-\plot{time_sources_mag}{width=\textwidth}{
-	{Comparison between the runtime to calculate the first column of the BCCB matrix embbeded from $\mathbf{A}$ (equation \ref{eq:aij_mag}) using only one and using four equivalent sources. Although the time is very similar, with one source a small advantage can be observed as the number of data $N$ increases. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.}
-	\label{fig:sources_time}
-}
+%\plot{time_sources_mag}{width=\textwidth}{
+%	{Comparison between the runtime to calculate the first column of the BCCB matrix embbeded from $\mathbf{A}$ (equation \ref{eq:aij_mag}) using only one and using four equivalent sources. Although the time is very similar, with one source a small advantage can be observed as the number of data $N$ increases. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.}
+%	\label{fig:sources_time}
+%}
 
 %% Synthetic data part I
 
