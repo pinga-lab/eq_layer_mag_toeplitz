@@ -1,13 +1,31 @@
 \begin{abstract}
 
-We present a fast equivalent layer for processing large-scale magnetic data. 
-Taking advantage of the sensitivity matrix structure of the magnetic kernel, when observation and equivalent sources are aligned on a regular spaced grid with constant height, we can calculate the matrix-vector product in a very fast manner. 
-In the literature, this matrix structure is called block-Toeplitz Toeplitz-block (BTTB) that can be embbeded 
-into a block-Circulant Circulant-block (BCCB), which in turn has its eigenvalues calculated using only the first column of the BTTB matrix and a 2D fast Fourier transform. 
-We demonstrate that, despite this BTTB matrix is not symmetric, by using only the first equivalent source it is possible to calculate all the first columns of the inverse of distance second derivatives that compose the magnetic kernel and reconstruct the first column of the BCCB matrix, saving computational time and system memory. 
-We solve the linear system by modifying the conjugate gradient iterative method to estimate the 
-physical-property distribution over the equivalent layer and then to process large data sets.
-Synthetic tests show a decrease in the order of $10^4$ in floating-point operations, $25$ times in computation runtime with a mid-size $80 \times 80$ grid, and exponential decrease in memory RAM usage, allowing to perform this operation with millions of observations on desktop computers. 
+We present a fast equivalent layer method for processing large-scale magnetic data. 
+We demonstrate that the sensitivity matrix associated with an equivalent layer
+of dipoles assumes a Block-Toeplitz Toeplitz-Block (BTTB) structure for the 
+particular case in which observations and equivalent sources are aligned on a 
+horizontal and regularly-spaced grid.
+The product of a BTTB matrix and an arbitrary vector represents a 2D discrete 
+convolution which, in turn, can be efficiently computed via 2D Fast Fourier Transform (2D FFT).
+In this case, the matrix-vector product uses only the elements forming the first column
+of the BTTB matrix, saving computational time and system memory. 
+Our convolutional equivalent layer method uses this fast convolution approach to compute 
+the matrix-vector products in the iterative conjugate gradient algorithm with the purpose 
+of estimating the physical-property distribution over the equivalent layer and then processing 
+large data sets.
+
+Synthetic tests with a mid-size $100 \times 50$ grid of total-field anomaly data
+show a decrease of $\approx 10^4$ in floating-point operations and $\approx 25\times$ 
+in computation runtime of our method compared to the classical approach of solving
+the least-squares normal equations via Cholesky decomposition. 
+Better results are obtained for millions of data, showing drastic decreases in RAM usage
+and runtime, allowing to perform magnetic data processing of large data sets on regular 
+desktop computers. 
+
+PAREI AQUI
+
+Our results also show that, compared to the standard Fourier approach
+
 Synthetic tests simulating data on irregular grids or over undulating observation surfaces  show the robustness of the convolutional equivalent layer in processing magnetic surveys that violate the requirement  that the data be measured on a regular grid and the observation surface be planar.
 Test on real magnetic data from Caraj{\'a}s Province, Brazil, with $1,310,000$ observations on an irregular grid, confirms the success of our method, taking $385.56$ seconds to estimate the physical-property distribution over the equivalent layer and $2.64$ seconds for upward-continuing the data.
 
