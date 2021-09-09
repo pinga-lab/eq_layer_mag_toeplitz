@@ -1,23 +1,48 @@
 \section{Conclusions}
 
-We have proposed  a fast convolutional equivalent-layer technique for processing magnetic data 
-whose computation time is more than four orders of magnitude less than the classical equivalent layer.
-Mathematically, we have  demonstrated that the sensitivity matrix associated with the linear system of the magnetic equivalent layer carries the structure of BTTB matrices, which means not only a very low computational cost to calculate a matrix-vector product, but also the possibility to store only the first column of the matrix BCCB. 
-In this work, our novel fast convolutional equivalent-layer technique  uses only one equivalent source to calculate the first six columns of the inverse of distance second derivatives matrices and to set up the first column of the BCCB matrix embbeded from the original magnetic kernel sensitivity matrix.
-We solve the linear system by adapting the method of Conjugate Gradient Least Square to compute fastly the BTTB matrix-vector product of the magnetic forward modeling in the equivalent-layer technique.
+We have proposed a fast equivalent-layer technique for processing magnetic data called
+convolutional equivalent layer method.
+We have demonstrated that the sensitivity matrix associated with planar 
+equivalent layers of dipoles has a BTTB structure for the particular case in which 
+the dipoles are aligned with the horizontal and regular grid of magnetic data.
+The product of such matrices and arbitrary vectors represents a 2D discrete convolution
+that can be efficiently computed via 2D Fast Fourier Transform by using only the 
+elements forming the first column of the matrix.
+By using this property, we have developed a fast and memory efficient iterative method for 
+estimating the physical-property distribution on the equivalent layer.
 
-The comparisons between the performances of classical equivalent-layer technique  and  fast convolutional equivalent-layer technique using synthetic magnetic data show similar estimates of the physical-property distribution over the equivalent layer.
-The difference in time, however, is noticeable: $2.04$ seconds using the classical approach and $0.083$ seconds using our approach. This difference was obtained with a mid-size mesh of $100 \times 50$ points, greater results can be obtained if more observation points are used.
+Comparisons between the estimated physical-property distribution obtained with our method and 
+the classical approach that solves the least-squares normal equations via Cholesky decomposition 
+show similar results. 
+The differences in total number of floating-point operations (flops), memory usage and computation 
+time, however, are noticeable. 
+For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of
+magnitude smaller than that required by the classical method. Besides, our method uses
+less than $1\%$ of the RAM and takes about $4\%$ of the computation time associated with
+the classical method in this case. (TEM QUE CHECAR ESTAS VALORES)
+Significantly better results can be obtained with larger data sets.
 
-The comparisons between the performances of classical approach in the Fourier domain and fast convolutional equivalent-layer technique for processing synthetic magnetic data show that the computational time required by the classical Fourier approach is the lowest one.
-However, the classical Fourier approach requires not only expanding the data by using a padding function to avoid the border effects but also it requires the measurement of the data on a regular grid and on a planar observation surface.
-Although the fast convolutional equivalent-layer technique  also requires that the data be measure on a regular grid and the observation surface be planar, the synthetic tests show the robustness of our method to deal  either with irregular grids or with uneven observation surface.
-This robustness of our method may fail if the horizontal coordinates of the observations are greatly scattered
-or if the observation surface is rugged.
-However, a poor performance of our method  can be easily detected  because it leads to poor data fitting and the decay of the data-misfit function along the iterations (convergence curve) does not exhibit an invariance along successive iterations. 
+Tests with synthetic data show that the computational time required by our method has 
+the same order of magnitude of that required by the classical approach in the Fourier domain
+to perform magnetic data processing.
+However, the classical Fourier approach shows considerable larger border effects if no previous 
+padding scheme is used to expand the data. 
+Besides, although both methods require the magnetic data be on a planar and regular grid, 
+tests with synthetic data show the robustness of our method to deal with data either on irregular grids
+or on undulating observation surfaces.
 
-On an irregular grid totaling $1,310,000$ observation points, the field data over the Carajás Province, northern Brazil, would require $12.49$ Terabytes of RAM to store the full sensitivity matrix  to run the classical equivalent-layer technique. 
-However, the fast convolutional equivalent-layer technique  neither requires the full computation nor the storage of a sensitivity matrix.
-Taking advantage of the symmetric or skew-symmetric matrices structures, it is possible to reconstruct the whole sensitivity matrix using only $59.97$ Megabytes.
-When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in single-processing and single-threading modes, the total time spent by our method for estimating the physical-property distribution over the equivalent layer was approximately $385.56$ seconds and for upward-continuing the total of $1,310,000$ magnetic observations  was $2.64$ seconds.
+While the classical equivalent-layer method would require $12.49$ Terabytes of RAM to store the full
+sensitivity matrix associated with the irregular grid of $1,310,000$ observation points over the
+Carajás Province, northern Brazil, our method requires only $59.97$ Megabytes.
+When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in
+single-processing and single-threading modes, the total times spent by our method to estimate the
+physical-property distribution over the equivalent layer and to compute the upward continuation
+of the $1,310,000$ magnetic observations over the Carajás province was approximately $385.56$ 
+seconds and $2.64$ seconds.
+
+Further investigation could usefully explore different preconditioning strategies to improve the
+convergence rate of our method. Besides, considerably more work will need to be done to generalize
+our convolutional equivalent layer method for dealing with irregularly spaced data sets on 
+undulating observation surfaces.
+
 
