@@ -31,7 +31,7 @@ a regular grid of $100 \times 50$ observation points (totaling  $N = 5,\, 000$ o
 with a grid spacing of $\Delta x = 101.01$ m and $\Delta y = 163.265$ m along the
 $x$- and $y$-axis, respectively.
 The noise-corrupted total-field anomaly (middle panel) is calculated at $z = -900$ m, with a
-pseudorandom Gaussian noise having null mean and standard deviation of $XXXX$ nT.
+pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
 
 %% irregular grids on a flat surface
 
@@ -48,7 +48,7 @@ $30.3$ m and $49.0$ m along the $x$- and $y$-directions, respectively.
 Their noise-corrupted total-field anomalies (middle panels in Figures 
 \ref{fig:synthetic_data_comparison_v2}b and \ref{fig:synthetic_data_comparison_v2}c) are calculated 
 on their corresponding irregular grids, on a flat observation surface at $z = -900$ m, 
-with a pseudorandom Gaussian noise having null mean and standard deviation of $XXXX$ nT.
+with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
 
 %% regular grid on undulating surfaces
 
@@ -66,7 +66,7 @@ The noise-corrupted total-field anomalies of these simulated surveys (middle pan
 on their corresponding undulating surfaces (upper panels in Figures 
 \ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e),
 on the same regular grid shown in Figure \ref{fig:synthetic_data_comparison_v2}a,
-with a pseudorandom Gaussian noise having null mean and standard deviation of $XXXX$ nT.
+with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
 
 
 %% Regular grid
@@ -107,7 +107,7 @@ using the classical method (upper panel) yield a good data fit with mean $0.3630
 deviation $0.2731$ nT. 
 Using our method, the data residuals (middle panel in Figure 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}b) also produced an acceptable data 
-fitting with mean of  $0.7147$ nT and standart deviation of $0.5622$ nT. 
+fitting with mean of  $0.7147$ nT and standard deviation of $0.5622$ nT. 
 The Euclidean norm of the data residuals obtained by our method 
 (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b) decreases, 
 as expected, and converges to a constant value close to iteration $50$. 
@@ -117,27 +117,27 @@ with the irregular data grid perturbed by using $30\%$ of the regular grid spaci
 This figure shows that the data residuals 
 obtained by the classical method (upper panel) produced an acceptable data fitting, having mean 
 $0.3634$ nT and standard deviation $0.2735$ nT. 
+%Using our method, the data residuals (middle panel in Figure 
+%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9788$ nT and 
+%standard deviation $0.7462$ nT produced a worse data fitting.
+%The convergence of our method (lower panel in Figure 
+%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
+%similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
+%increasing without achieving an invariance. Hence, the convergence is not achieved. 
+%
+%\textbf{Alternative text} $\rightarrow$
+%
 Using our method, the data residuals (middle panel in Figure 
-\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9788$ nT and 
-standard deviation $0.7462$ nT produced a worse data fitting.
-The convergence of our method (lower panel in Figure 
-\ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
-similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
-increasing without achieving an invariance. Hence, the convergence is not achieved. 
-
-\textbf{Alternative text} $\rightarrow$
-
-Using our method, the data residuals (middle panel in Figure 
-\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean (usar valor com a menor norma euclidiana) nT and 
-standard deviation (usar valor com a menor norma euclidiana) nT also produced a good data fitting.
+\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9186$ nT and 
+standard deviation $0.7354$ nT also produced a good data fitting.
 The convergence of our method (lower panel in Figure 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
 similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
 increasing without achieving an invariance. In this case, we have to stop the algorithm
-before the iteration $N$. Note that this good result was obtained by using a very perturbed
+at iteration $40$. Note that this good result was obtained by using a very perturbed
 data grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}c).
-
-$\leftarrow$ \textbf{Alternative text}
+%
+%$\leftarrow$ \textbf{Alternative text}
 
 %======================================================================================
 \subsection*{Tests with regular data grid an undulating surfaces}
@@ -155,7 +155,7 @@ Likewise, the Euclidean norm of the data residuals produced by our method
 (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) decreases up to 
 iteration 50 and reaches an invariance in the subsequent iterations.
 
-Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d shows the results obtained
+Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e shows the results obtained
 with data on the undulating surface varying $10\%$ of $z = 900$ m.
 By using the classical approach, the data residuals (upper panel in 
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e) 

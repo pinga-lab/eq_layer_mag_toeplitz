@@ -5,7 +5,7 @@ northern Brazil.
 The survey is composed of $131$ flight lines along north-south direction with line spacing of 
 $\Delta y = 3,000$ m. 
 Data were measured with spacing $\Delta x = 7.65$ m along lines, with an average distance 
-to the ground of $900$ m. (TEM QUE CHECAR)
+to the ground of $900$ m.% (TEM QUE CHECAR)
 The total number of observation points is $N = 6,081,345$. Figure \ref{fig:carajas_real_data_mag} 
 shows the observed total-field anomaly data over the study area.
 
@@ -24,37 +24,38 @@ to process this amount of data.
 
 As the study area is very large, the main magnetic field varies with position.
 For this application, we set the main field direction as that of a mid location 
-(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ 
-for the IGRF model at 1st January, 2014 (epoch of the survey). The inclination was calculated using the magnetic field calculator from NOAA and is equal to $-7.4391^{\circ}$. 
-
-\textbf{Alternative text} $\rightarrow$
-
-As the study area is very large, the main magnetic field varies with position.
-For this application, we set the main field direction as that of a mid location 
-(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ 
-and inclination is $XXXXXX^{\circ}$ according to IGRF model at 1st January, 2014 (epoch of the survey).
-(É ESTRANHO CALCULAR A DECLINAÇÃO COM UM MODELO E A INCLINAÇÃO COM OUTRO)
-
-$\leftarrow$ \textbf{Alternative text}
-
-We set the equivalent layer at $300$ meters above the ground ($600$ m below the data TEM QUE CHECAR).
+(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ and
+the inclination is $-7.4391^{\circ}$. Both values were calculated using the magnetic field calculator from NOAA
+at 1st January, 2014 (epoch of the survey).
+%
+%\textbf{Alternative text} $\rightarrow$
+%
+%As the study area is very large, the main magnetic field varies with position.
+%For this application, we set the main field direction as that of a mid location 
+%(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ 
+%and inclination is $XXXXXX^{\circ}$ according to IGRF model at 1st January, 2014 (epoch of the survey).
+%(É ESTRANHO CALCULAR A DECLINAÇÃO COM UM MODELO E A INCLINAÇÃO COM OUTRO)
+%
+%$\leftarrow$ \textbf{Alternative text}
+%
+We set the equivalent layer at $300$ meters above the ground ($600$ m below the data).
 By applying our method to the interpolated regular grid 
 (Figure \ref{fig:carajas_real_data_decimated_gridline}a), we obtain the  predicted data shown in 
 Figure \ref{fig:carajas_gz_predito_mag_gridline}a and data residuals 
 (Figure \ref{fig:carajas_gz_predito_mag_gridline}b) with mean $0.0762$ nT and the standard deviation 
 $0.4886$ nT, revealing an acceptable data fitting.
-Our method took $\approx 390.80$ seconds to converge at about $200$ iterations. (TEM QUE CHECAR)
-
-POR QUE A CURVA DE CONVERGENCIA NÃO FOI MOSTRADA?
-
+Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.% (TEM QUE CHECAR)
+%
+%POR QUE A CURVA DE CONVERGENCIA NÃO FOI MOSTRADA?
+%
 By applying our method to the decimated irregular grid 
 (Figure \ref{fig:carajas_real_data_decimated_gridline}b), we obtain the predicted data shown in 
 Figure \ref{fig:carajas_gz_predito_mag_decimated}a and data residuals 
 (Figure \ref{fig:carajas_gz_predito_mag_decimated}b) with mean $0.0717$ nT and standard deviation 
 $0.3144$ nT. In this case, our method took $\approx 385.56$ seconds 
-to converge at about $2,000$ iterations (Figure \ref{fig:convergence_carajas_mag_decimated}) (TEM ALGO
-ESTRANHO AQUI. COMO QUE 2000 ITERAÇÕES FOI MAIS MAIS RÁPIDO DO QUE AS 200 ITERAÇÕES DO GRID
-INTERPOLADO?). The convergence curve reveals a good convergence rate obtained with the decimated 
+to converge at about $200$ iterations (Figure \ref{fig:convergence_carajas_mag_decimated}).
+%(TEM ALGO ESTRANHO AQUI. COMO QUE 2000 ITERAÇÕES FOI MAIS MAIS RÁPIDO DO QUE AS 200 ITERAÇÕES DO GRID INTERPOLADO?).
+The convergence curve reveals a good convergence rate obtained with the decimated 
 irregular grid. This result shows the robustness of our method in processing irregular grid.
 
 %We have found, in applying our method to the decimated irregular grid, that the data residual amplitude (Figure \ref{fig:carajas_gz_predito_mag_decimated}b) is lower than the data residual amplitude (Figure 
