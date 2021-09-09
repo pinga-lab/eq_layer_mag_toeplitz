@@ -1,64 +1,76 @@
-This is BibTeX, Version 0.99d (TeX Live 2019/dev/Debian)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: manuscript.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
 A level-1 auxiliary file: abstract.aux
+Reallocating 'name_of_file' (item size: 1) to 17 items.
 A level-1 auxiliary file: introduction.aux
+Reallocating 'name_of_file' (item size: 1) to 16 items.
 A level-1 auxiliary file: methodology.aux
+Reallocating 'name_of_file' (item size: 1) to 19 items.
 A level-1 auxiliary file: synthetic_data.aux
+Reallocating 'name_of_file' (item size: 1) to 15 items.
 A level-1 auxiliary file: field_data.aux
+Reallocating 'name_of_file' (item size: 1) to 16 items.
 A level-1 auxiliary file: conclusions.aux
+Reallocating 'name_of_file' (item size: 1) to 20 items.
 A level-1 auxiliary file: aknowledgements.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
 A level-1 auxiliary file: figures.aux
-A level-1 auxiliary file: Flops_computations.aux
+Reallocating 'name_of_file' (item size: 1) to 23 items.
+A level-1 auxiliary file: BTTB_matrix_vector.aux
+Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: seg.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Reallocating 'name_of_file' (item size: 1) to 11 items.
 A level-1 auxiliary file: tables.aux
 Database file #1: references.bib
-I was expecting a `,' or a `}'---line 542 of file references.bib
+I was expecting a `,' or a `}'---line 543 of file references.bib
  : 
  : @article{mendoncca2020subspace,
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 You can't pop an empty literal stack for entry chan-jin2007
 while executing---line 1586 of file seg.bst
-You've used 25 entries,
+You've used 31 entries,
             2639 wiz_defined-function locations,
-            868 strings with 10039 characters,
-and the built_in function-call counts, 9442 in all, are:
-= -- 1017
-> -- 309
-< -- 16
-+ -- 110
-- -- 98
-* -- 822
-:= -- 1636
-add.period$ -- 25
-call.type$ -- 25
-change.case$ -- 175
-chr.to.int$ -- 25
-cite$ -- 25
-duplicate$ -- 344
-empty$ -- 729
-format.name$ -- 133
-if$ -- 1938
+            902 strings with 10794 characters,
+and the built_in function-call counts, 11461 in all, are:
+= -- 1235
+> -- 374
+< -- 21
++ -- 132
+- -- 118
+* -- 981
+:= -- 1995
+add.period$ -- 31
+call.type$ -- 31
+change.case$ -- 219
+chr.to.int$ -- 31
+cite$ -- 31
+duplicate$ -- 424
+empty$ -- 888
+format.name$ -- 163
+if$ -- 2359
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 30
-newline$ -- 79
-num.names$ -- 75
-pop$ -- 134
+missing$ -- 40
+newline$ -- 97
+num.names$ -- 93
+pop$ -- 173
 preamble$ -- 1
-purify$ -- 174
+purify$ -- 214
 quote$ -- 0
-skip$ -- 252
+skip$ -- 307
 stack$ -- 0
-substring$ -- 755
-swap$ -- 20
+substring$ -- 876
+swap$ -- 22
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 140
+type$ -- 168
 warning$ -- 0
-while$ -- 80
+while$ -- 96
 width$ -- 0
-write$ -- 274
+write$ -- 340
 (There were 2 error messages)
