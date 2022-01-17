@@ -1,0 +1,1641 @@
+%\documentclass[paper,twocolumn,twoside]{geophysics}
+%\documentclass[manuscript,noblind]{geophysics}
+\documentclass[manuscript]{geophysics}
+
+% An example of defining macros
+\newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
+\newcommand{\rr}[1]{\mbox{\rm #1}}
+
+% Extra packages
+\usepackage{amsmath}
+%\usepackage[]{algorithm2e}
+\usepackage{algorithm}
+\usepackage{bm}
+\usepackage[hyphens,spaces]{url}
+\usepackage[pdftex,colorlinks=true]{hyperref}
+\hypersetup{
+	allcolors=black,
+}
+\usepackage{lipsum}
+\usepackage[table]{xcolor}
+\usepackage[titletoc,title]{appendix}
+
+\renewcommand{\figdir}{Fig} % figure directory
+
+\begin{document}
+	
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+	
+	%\ms{GEO-XXXX} % manuscript number
+	
+	\maketitle
+	
+	% Main body
+	\begin{abstract}
+		
+		We present a fast equivalent layer method for processing large-scale magnetic data. 
+		We demonstrate that the sensitivity matrix associated with an equivalent layer
+		of dipoles assumes a Block-Toeplitz Toeplitz-Block (BTTB) structure for the 
+		case in which observations and dipoles are aligned on a 
+		horizontal and regularly-spaced grid.
+		The product of a BTTB matrix and an arbitrary vector represents a discrete 
+		convolution and can be efficiently computed via 2D Fast Fourier Transform.
+		In this case, the matrix-vector product uses only the elements forming the first column
+		of the BTTB matrix, saving computational time and memory. 
+		Our convolutional equivalent layer method uses this approach to compute 
+		the matrix-vector products in the iterative conjugate gradient algorithm with the purpose 
+		of estimating the physical-property distribution over the equivalent layer with 
+		large data sets.
+		Synthetic tests with a mid-size $100 \times 50$ grid of total-field anomaly data
+		show a decrease of $\approx 10^4$ in floating-point operations and $\approx 25\times$ 
+		in computation runtime of our method compared to the classical approach of solving
+		the least-squares normal equations via Cholesky decomposition. 
+		Better results are obtained for millions of data, showing drastic decreases in RAM usage
+		and runtime, allowing to perform magnetic data processing of large data sets on regular 
+		desktop computers. 
+		Our results also show that, compared to the classical Fourier approach, the magnetic
+		data processing with our method requires similar computation time, but produces significantly 
+		smaller border effects without using any padding scheme and also is much more robust to 
+		deal with data on irregularly spaced points or on undulating observation surfaces.
+		A test with $1,310,000$ irregularly spaced field data over the Caraj{\'a}s Province, Brazil, 
+		confirms the success of our method by taking $\approx 385.56$ seconds to estimate the physical-property
+		distribution over the equivalent layer and $\approx 2.64$ seconds to compute the upward 
+		continuation.
+		
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	Large-scale data processing with tens of thousands of data, is a reality in all areas of geophysics including the geophysical potential fields. 
+	The potential-field data processing includes convolution integrals which can be solved either in the space or Fourier domains.
+	The earliest techniques of potential-field data processing  were developed in the space domain.
+	For example, \cite{Peters1949} accomplished, in the space domain, the second and fourth derivatives of magnetic data and the upward- and downward-continuations of magnetic data by deriving coefficients that are
+	used in a  graphical convolution with the magnetic data.
+	Howerver, the techniques for  processing potential-field data in space-domain were soon substituted by the Fourier-domain techniques. 
+	\cite{Dean1958} pointed out that the operations of second derivative, analytic continuation, smoothing, the removing of residuals or regionals, and others for processing  potential-field data are
+	similar to the electric filter circuits in Fourier domain.
+	\cite{Dean1958} was the first to develop the theroy of  linear filter in Fourier domain for gravity and magnetic processing and to present filters in Fourier domain \citep[][ see Table I, p 113]{Dean1958} 
+	for some theoretical geophysical operations (e.g., derivatives and upward and downward continuations).
+	\cite{GUNN1975} presented a comprehensive analysis of processing potential-field data in Fourier domain.
+	
+	
+	An approach for processing potential-field data in space domain is the equivalent-layer technique.
+	The equations deductions of the equivalent layer as a solution of the Laplace's equation in the region above the source was first presented by \cite{kellogg1929} and detailed explanations can also be found in \cite{blakely1996}. 
+	Although the equivalent-layer technique  has been known since the 1960s in geophysical literature \citep{danes1961structure,bott1967solution,dampney1969}, its use has become feasible only recently 
+	because the advances in computational power.
+	In magnetic data procesing, some authors explored this technique for calculating the first and second vertical derivatives fields \citep{emilia1973}, reduction to the pole \citep{silva1986,oliveirajr-etal2013,li2014using}, upward/downward continuations \citep{hansen-miyazaki1984,li-oldenburg2010} and total magnetic induction vector components calculation \citep{sun2019constrained}.
+	
+	Together with the rise in computational processing power, some works tried new implementations to increase the efficiency of the equivalent layer. 
+	In \cite{leao-silva1989} the authors used a shifting window over the layer, increasing the number of linear systems to be solved, but the size of each linear system is reduced. 
+	Another approach for a fast equivalent layer was proposed by \cite{li-oldenburg2010}  who transformed the full sensitivity matrix into a sparse one by using  the compression of the coefficient matrix 
+	using fast wavelet transforms based on orthonormal, compactly supported wavelets.  
+	\cite{oliveirajr-etal2013} divided the equivalent layer into a grid of fixed source windows.
+	Instead of directly calculating the the physical-property distribution of a finite set of equivalent
+	sources (e.g., dipoles, point of masses) arranged in the entire equivalent layer,
+	\cite{oliveirajr-etal2013} estimated the coefficients of a bivariate polynomial function describing 
+	the physical-property distribution within each equivalent-source window.
+	The estimated polynomial-coefficients are transformed into the physical-property distribution
+	and thus any standard linear transformation of the data can be performed.
+	Grounded on excess mass constraint, \cite{siqueira-etal2017} proposed an iterative method 
+	for processing large gravimetric data using the equivalent layer without requiring the solution 
+	of a linear system. 
+	In \cite{siqueira-etal2017}, the initial mass distribution over the equivalent layer is
+	proportional to observed gravity data and it is updated at each iteration by adding mass corrections that are proportional to the residuals of observed and estimated data.
+	
+	One of the greatest obstacles to the use of the equivalent-layer technique for processing potential-field data is the solution of the associated linear system.
+	A wide variety of applications in mathematics and engineering that fall into Toeplitz systems propelled the development of a large variety of  methods for solving them. Direct methods were conceived by \cite{levinson1946} and by \cite{trench1964}. Currently, the iterative method of conjugate gradient is used in most cases, in \cite{chan-jin2007} the authors presented an introduction on the topic for 1D data structures of Toeplitz matrices and also for 2D data structures, which they called block-Toeplitz Toeplitz-block matrices. In both cases, the solving strategy is to embbed the Toeplitz/BTTB matrix into a Circulant/Block-Circulant Circulant-Block matrix, calculate its eigenvalues by a 1D or 2D fast Fourier transform of its first column, respectively and carry the matrix-vector product between kernel and parameters at each iteration of the conjugate gradient method in a very fast manner.
+	
+	In potential field methods, the properties of Toeplitz system have been used for downward continuation \citep{zhang-etal2016} and for 3D gravity-data inversion using a 2D multilayer model \citep{zhang-wong2015}. More recently, \cite{hogue2020tutorial} provided an overview on modeling the gravity and magnetic kernels using the BTTB structures and \cite{renaut2020fast} used BTTB the structures for inversion of both gravity and magnetic data to recover sparse subsurface structures.
+	\cite{takahashi2020convolutional} combined the fast equivalent source technique presented by \cite{siqueira-etal2017} with the concept of symmetric block-Toeplitz Toeplitz-block (BTTB) matrices to introduce the convolutional equivalent layer for gravimetric data technique. 
+	\cite{takahashi2020convolutional} showed that the BTTB structure appears when the sensitivity matrix of the linear system, required to solve the gravimetric equivalent layer, is calculated on a regular spaced grid of dataset with constant height and each equivalent source is exactly beneath each observed data point. 
+	This work showed an decrease in the order of $10^4$ in floating-point operations needed to estimate the equivalent sources; thus, the \cite{takahashi2020convolutional} method was able to efficiently process very large gravity data sets. 
+	Moreover, \cite{takahashi2020convolutional} method yielded neither significant boundary effects nor noise amplification.
+	
+	In this work, the convolutional equivalent layer using the block-Toeplitz Toeplitz-block idea, presented in \cite{takahashi2020convolutional}, will be used to solve the linear system required to estimate the physical property that produces a magnetic field on regular grids. 
+	Here, we achive very fast solutions using a conjugate gradient algorithm combined with the fast Fourier transform. We present a novel method of exploring the symmetric structures of the second derivatives of the inverse of the distance contained in the magnetic kernel, to keep the memory RAM usage to the minimal by using only one equivalent source to carry the calculations of the forward problem. We also show tests of the magnetic convolutional equivalent layer when irregular grids are used. The convergence of the conjugate gradient maintains in an acceptable level even using irregular grids. 
+	Our results show the good performance of our method in producing fast and robust solutions for processing large amounts of magnetic data using the equivalent layer technique.
+	
+	\section{Methodology}
+	
+	%======================================================================================
+	\subsection{Classical equivalent layer for magnetic data}
+	%======================================================================================
+	
+	Let $\mathbf{d}^{o}$ be the $N \times 1$ observed data vector, whose $i$th element 
+	is the total-field anomaly $d^{o}_{i}$ produced by arbitrarily magnetized sources
+	at the position $(x_{i}, y_{i}, z_{i})$, $i =  1, \dots, N $, 
+	of a right-handed Cartesian coordinate system with $x$-, $y$- and $z$-axis 
+	pointing to north, east and down, respectively.
+	We consider that the total-field anomaly data $d^{o}_{i}$ represent the discrete
+	values of a harmonic function. Besides, we consider that the main geomagnetic field 
+	direction at the study area can be defined by the unit vector
+	\begin{equation}
+		\hat{\mathbf{F}} = \begin{bmatrix}
+			F_x \\
+			F_y \\
+			F_z
+		\end{bmatrix} =
+		\begin{bmatrix}
+			\cos(I_{0}) \, \cos(D_{0}) \\
+			\cos(I_{0}) \, \sin(D_{0}) \\
+			\sin(I_{0})
+		\end{bmatrix} \: ,
+		\label{eq:unit_vector_F}
+	\end{equation}
+	with constant inclination $I_{0}$ and declination $D_{0}$.
+	In this case, $d^{o}_{i}$ can be approximated by the predicted total-field anomaly
+	\begin{equation}
+		\Delta T_{i} = \sum_{j=1}^{M} \, p_{j} a_{ij} \: ,
+		\label{eq:integral-sum_mag}
+	\end{equation}
+	which describes the magnetic induction exerted, at the observation point $(x_{i}, y_{i}, z_{i})$,
+	by a discrete layer of $M$ dipoles (equivalent sources) defined on the horizontal plane $z = z_{c}$, 
+	where $p_{j}$ is the magnetic moment intensity (in A~m~$^{2}$)~of the $j$th dipole, 
+	that has unit volume and is located at the point $(x_{j}, y_{j}, z_{c})$. In equation
+	\ref{eq:integral-sum_mag}, $a_{ij}$ is the harmonic function
+	\begin{equation}
+		a_{ij}
+		= c_{m} \, \frac{\mu_{0}}{4\pi} \, \hat{\mathbf{F}}^{\top} \mathbf{H}_{ij} \: \hat{\mathbf{u}} \: ,
+		\label{eq:aij_mag}
+	\end{equation}
+	the unit vector
+	\begin{equation}
+		\hat{\mathbf{u}} = \begin{bmatrix}
+			u_x \\
+			u_y \\
+			u_z
+		\end{bmatrix} =
+		\begin{bmatrix}
+			\cos(I) \, \cos(D) \\
+			\cos(I) \, \sin(D) \\
+			\sin(I)
+		\end{bmatrix} \: ,
+		\label{eq:u_hat}
+	\end{equation}
+	defines the magnetization direction of all dipoles, with constant inclination $I$ and declination $D$,
+	$\mu_{0} = 4\pi \, 10^{-7}$ H/m is the magnetic constant, $c_{m} = 10^{9}$ is a factor that transforms
+	the magnetic induction from Tesla (T) to nanotesla (nT) and $\mathbf{H}_{ij}$ is a $3 \times 3$ matrix 
+	\begin{equation}
+		\mathbf{H}_{ij} = \begin{bmatrix}
+			h^{xx}_{ij} & h^{xy}_{ij} & h^{xz}_{ij} \\
+			h^{xy}_{ij} & h^{yy}_{ij} & h^{yz}_{ij} \\
+			h^{xz}_{ij} & h^{yz}_{ij} & h^{zz}_{ij}
+		\end{bmatrix} \: ,
+		\label{eq:Hij}
+	\end{equation}
+	where 
+	\begin{equation}
+		h^{\alpha\beta}_{ij} = 
+		\begin{cases}
+			\frac{3 \left( \alpha_{i} - \alpha_{j} \right)^{2}}{r_{ij}^{5}} - \frac{1}{r_{ij}^{3}} \: , \quad \alpha = \beta \\
+			\frac{3 \left( \alpha_{i} - \alpha_{j} \right) \left( \beta_{i} - \beta_{j} \right)}{r_{ij}^{5}} \: , \quad \alpha \ne \beta
+		\end{cases} \: , \quad \alpha, \beta = x, y, z \: ,
+		\label{eq:hij_alpha_beta}
+	\end{equation}
+	are the second derivatives of the inverse distance function
+	\begin{equation}
+		\frac{1}{r_{ij}} = 
+		\frac{1}{\sqrt{\left(x_{i} - x_{j} \right)^{2} + 
+				\left(y_{i} - y_{j} \right)^{2} + \left(z_{i} - z_{c} \right)^{2}}}
+		\label{eq:1_rij}
+	\end{equation}
+	with respect to the coordinates of the observation point $(x_{i}, y_{i}, z_{i})$.
+	
+	Equation \ref{eq:integral-sum_mag} can be rewritten in matrix notation as follows:
+	\begin{equation}
+		\mathbf{d}(\mathbf{p}) = \mathbf{A} \mathbf{p} \: ,
+		\label{eq:predicted-data-vector_mag}
+	\end{equation}
+	where $\mathbf{d}(\mathbf{p})$ is the $N \times 1$ predicted data vector with $i$th element defined
+	as the predicted total-field anomaly $\Delta T_{i}$ (equation \ref{eq:integral-sum_mag}),
+	$\mathbf{p}$ is the $M \times 1$ parameter vector whose $j$th element is the magnetic moment intensity
+	$p_{j}$ of the $j$th dipole and $\mathbf{A}$ is the $N \times M$ sensitivity matrix with element 
+	$ij$ defined by the harmonic function $a_{ij}$ (equation \ref{eq:aij_mag}).
+	In the classical equivalent-layer technique, the common approach for 
+	estimating the parameter vector $\mathbf{p}$ from the observed 
+	total-field anomaly data $\mathbf{d}^{o}$ is solving the least-squares normal equations
+	\begin{equation}
+		\mathbf{A}^{\top}\mathbf{A} \: \mathbf{p} = 
+		\mathbf{A}^{\top} \mathbf{d}^{o} \: .
+		\label{eq:normal-equations}
+	\end{equation}
+	Equation \ref{eq:normal-equations} is usually solved by first computing the Cholesky 
+	factor $\mathbf{G}$ of matrix $\mathbf{A}^{\top}\mathbf{A}$ and then using it to solve the linear 
+	systems \citep[][ p. 262]{golub-vanloan2013}:
+	\begin{equation}
+		\begin{split}
+			\mathbf{G} \mathbf{w} &= \mathbf{A}^{\top}\mathbf{d}^{o} \\
+			\mathbf{G}^{\top} \tilde{\mathbf{p}} &= \mathbf{w}
+		\end{split} \: ,
+		\label{eq:classical-method}
+	\end{equation}
+	where $\mathbf{w}$ is a dummy variable.
+	This approach to estimate the parameter vector will be 
+	referenced throughout this work as the \textit{classical method}.
+	The computational cost associated with the classical method can be very high
+	when dealing with large datasets. In the following subsections, we will show how to 
+	explore the structure of the sensitivity matrix $\mathbf{A}$ and 
+	efficiently solve the least-squares normal equations (equation \ref{eq:normal-equations}).
+	
+	
+	%=====================================================================================================
+	\subsection{Matrix $\mathbf{A}$ in terms of matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$}
+	%=====================================================================================================
+	
+	To access the structure of the sensitivity matrix $\mathbf{A}$ 
+	(equation \ref{eq:predicted-data-vector_mag}), let us first rewrite its elements 
+	$a_{ij}$ (equation \ref{eq:aij_mag}) in the following way:
+	\begin{equation}
+		\begin{split}
+			a_{ij} = a^{xx}_{ij} + a^{xy}_{ij} + a^{xz}_{ij} + a^{yy}_{ij} + a^{yz}_{ij} + a^{zz}_{ij} \: ,
+		\end{split}
+		\label{eq:aij_mag_expand}
+	\end{equation}
+	where
+	\begin{equation}
+		a^{\alpha\beta}_{ij} = 
+		\begin{cases}
+			c_{m} \, \frac{\mu_{0}}{4\pi} 
+			\left( F_{\alpha} u_{\beta} \right) h^{\alpha\beta}_{ij} \: &, \quad \alpha = \beta \\
+			c_{m} \, \frac{\mu_{0}}{4\pi} 
+			\left( F_{\alpha} u_{\beta} + F_{\beta} u_{\alpha} \right) h^{\alpha\beta}_{ij} \: &, \quad \alpha \ne \beta \\
+		\end{cases}
+		\: , \quad \alpha, \beta = x, y, z \: ,
+		\label{eq:aij_alpha_beta}
+	\end{equation}
+	are defined by the elements of $\hat{\mathbf{F}}$ 
+	(equation \ref{eq:unit_vector_F}), $\hat{\mathbf{u}}$ (equation \ref{eq:u_hat}) and 
+	$\mathbf{H}_{ij}$ (equations \ref{eq:Hij} and \ref{eq:hij_alpha_beta}).
+	Then, we can rewrite the sensitivity matrix $\mathbf{A}$ 
+	(equation \ref{eq:predicted-data-vector_mag}) according to:
+	\begin{equation}
+		\mathbf{A} = \mathbf{A_{xx}} + \mathbf{A_{xy}} + \mathbf{A_{xz}} + 
+		\mathbf{A_{yy}} + \mathbf{A_{yz}} + \mathbf{A_{zz}} \: ,
+		\label{eq:A_expand}
+	\end{equation}
+	where $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ are $N \times M$ matrices with elements 
+	$ij$ defined by $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}).
+	
+	Now we can define the structure of $\mathbf{A}$ in terms of its components 
+	$\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}). To do this, 
+	we consider the particular case in which the observed total-field anomaly is located 
+	on an $N_{x} \times N_{y}$ 
+	regular grid of points spaced by $\Delta_{x}$ and $\Delta_{y}$ along the $x$- and $y$-directions,
+	respectively, on a constant vertical coordinate $z_{0}$. We also consider that the equivalent layer
+	is formed by one dipole right below each observation point, at the constant coordinate $z_{c}$.
+	In this case, the number of equivalent sources $M$ is equal to the number of data $N$ and, 
+	consequently, matrices $\mathbf{A}$ and $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ become 
+	square ($N \times N$). 
+	Besides, the horizontal coordinates $x_{i}$ and $y_{i}$ of the observation points 
+	can be defined by
+	\begin{equation}
+		x_{i} = x_{1} + \left[ k(i) - 1 \right] \, \Delta_{x}
+		\label{eq:xi}
+	\end{equation}
+	and
+	\begin{equation}
+		y_{i} = y_{1} + \left[ l(i) - 1 \right] \, \Delta_{y} \: ,
+		\label{eq:yi}
+	\end{equation}
+	where $x_{1}$ and $y_{1}$ are the lower limits for $x_{i}$ and $y_{i}$, respectively,
+	and $k(i)$ and $l(i)$ are integer functions defined according to the orientation
+	of the data grid (Figure \ref{fig:regular-grids}). 
+	For $x$-\textit{oriented grids}, the integer functions are given by
+	\begin{equation}
+		k(i)  = i - \Bigg\lceil \frac{i}{N_{x}} \Bigg\rceil N_{x} + N_{x}
+		\label{eq:k-x-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		l(i) = \Bigg\lceil \frac{i}{N_{x}} \Bigg\rceil \: .
+		\label{eq:l-x-oriented}
+	\end{equation}
+	For $y$-\textit{oriented grids}, the integer functions are given by
+	\begin{equation}
+		k(i) = \Bigg\lceil \frac{i}{N_{y}} \Bigg\rceil
+		\label{eq:k-y-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		l(i) = i - \Bigg\lceil \frac{i}{N_{y}} \Bigg\rceil N_{y} + N_{y} \: .
+		\label{eq:l-y-oriented}
+	\end{equation}
+	In equations \ref{eq:k-x-oriented}--\ref{eq:l-y-oriented}, $\lceil \cdot \rceil$ denotes the ceiling 
+	function \citep[e.g.,][ p. 67-68]{graham-etal1994}.
+	Equations \ref{eq:xi}--\ref{eq:l-y-oriented} can also be used to define the coordinates 
+	$x_{j}$ and $y_{j}$ of the equivalent sources, but with index $j$ instead of $i$.
+	
+	By using equations \ref{eq:xi}--\ref{eq:l-y-oriented} to define the coordinates $x_{i}$ and 
+	$y_{i}$ of the observation points and $x_{j}$ and $y_{j}$ of the equivalent sources, we can
+	rewrite the elements $h^{\alpha\beta}_{ij}$ (equation \ref{eq:hij_alpha_beta}) of matrix 
+	$\mathbf{H}_{ij}$ (equation \ref{eq:Hij}) as follows:
+	\begin{equation}
+		h^{xx}_{ij} = 
+		\frac{3 \left( \Delta k_{ij} \, \Delta_{x} \right)^{2}}{r_{ij}^{5}} - \frac{1}{r_{ij}^{3}} \: ,
+		\label{eq:hxx_regular}
+	\end{equation}
+	\begin{equation}
+		h^{yy}_{ij} = 
+		\frac{3 \left( \Delta l_{ij} \, \Delta_{y} \right)^{2}}{r_{ij}^{5}} - \frac{1}{r_{ij}^{3}} \: ,
+		\label{eq:hyy_regular}
+	\end{equation}
+	\begin{equation}
+		h^{zz}_{ij} = 
+		\frac{3 \Delta_{z}^{2}}{r_{ij}^{5}} - \frac{1}{r_{ij}^{3}} \: ,
+		\label{eq:hzz_regular}
+	\end{equation}
+	\begin{equation}
+		h^{xy}_{ij} = 
+		\frac{3 \left( \Delta k_{ij} \, \Delta_{x} \right)\left( \Delta l_{ij} \, \Delta_{y} \right)}{r_{ij}^{5}} \: ,
+		\label{eq:hxy_regular}
+	\end{equation}
+	\begin{equation}
+		h^{xz}_{ij} = 
+		\frac{3 \left( \Delta k_{ij} \, \Delta_{x} \right) \Delta_{z}}{r_{ij}^{5}}
+		\label{eq:hxz_regular}
+	\end{equation}
+	and
+	\begin{equation}
+		h^{yz}_{ij} = 
+		\frac{3 \left( \Delta l_{ij} \, \Delta_{y} \right) \Delta_{z}}{r_{ij}^{5}} \: ,
+		\label{eq:hyz_regular}
+	\end{equation}
+	where $\Delta_{z} = z_{c} - z_{0}$, 
+	\begin{equation}
+		\Delta k_{ij} = \frac{x_{i} - x_{j}}{\Delta_{x}} = k(i) - k(j) \: ,
+		\label{eq:Delta_kij}
+	\end{equation}
+	\begin{equation}
+		\Delta l_{ij} = \frac{y_{i} - y_{j}}{\Delta_{y}} = l(i) - l(j)
+		\label{eq:Delta_lij}
+	\end{equation}
+	and 
+	\begin{equation}
+		\frac{1}{r_{ij}} = 
+		\frac{1}{\sqrt{\left( \Delta k_{ij} \, \Delta_{x} \right)^{2} + \left( \Delta l_{ij} \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
+		\label{eq:1_rij_regular}
+	\end{equation}
+	Note that the integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ (equations 
+	\ref{eq:k-x-oriented}--\ref{eq:l-y-oriented}) defining $\Delta k_{ij}$ (equation
+	\ref{eq:Delta_kij}), $\Delta l_{ij}$ (equation \ref{eq:Delta_lij}) and 
+	$\tfrac{1}{r_{ij}}$ (equation \ref{eq:1_rij_regular}) assume different 
+	forms depending on the grid orientation.
+	Despite of that, it can be shown that
+	\begin{equation}
+		\Delta k_{ij} = - \Delta k_{ji} \: ,
+		\label{eq:Delta_kij_symmetry}
+	\end{equation}
+	\begin{equation}
+		\Delta l_{ij} = - \Delta l_{ji}
+		\label{eq:Delta_lij_symmetry}
+	\end{equation}
+	and 
+	\begin{equation}
+		\frac{1}{r_{ij}} = \frac{1}{r_{ji}}
+		\label{eq:1_rij_symmetry}
+	\end{equation}
+	for any grid orientation.
+	
+	%=================================================================================
+	\subsection{General structure of matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$}
+	%=================================================================================
+	
+	By using equations \ref{eq:hxx_regular}--\ref{eq:1_rij_regular} to compute 
+	$a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}), we can show that 
+	matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}) assume
+	well-defined structures that can be conveniently
+	represented with \textit{block indices} $q$ and $p$ \citep{takahashi2020convolutional}.
+	These indices are defined by the integer functions $\Delta k_{ij}$ and $\Delta l_{ij}$ 
+	(equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}), in terms of the indices $i$ 
+	of the observation points $(x_{i}, y_{i}, z_{0})$ and $j$ of the equivalent sources
+	$(x_{j}, y_{j}, z_{c})$.
+	For $x$-\textit{oriented grids} (Figure \ref{fig:regular-grids}), $Q = N_{y}$, $P = N_{x}$ 
+	and the block indices $q$ and $p$ are given by:
+	\begin{equation}
+		q \equiv q(i, j) = \Delta l_{ij}
+		\label{eq:q-x-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		p \equiv p(i, j) = \Delta k_{ij} \: ,
+		\label{eq:p-x-oriented}
+	\end{equation}
+	where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
+	are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
+	\ref{eq:k-x-oriented} and \ref{eq:l-x-oriented}.
+	For $y$-\textit{oriented grids} (Figure \ref{fig:regular-grids}), $Q = N_{x}$, $P = N_{y}$ and 
+	the block indices $q$ and $p$ are given by:
+	\begin{equation}
+		q \equiv q(i, j) = \Delta k_{ij}
+		\label{eq:q-y-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		p \equiv p(i, j) = \Delta l_{ij} \: ,
+		\label{eq:p-y-oriented}
+	\end{equation}
+	where $\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
+	are defined by integer functions $k(i)$, $k(j)$, $l(i)$ and $l(j)$ given by equations 
+	\ref{eq:k-y-oriented} and \ref{eq:l-y-oriented}.
+	Equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented} show that $q$ varies from $-Q+1$
+	to $Q-1$ and $p$ from $-P+1$ to $P-1$, regardless of the grid orientation. They differ 
+	from those presented by \citet{takahashi2020convolutional} due to the absence of the module.
+	
+	% in review ==========>
+	
+	Let us consider the small regular grid of $N_{x} = 3$ and $N_{y} = 2$ points shown by
+	Figure \ref{fig:regular-grids}. This grid may represent observation points 
+	$(x_{i}, y_{i}, z_{0})$ with constant vertical coordinate $z_{0}$ or equivalent sources
+	$(x_{j}, y_{j}, z_{c})$ with constant vertical coordinate $z_{c} > z_{0}$. In both cases,
+	the horizontal coordinates are defined by equations \ref{eq:xi} and \ref{eq:yi}.
+	Given an index $i$, associated with an observation point, and an index $j$, associated with
+	an equivalent source, we can compute $\Delta k_{ij}$ (equation \ref{eq:Delta_kij}), 
+	$\Delta l_{ij}$ (equation \ref{eq:Delta_lij}) and $\tfrac{1}{r_{ij}}$ 
+	(equation \ref{eq:1_rij_regular}). The matrices $\Delta\mathbf{K}$ and $\Delta\mathbf{L}$ 
+	having elements $ij$ 
+	defined by $\Delta k_{ij}$ and $\Delta l_{ij}$, respectively, assume different forms, depending on
+	the grid orientation. For $x$-oriented grids (Figure \ref{fig:regular-grids}), they are given by:
+	\begin{equation}
+		\Delta\mathbf{K} = \begin{bmatrix}
+			0 &  -1 &  -2 &   0 &  -1 &  -2 \\
+			1 &   0 &  -1 &   1 &   0 &  -1 \\
+			2 &   1 &   0 &   2 &   1 &   0 \\
+			0 &  -1 &  -2 &   0 &  -1 &  -2 \\
+			1 &   0 &  -1 &   1 &   0 &  -1 \\
+			2 &   1 &   0 &   2 &   1 &   0 \\
+		\end{bmatrix}
+		\label{eq:DK-matrix-x-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		\Delta\mathbf{L} = \begin{bmatrix}
+			0 &   0 &   0 &  -1 &  -1 &  -1 \\
+			0 &   0 &   0 &  -1 &  -1 &  -1 \\
+			0 &   0 &   0 &  -1 &  -1 &  -1 \\
+			1 &   1 &   1 &   0 &   0 &   0 \\
+			1 &   1 &   1 &   0 &   0 &   0 \\
+			1 &   1 &   1 &   0 &   0 &   0 \\
+		\end{bmatrix} \: .
+		\label{eq:DL-matrix-x-oriented}
+	\end{equation}
+	For $y$-oriented grids (Figure \ref{fig:regular-grids}), they are given by:
+	\begin{equation}
+		\Delta\mathbf{K} = \begin{bmatrix}
+			0 &   0 &  -1 &  -1 &  -2 &  -2 \\
+			0 &   0 &  -1 &  -1 &  -2 &  -2 \\
+			1 &   1 &   0 &   0 &  -1 &  -1 \\
+			1 &   1 &   0 &   0 &  -1 &  -1 \\
+			2 &   2 &   1 &   1 &   0 &   0 \\
+			2 &   2 &   1 &   1 &   0 &   0 \\
+		\end{bmatrix}
+		\label{eq:DK-matrix-y-oriented}
+	\end{equation}
+	and
+	\begin{equation}
+		\Delta\mathbf{L} = \begin{bmatrix}
+			0 &  -1 &   0 &  -1 &   0 &  -1 \\
+			1 &   0 &   1 &   0 &   1 &   0 \\
+			0 &  -1 &   0 &  -1 &   0 &  -1 \\
+			1 &   0 &   1 &   0 &   1 &   0 \\
+			0 &  -1 &   0 &  -1 &   0 &  -1 \\
+			1 &   0 &   1 &   0 &   1 &   0 \\
+		\end{bmatrix} \: .
+		\label{eq:DL-matrix-y-oriented}
+	\end{equation}
+	These examples (equations \ref{eq:DK-matrix-x-oriented}--\ref{eq:DL-matrix-y-oriented})
+	show that different combinations of indices $i$ and $j$ result in integer functions 
+	$\Delta k_{ij}$ and $\Delta l_{ij}$ (equations \ref{eq:Delta_kij} and \ref{eq:Delta_lij}) 
+	having the same numerical value. In these cases, not only the numerical values of
+	the corresponding elements $a^{\alpha\beta}_{ij}$ (equation \ref{eq:aij_alpha_beta}),
+	but also their associated block indices $q$ and $p$ (equations 
+	\ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}) are the same. 
+	The contrary is also true: elements $a^{\alpha\beta}_{ij}$ having different 
+	associated block indices $q$ and $p$ also have different numerical values.
+	Because of that, using the alternative notation $a^{\alpha\beta}_{qp}$ to define the elements 
+	$a^{\alpha\beta}_{ij}$ in terms of its associated block indices $q$ and $p$ is a good
+	approach to investigate the structure of a given matrix component 
+	$\mathbf{A_{\boldsymbol{\alpha\beta}}}$ (equation \ref{eq:A_expand}).
+	This approach allows identifying elements $a^{\alpha\beta}_{ij}$ having the same numerical
+	value only by inspecting their associated block indices.
+	
+	Note that, for $x$-oriented grids, matrices $\Delta\mathbf{K}$ (equation \ref{eq:DK-matrix-x-oriented})
+	and $\Delta\mathbf{L}$ (equation \ref{eq:DL-matrix-x-oriented}) define the block indices
+	$p$ (equation \ref{eq:p-x-oriented}) and $q$ (equation \ref{eq:q-x-oriented}), respectively.
+	In this case, they are composed of $Q \times Q$ blocks with $P \times P$ elements each, where 
+	$Q = N_{y}$ and $P = N_{x}$. 
+	For $y$-oriented grids, matrices $\Delta\mathbf{K}$ (equation \ref{eq:DK-matrix-y-oriented})
+	and $\Delta\mathbf{L}$ (equation \ref{eq:DL-matrix-y-oriented}) define the block indices
+	$q$ (equation \ref{eq:q-y-oriented}) and $p$ (equation \ref{eq:p-y-oriented}), respectively.
+	In this case, they are also composed of $Q \times Q$ blocks with $P \times P$ elements each, 
+	but now $Q = N_{x}$ and $P = N_{y}$.
+	The examples shown by equations \ref{eq:DK-matrix-x-oriented}--\ref{eq:DL-matrix-y-oriented}
+	also illustrate that, regardless of grid orientation, (i) the block index $q$ is constant 
+	inside each block; (ii) blocks disposed along the same block diagonal are equal to each other; 
+	(iii) the block index $p$ is constant on each diagonal of a given block; 
+	(iv) elements of a given block located on the same diagonal are also equal do each other.
+	The results obtained with the small grid shown in Figure \ref{fig:regular-grids}
+	can be easily generalized for larger grids.
+	Based on the well-defined structure of block indices, we can define 
+	matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ in a general form
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+			\mathbf{A}_{\boldsymbol{\alpha\beta}}^{0}   & \mathbf{A}_{\boldsymbol{\alpha\beta}}^{-1} & \cdots          & \mathbf{A}_{\boldsymbol{\alpha\beta}}^{-Q+1} \\
+			\mathbf{A}_{\boldsymbol{\alpha\beta}}^{1}   & \ddots          & \ddots          & \vdots           \\ 
+			\vdots           & \ddots          & \ddots          & \mathbf{A}_{\boldsymbol{\alpha\beta}}^{-1}   \\
+			\mathbf{A}_{\boldsymbol{\alpha\beta}}^{Q-1} & \cdots          & \mathbf{A}_{\boldsymbol{\alpha\beta}}^{1}  & \mathbf{A}_{\boldsymbol{\alpha\beta}}^{0}
+		\end{bmatrix}_{N \times N} \: ,
+		\label{eq:BTTB_A_alpha_beta}
+	\end{equation}
+	with blocks $\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$, given by
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+			a^{\alpha\beta}_{q0}   & a^{\alpha\beta}_{q(-1)} & \cdots  & a^{\alpha\beta}_{q(-P+1)} \\
+			a^{\alpha\beta}_{q1}   & \ddots     & \ddots  & \vdots       \\ 
+			\vdots      & \ddots     & \ddots  & a^{\alpha\beta}_{q(-1)}   \\
+			a^{\alpha\beta}_{q(P-1)} & \cdots     & a^{\alpha\beta}_{q1}  & a^{\alpha\beta}_{q0}
+		\end{bmatrix}_{P \times P} \: ,
+		\label{eq:Aq_block}
+	\end{equation}
+	formed by elements $a^{\alpha\beta}_{qp}$, $p = -P+1, \dots, P-1$.
+	This well-defined structure (equations \ref{eq:BTTB_A_alpha_beta} and \ref{eq:Aq_block}) 
+	of matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ 
+	(equation \ref{eq:A_expand}) is called Block-Toeplitz Toeplitz-Block (BTTB) 
+	\citep[e.g., ][ p. 67]{chan-jin2007}.
+	
+	%=====================================================================================================
+	\subsection{Detailed structure of matrices $\mathbf{A_{xx}}$, $\mathbf{A_{yy}}$ and $\mathbf{A_{zz}}$}
+	%=====================================================================================================
+	
+	Equations \ref{eq:BTTB_A_alpha_beta} and \ref{eq:Aq_block} define the general BTTB
+	structure of all matrix components $\mathbf{A_{\boldsymbol{\alpha\beta}}}$, but 
+	there are some differences between them.
+	Let us consider the matrix component $\mathbf{A}_{\boldsymbol{xx}}$, with elements
+	$a^{xx}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+	$h^{xx}_{ij}$ (equation \ref{eq:hxx_regular}). It can be easily verified from equations
+	\ref{eq:Delta_kij_symmetry} and \ref{eq:1_rij_symmetry} that $h^{xx}_{ij} = h^{xx}_{ji}$.
+	As a consequence, $a^{xx}_{ij} = a^{xx}_{ji}$, which means that 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xx}} = \left( \mathbf{A}_{\boldsymbol{xx}} \right)^{\top}
+		\label{eq:Axx_symmetry}
+	\end{equation}
+	for any grid orientation.
+	Now, let us investigate the elements $a^{xx}_{qp}$ forming the blocks $\mathbf{A}_{\boldsymbol{xx}}^{q}$.
+	For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+	by equations \ref{eq:q-x-oriented} and 
+	\ref{eq:p-x-oriented} and $a^{xx}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right)^{2}}{r_{qp}^{5}} - 
+		\frac{1}{r_{qp}^{3}} \: ,
+		\label{eq:aqp_xx_x_oriented}
+	\end{equation}
+	where
+	\begin{equation}
+		\frac{1}{r_{qp}} = 
+		\frac{1}{\sqrt{\left( p \, \Delta_{x} \right)^{2} + \left( q \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
+		\label{eq:1_rqp_x_oriented}
+	\end{equation}
+	For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+	defined by equations \ref{eq:q-y-oriented} and 
+	\ref{eq:p-y-oriented} and $a^{xx}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xx}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right)^{2}}{r_{qp}^{5}} - 
+		\frac{1}{r_{qp}^{3}} \: ,
+		\label{eq:aqp_xx_y_oriented}
+	\end{equation}
+	where
+	\begin{equation}
+		\frac{1}{r_{qp}} = 
+		\frac{1}{\sqrt{\left( q \, \Delta_{x} \right)^{2} + \left( p \, \Delta_{y} \right)^{2} + \Delta_{z}^{2}}} \: .
+		\label{eq:1_rqp_y_oriented}
+	\end{equation}
+	From equations \ref{eq:aqp_xx_x_oriented}--\ref{eq:1_rqp_y_oriented}, we can easily verify that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xx}}^{q} = \mathbf{A}_{\boldsymbol{xx}}^{(-q)}
+		\label{eq:Axx_q_external_block_symmetry}
+	\end{equation}
+	and
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xx}}^{q} = \left(\mathbf{A}_{\boldsymbol{xx}}^{q} \right)^{\top} \: .
+		\label{eq:Axx_q_internal_block_symmetry}
+	\end{equation}
+	Note that these symmetries are valid for 
+	any grid orientation.
+	From this results we conclude the matrix component 
+	$\mathbf{A}_{\boldsymbol{xx}}$ is \textit{symmetric-Block-Toeplitz symmetric-Toeplitz-Block} 
+	for any grid orientation.
+	The same reasoning can be used to show that matrices $\mathbf{A}_{\boldsymbol{yy}}$ and
+	$\mathbf{A}_{\boldsymbol{zz}}$ also have this symmetric structure.
+	
+	%==========================================================
+	\subsection{Detailed structure of matrix $\mathbf{A_{xy}}$}
+	%==========================================================
+	
+	Let $\mathbf{A}_{\boldsymbol{xy}}$ be a matrix component with elements
+	$a^{xy}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+	$h^{xy}_{ij}$ (equation \ref{eq:hxy_regular}). It can be easily verified from equations
+	\ref{eq:Delta_kij_symmetry}--\ref{eq:1_rij_symmetry} that $h^{xy}_{ij} = h^{xy}_{ji}$.
+	As a consequence, $a^{xy}_{ij} = a^{xy}_{ji}$, which means that 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xy}} = \left( \mathbf{A}_{\boldsymbol{xy}} \right)^{\top}
+		\label{eq:Axy_symmetry}
+	\end{equation}
+	for any grid orientation.
+	For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+	by equations \ref{eq:q-x-oriented} and 
+	\ref{eq:p-x-oriented} and $a^{xy}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xy}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{y} + F_{y} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right)\left( q \, \Delta_{y} \right)}{r_{qp}^{5}}
+		\: ,
+		\label{eq:aqp_xy_x_oriented}
+	\end{equation}
+	with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_x_oriented}.
+	For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+	defined by equations \ref{eq:q-y-oriented} and 
+	\ref{eq:p-y-oriented} and $a^{xy}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xy}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{y} + F_{y} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right)\left( p \, \Delta_{y} \right)}{r_{qp}^{5}} \: ,
+		\label{eq:aqp_xy_y_oriented}
+	\end{equation}
+	with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_y_oriented}.
+	From equations \ref{eq:1_rqp_x_oriented}, \ref{eq:1_rqp_y_oriented}, \ref{eq:aqp_xy_x_oriented} 
+	and \ref{eq:aqp_xy_y_oriented}, we can show that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xy}}^{q} = -\mathbf{A}_{\boldsymbol{xy}}^{(-q)}
+		\label{eq:Axy_q_external_block_symmetry}
+	\end{equation}
+	and 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xy}}^{q} = -\left( \mathbf{A}_{\boldsymbol{xy}}^{q} \right)^{\top} \: .
+		\label{eq:Axy_q_internal_block_symmetry}
+	\end{equation}
+	Note that these symmetries are valid for any grid orientation.
+	From this results we conclude the matrix component 
+	$\mathbf{A}_{\boldsymbol{xy}}$ is \textit{skew symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block} 
+	for any grid orientation.
+	
+	%==================================================================================
+	\subsection{Detailed structure of matrices $\mathbf{A_{xz}}$ and $\mathbf{A_{yz}}$}
+	%==================================================================================
+	
+	Let $\mathbf{A}_{\boldsymbol{xz}}$ be a matrix component with elements
+	$a^{xz}_{ij}$ (equation \ref{eq:aij_alpha_beta}) defined by the second derivative
+	$h^{xz}_{ij}$ (equation \ref{eq:hxz_regular}). It can be easily verified from equations
+	\ref{eq:Delta_kij_symmetry}--\ref{eq:1_rij_symmetry} that $h^{xz}_{ij} = -h^{xz}_{ji}$.
+	As a consequence, $a^{xz}_{ij} = -a^{xz}_{ji}$, which means that 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xz}} = -\left( \mathbf{A}_{\boldsymbol{xz}} \right)^{\top}
+		\label{eq:Axz_symmetry}
+	\end{equation} 
+	for any grid orientation.
+	For $x$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are defined 
+	by equations \ref{eq:q-x-oriented} and 
+	\ref{eq:p-x-oriented} and $a^{xz}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xz}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{z} + F_{z} u_{x} \right) \frac{3 \left( p \, \Delta_{x} \right) \Delta_{z}}{r_{qp}^{5}}
+		\: ,
+		\label{eq:aqp_xz_x_oriented}
+	\end{equation}
+	with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_x_oriented}.
+	In this case, we can see that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xz}}^{q} = \mathbf{A}_{\boldsymbol{xz}}^{(-q)}
+		\label{eq:Axz_q_external_block_symmetry_x_oriented}
+	\end{equation}
+	and 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xz}}^{q} = -\left( \mathbf{A}_{\boldsymbol{xz}}^{q} \right)^{\top} \: .
+		\label{eq:Axz_q_internal_block_symmetry_x_oriented}
+	\end{equation}
+	This structure is called \textit{symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block} and is 
+	valid only for $x$-oriented grids.
+	For $y$-oriented grids (Figure \ref{fig:regular-grids}), the block indices $q$ and $p$ are 
+	defined by equations \ref{eq:q-y-oriented} and 
+	\ref{eq:p-y-oriented} and $a^{xz}_{qp}$ can be rewritten as follows:
+	\begin{equation}
+		a^{xz}_{qp} = c_{m} \, \frac{\mu_{0}}{4\pi} 
+		\left( F_{x} u_{z} + F_{z} u_{x} \right) \frac{3 \left( q \, \Delta_{x} \right) \Delta_{z}}{r_{qp}^{5}} \: ,
+		\label{eq:aqp_xz_y_oriented}
+	\end{equation}
+	with $\tfrac{1}{r_{qp}}$ defined by equation \ref{eq:1_rqp_y_oriented}.
+	Now, we conclude that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xz}}^{q} = -\mathbf{A}_{\boldsymbol{xz}}^{(-q)}
+		\label{eq:Axz_q_external_block_symmetry_y_oriented}
+	\end{equation}
+	and 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{xz}}^{q} = \left( \mathbf{A}_{\boldsymbol{xz}}^{q} \right)^{\top} \: .
+		\label{eq:Axz_q_internal_block_symmetry_y_oriented}
+	\end{equation}
+	This structure is called \textit{skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block} and is 
+	valid only for $y$-oriented grids.
+	
+	The same reasoning can be followed to show that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{yz}} = -\left( \mathbf{A}_{\boldsymbol{yz}} \right)^{\top}
+		\label{eq:Ayz_symmetry}
+	\end{equation} 
+	for any grid orientation. Besides, we can also show that
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{yz}}^{q} = -\mathbf{A}_{\boldsymbol{yz}}^{(-q)}
+		\label{eq:Ayz_q_external_block_symmetry_x_oriented}
+	\end{equation}
+	and 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{yz}}^{q} = \left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
+		\label{eq:Ayz_q_internal_block_symmetry_x_oriented}
+	\end{equation}
+	for $x$-oriented grids (\textit{skew symmetric-Block-Toeplitz symmetric-Toeplitz-Block}), while
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{yz}}^{q} = \mathbf{A}_{\boldsymbol{yz}}^{(-q)}
+		\label{eq:Ayz_q_external_block_symmetry_y_oriented}
+	\end{equation}
+	and 
+	\begin{equation}
+		\mathbf{A}_{\boldsymbol{yz}}^{q} = -\left( \mathbf{A}_{\boldsymbol{yz}}^{q} \right)^{\top}
+		\label{eq:Ayz_q_internal_block_symmetry_y_oriented}
+	\end{equation}
+	for $y$-oriented grids (\textit{symmetric-Block-Toeplitz skew symmetric-Toeplitz-Block}).
+	
+	%======================================================================================
+	%\subsection{Standard Conjugate Gradient Least Squares (CGLS) method}
+	\subsection{Convolutional equivalent layer}
+	%======================================================================================
+	
+	The computational cost associated with the classical method to estimate the parameter 
+	vector $\mathbf{p}$ by solving the linear system \ref{eq:normal-equations} can be very high 
+	or even prohibitive when dealing with large data sets. In these cases, a well-known alternative
+	is solving the normal equations (equation \ref{eq:normal-equations}) iteratively by 
+	using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
+	
+	\begin{algorithm}[H]
+		Input: $\mathbf{A}$ and $\mathbf{d}^{o}$.
+		
+		Output: Estimated parameter vector $\tilde{\mathbf{p}}$.
+		
+		Set $it = 0$, $\tilde{\mathbf{p}}_{(it)} = \mathbf{0}$, $\mathbf{c}_{(it-1)} = \mathbf{0}$, $\beta_{(it)} = 0$, $\mathbf{s}_{(it)} = \mathbf{d}^{o}$ and $\mathbf{r}_{(it)} = \mathbf{A}^{\top} \mathbf{s}_{(it)}$.
+		
+		1 - If $it > 0$, $\beta_{(it)} = \dfrac{\| \mathbf{r}_{(it)} \|_{2}^{2}}{\| \mathbf{r}_{(it - 1)} \|_{2}^{2}}$
+		
+		2 - $\mathbf{c}_{(it)} = \mathbf{r}_{(it)} + \beta_{(it)} \, \mathbf{c}_{(it - 1)}$
+		
+		3 - $\alpha_{(it)} = \dfrac{{\| \mathbf{r}_{(it)}\|_{2}^{2}}}{\| \mathbf{A} \, \mathbf{c}_{(it)} \|_{2}^{2}}$
+		
+		4 - $\tilde{\mathbf{p}}_{(it + 1)} = \tilde{\mathbf{p}}_{(it)} + \alpha_{(it)} \, \mathbf{c}_{(it)}$
+		
+		5 - $\mathbf{s}_{(it + 1)} = \mathbf{s}_{(it)} - \alpha_{(it)} \, \mathbf{A} \, \mathbf{c}_{(it)}$
+		
+		6 - $\mathbf{r}_{(it + 1)} = \mathbf{A}^{\top} \, \mathbf{s}_{(it + 1)}$
+		
+		7 - $it = it + 1$
+		
+		8 - Repeat previous steps until convergence.
+		
+		\caption{Standard CGLS pseudocode \citep[][ p. 166]{aster2019parameter}.}
+		\label{al:std-cgls-algorithm}
+	\end{algorithm}
+	
+	Setting a convergence criteria based on the minimum tolerance of the residuals is a good 
+	option to carry out this algorithm efficiently and still obtaining very good results. 
+	Another possibility is to set an invariance to the Euclidean norm of residuals between 
+	iterations, which would increase algorithm runtime, but with smaller residuals. 
+	We chose the first option, as we achieve satisfactory results. 
+	
+	Note that the standard CGLS solution (Algorithm \ref{al:std-cgls-algorithm}) requires 
+	neither inverse matrix nor matrix-matrix product. Instead, it only requires: one matrix-vector 
+	product out of the loop and two matrix-vector products per iteration (in steps 3 and 6). 
+	These products can be efficiently computed by using the 2D FFT, as a discrete convolution
+	(see Appendix A). \citet{takahashi2020convolutional} used this approach
+	to develop an efficient algorithm for gravity data processing. This modified approach in which
+	the standard CGLS method is modified to efficiently compute the matrix-vector products will be 
+	referenced throughout this work as the \textit{convolutional equivalent layer method}.
+	
+	%======================================================================================
+	\subsection{Computational performance}
+	%======================================================================================
+	
+	In this sections we compare the efficiency of the classical (equation \ref{eq:classical-method}), 
+	standard CGLS (Algorithm \ref{al:std-cgls-algorithm}) and the convolutional equivalent 
+	layer method (Algorithm \ref{al:std-cgls-algorithm} with matrix-vector products computed 
+	according to Appendix A). To do this, we compute the total number of 
+	\textit{flops} associated to them \citep[][ p. 12]{golub-vanloan2013}.
+	
+	For the classical method, we have $\tfrac{1}{2} N^3$ flops to compute the lower triangle of
+	$\mathbf{A}^{\top}\mathbf{A}$; $\tfrac{1}{3} N^3$ flops to compute the Cholesky factor
+	$\mathbf{G}$ of $\mathbf{A}^{\top}\mathbf{A}$ \citep[][ p.~164]{golub-vanloan2013};
+	$2 \, N^2$ flops to compute the matrix-vector product $\mathbf{A}^{\top} \mathbf{d}^{o}$;
+	and $2 \, N^2$ flops to solve the triangular systems given by equation \ref{eq:classical-method}
+	\citep[][ p.~106]{golub-vanloan2013}. The resultant flop count for the classical method is
+	\begin{equation}
+		f_{classical} =  \dfrac{5}{6} N^{3} + 4 \, N^{2}\: .
+		\label{eq:flops-classical-method}
+	\end{equation}
+	
+	%======================================================================================
+	%\subsection{CGLS flops count}
+	%======================================================================================
+	
+	For the standard CGLS method (Algorithm \ref{al:std-cgls-algorithm}) we have $2 \, N^2$ to compute
+	the matrix-vector product $\mathbf{A}^{\top} \mathbf{s}_{(it)}$ out of the loop;
+	$4 \, N$ in step 1; $2 \, N$ in step 2; $2 \, N^2 + 2 \, N$ in step 3; $2 \, N$ in step 4;
+	$2 \, N$ in step 5; and $2 \, N^2$ in step 6. The resultant flop count is given by:
+	\begin{equation}
+		f_{cgls} =  2 N^{2} + it \, (4 N^{2} + 12 N) \: .
+		\label{eq:flops-standard-cgls}
+	\end{equation}
+	
+	%======================================================================================
+	%\subsection{Our modified CGLS flops count}
+	%======================================================================================
+	
+	To compute the flops count of our method, we need only to replace the flops associated with 
+	matrix-vector products in the standard CGLS method by those associated with
+	2D convolution defined in Appendix A, which consists of $\kappa  \, 4 N \log_2(4N)$ flops to
+	compute the 2D FFT for each matrix $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ (equation 
+	\ref{eq:L_alpha_beta}); $\kappa  \, 4 N \log_2(4N)$ flops to compute 
+	$\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P}$ via 2D FFT; $24 \, N$ flops to compute the 
+	Hadamard product $\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right)$; 
+	and $\kappa  \, 4 N \log_2(4N)$ flops to compute the IDFT in equation 
+	\ref{eq:2d-discrete-convolution-complete}. We use $\kappa = 5$ for the \emph{radix-2} algorithm
+	\citep[][ p.~15]{vanloan1992}. By replacing these flops into Algorithm \ref{al:std-cgls-algorithm},
+	we obtain the complete number of flops
+	\begin{equation}
+		f_{conv} =  \kappa  \, 16 N \log_2(4 N) + 24 N + it \, (\kappa  \, 16 N \log_2 (4 N) + 60 N) \: .
+		\label{eq:flops-convolutional-method}
+	\end{equation}
+	
+	Figure \ref{fig:flops} shows a comparison between 
+	$f_{classical}$ (equation \ref{eq:flops-classical-method}), 
+	$f_{cgls}$ (equation \ref{eq:flops-standard-cgls}) and 
+	$f_{conv}$ (equation \ref{eq:flops-convolutional-method})
+	for different numbers of observation points up to $1,000,000$. As we can see, 
+	the total flops count associated with our method is $10^7$ orders of magnitude smaller 
+	than that associated with the classical method and $10^3$ orders of magnitude smaller than
+	that associated with the standard CGLS method by using a maximum number
+	of iterations $N^{it} = 50$. 
+	
+	Figure \ref{fig:solve_time} shows the time necessary to build matrix $\mathbf{A}$ 
+	(equation \ref{eq:A_expand}) and solve the linear system for $N$ varying up to $10,000$. 
+	With $N = 10,000$, the classical method takes more than sixty-three seconds, the standard 
+	CGLS more than twelve seconds, while our method takes only half a second. 
+	The CPU used for this test was a Intel Core i7-7700HQ@2.8GHz.
+	
+	%In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
+	
+	Table \ref{tab:RAM-usage} shows a comparison between the RAM memory storage 
+	associated with each method. The classical and standard CGLS methods have to store the whole 
+	matrix $\mathbf{A}$ (equation \ref{eq:A_expand}). For example, a dataset with 
+	$N = 10,000$ observation points has an associated sensitivity matrix $\mathbf{A}$ formed by 
+	$N^2 = 100,000,000$ elements and takes approximately $763$ Megabytes of memory (8 bytes per element). 
+	Using the same number of observation points $N = 10,000$, our method requires only 
+	$1.831$ Megabytes to store the first columns of the BCCB matrices
+	$\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) and 
+	$0.6104$ Megabytes to store the complex matrix $\mathbf{L}$ (equation \ref{eq:L}) 
+	(16 bytes per element). For a bigger dataset with $N = 1,000,000$, the amount of necessary RAM 
+	goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively.
+	
+	\section{Application to synthetic data}
+	
+	Our convolutional equivalent layer method requires a regular data grid located on a 
+	horizontal and flat observation surface.
+	Here, we evaluate the performance of our method by applying it to simulated airborne magnetic 
+	surveys formed by
+	i) a regular data grid on a flat surface;
+	ii) irregular data grids on a flat surface; and 
+	iii) regular data grid on undulating surfaces.
+	Note that the simulated surveys in (ii) and (iii) violate the premises of our method. 
+	
+	%=======================================
+	\subsection*{Simulated airborne surveys}
+	%=======================================
+	
+	The upper and middle rows in Figure \ref{fig:synthetic_data_comparison_v2} show, respectively, 
+	the simulated flight patterns and noise-corrupted total-field anomalies of the airborne magnetic 
+	surveys used in our tests. The lower row in Figure \ref{fig:synthetic_data_comparison_v2} shows 
+	the true upward-continued total-field anomalies at $z = -1, \, 300$ m.
+	All magnetic data (middle and lower rows in Figure \ref{fig:synthetic_data_comparison_v2}) 
+	are produced by the same three synthetic bodies: two prisms and one sphere with 
+	constant total-magnetization vector having inclination, declination and intensity of 
+	$0^{\circ}$, $45^{\circ}$, and $2.8284$ A/m, respectively. 
+	The simulated main geomagnetic field has inclination and declination of $10^{\circ}$ and $37^{\circ}$,
+	respectively. 
+	
+	%% regular grid on a flat surface
+	
+	Figure \ref{fig:synthetic_data_comparison_v2}a shows the simulated airborne survey on
+	a regular grid of $100 \times 50$ observation points (totaling  $N = 5,\, 000$ observation points),
+	with a grid spacing of $\Delta x = 101.01$ m and $\Delta y = 163.265$ m along the
+	$x$- and $y$-axis, respectively.
+	The noise-corrupted total-field anomaly (middle panel) is calculated at $z = -900$ m, with a
+	pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+	
+	%% irregular grids on a flat surface
+	
+	Figures \ref{fig:synthetic_data_comparison_v2}b and \ref{fig:synthetic_data_comparison_v2}c 
+	show the simulated surveys on irregular grids obtained by perturbing the horizontal coordinates
+	of the regular grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}a).
+	For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}b, the $x$ and $y$ coordinates 
+	are perturbed with sequences of pseudorandom Gaussian noises having null mean and standard deviations
+	equal to $20\%$ of the corresponding grid spacing, which results in
+	absolute values of $20.2$ m and $32.6$ m, along the $x$- and $y$-directions, respectively.
+	For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}c, the standard deviations
+	are equal to $30\%$ of the corresponding grid spacing, which results in absolute values of 
+	$30.3$ m and $49.0$ m along the $x$- and $y$-directions, respectively.
+	Their noise-corrupted total-field anomalies (middle panels in Figures 
+	\ref{fig:synthetic_data_comparison_v2}b and \ref{fig:synthetic_data_comparison_v2}c) are calculated 
+	on their corresponding irregular grids, on a flat observation surface at $z = -900$ m, 
+	with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+	
+	%% regular grid on undulating surfaces
+	
+	Figures \ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e 
+	show the simulated surveys on the same regular grid shown in Figure 
+	\ref{fig:synthetic_data_comparison_v2}a (upper panel). The difference is that 
+	they are no longer on a flat, but on undulating surfaces.
+	For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}d, the $z$ coordinates 
+	of the undulating surface are defined by a sequence of pseudorandom Gaussian noise having mean 
+	$-900$ m and standard deviation equal to $5\%$ of $900$ m, which corresponds to $45$ m.
+	For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}e, the standard deviation 
+	is equal to $10\%$ of $900$ m, which corresponds to $90$ m.
+	The noise-corrupted total-field anomalies of these simulated surveys (middle panels in Figures 
+	\ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e) are calculated 
+	on their corresponding undulating surfaces (upper panels in Figures 
+	\ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e),
+	on the same regular grid shown in Figure \ref{fig:synthetic_data_comparison_v2}a,
+	with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+	
+	
+	%% Regular grid
+	%======================================================================================
+	\subsection*{Tests with a regular data grid on a flat surface}
+	%======================================================================================
+	
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2} show the 
+	difference between the simulated (middle row in Figure \ref{fig:synthetic_data_comparison_v2})
+	and predicted data (not shown) obtained by using the classical (the upper row) and 
+	our method (the middle row). From now on, we designate this difference as data residuals. 
+	The lower row in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2} shows the 
+	convergence curve of our method.
+	
+	The data residuals using the classical method (equation \ref{eq:classical-method})  
+	are shown in the upper panel of Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a, 
+	with mean $0.3627$ nT and standard deviation $0.2724$ nT. This process took $17.10$ seconds.
+	Using our method, the data residuals (the middle panel in Figure
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}a) have mean $0.5223$ nT and standard
+	deviation $0.4323$ nT. In this case, however, the processing time was only $0.18$ seconds.
+	As expected, the Euclidean norm of the data residuals produced by our method 
+	(lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a) decreases 
+	and the convergence criterion is satisfied close to iteration $50$. 
+	This result shows that, in practice, our method converges way before $N$ iterations,
+	where $N$ is the number of observations.
+	Setting the convergence to $N$ iterations, besides being unnecessary, it also demands a larger 
+	computer processing time, even in this synthetic test with a small number 
+	of $N = 5,\, 000$ observations.
+	
+	%======================================================================================
+	\subsection*{Tests with irregular data grids on a flat surface}
+	%======================================================================================
+	
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b shows the results obtained
+	with the irregular data grid perturbed by using $20\%$ of the regular grid spacing.
+	In this Figure we can see that the data residuals 
+	using the classical method (upper panel) yield a good data fit with mean $0.3630$ nT and standard
+	deviation $0.2731$ nT. 
+	Using our method, the data residuals (middle panel in Figure 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}b) also produced an acceptable data 
+	fitting with mean of  $0.7147$ nT and standard deviation of $0.5622$ nT. 
+	The Euclidean norm of the data residuals obtained by our method 
+	(lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b) decreases, 
+	as expected, and converges to a constant value close to iteration $50$. 
+	
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b shows the results obtained
+	with the irregular data grid perturbed by using $30\%$ of the regular grid spacing.
+	This figure shows that the data residuals 
+	obtained by the classical method (upper panel) produced an acceptable data fitting, having mean 
+	$0.3634$ nT and standard deviation $0.2735$ nT. 
+	%Using our method, the data residuals (middle panel in Figure 
+	%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9788$ nT and 
+	%standard deviation $0.7462$ nT produced a worse data fitting.
+	%The convergence of our method (lower panel in Figure 
+	%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
+	%similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
+	%increasing without achieving an invariance. Hence, the convergence is not achieved. 
+	%
+	%\textbf{Alternative text} $\rightarrow$
+	%
+	Using our method, the data residuals (middle panel in Figure 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9186$ nT and 
+	standard deviation $0.7354$ nT also produced a good data fitting.
+	The convergence of our method (lower panel in Figure 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
+	similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
+	increasing without achieving an invariance. In this case, we have to stop the algorithm
+	at iteration $40$. Note that this good result was obtained by using a very perturbed
+	data grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}c).
+	%
+	%$\leftarrow$ \textbf{Alternative text}
+	
+	%======================================================================================
+	\subsection*{Tests with regular data grid an undulating surfaces}
+	%======================================================================================
+	
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d shows the results obtained
+	with data on the undulating surface varying $5\%$ of $z = 900$ m.
+	In this case, the data residuals either using the classical method 
+	(upper panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) or
+	our method (middle panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) reveal
+	acceptable data fittings.
+	Using the classical method, data residuals have mean $0.3712$ nT and standard deviation $0.2870$ nT.
+	Using our method, they have mean $0.9542$ nT and standard deviation $0.8943$ nT. 
+	Likewise, the Euclidean norm of the data residuals produced by our method 
+	(lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) decreases up to 
+	iteration 50 and reaches an invariance in the subsequent iterations.
+	
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e shows the results obtained
+	with data on the undulating surface varying $10\%$ of $z = 900$ m.
+	By using the classical approach, the data residuals (upper panel in 
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e) 
+	yielded a good data fitting, with mean $0.3865$ nT and standard deviation $0.3216$ nT. 
+	By using our method, the data residuals (middle panel in 
+	Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e) yielded a worse data fitting 
+	with mean $1.6109$ nT and standard deviation $1.6231$ nT.
+	The convergence curve (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e)
+	reveals the inadequacy of our method in dealing with observations on rugged surfaces, as 
+	the Euclidean norm of the data residuals decreases slower than in previous tests. 
+	We stress that, in this test, the undulating surface (upper panel in Figure 
+	\ref{fig:synthetic_data_comparison_v2}e) varies in a broad range from $z = - 570$ m to about 
+	$z = -1,\, 230$ m. Thus, this simulated airborne magnetic survey greatly violates the requirement 
+	of a flat observation surface demanded by our method.
+	
+	Although our method is formulated to deal with magnetic observations measured on 
+	a horizontally regular grid, on a flat surface, the results obtained with synthetic 
+	data show that our method is robust in dealing either with irregular grids in the 
+	horizontal directions or with uneven surfaces.
+	However, the robustness of our method has limitations.
+	The performance limitation of our method depends on the degree of 
+	departure of the (i) $x$- and $y$-coordinates from those of the closest 
+	regular grid and (ii) the $z$ coordinates from a constant value.
+	High departures in the $x$-, $y$, and $z$-coordinates lead to unacceptable 
+	data fittings (large data residuals), as shown the middle panels in Figures 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}c and
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}e.
+	
+	%======================================================================================
+	\subsection*{Magnetic data processing}
+	%======================================================================================
+	
+	We performed the upward continuations of the synthetic total-field anomalies 
+	(middle row in Figure \ref{fig:synthetic_data_comparison_v2}) by using 
+	the classical method, our convolutional equivalent layer method, and 
+	the classical approach in the Fourier domain,
+	which consists in computing the Fourier transform of the total-field anomaly 
+	\citep[e.g.,][ p. 317]{blakely1996}. 
+	
+	Figure \ref{fig:synthetic_upward_residuals_comparison_v2} shows the differences
+	between the true upward-continued total-field anomalies (lower row in Figure
+	\ref{fig:synthetic_data_comparison_v2}) and the predicted upward-continued total-field 
+	anomalies (not shown). We conveniently denote these differences as continuation
+	residuals.
+	
+	%% Classical and our method 
+	
+	Figure \ref{fig:synthetic_upward_residuals_comparison_v2} shows that the continuation residuals 
+	obtained by using the classical method (upper row) and our method (middle row) are 
+	similar to each other in most of the tests.
+	One exception is the synthetic test with data over an undulating surface 
+	(Figures \ref{fig:synthetic_data_comparison_v2}e and 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}e), which greatly violates the 
+	requirement of a flat observation surface demanded by our method.
+	Note that the maximum absolute value of the continuation residuals produced by using our 
+	method (middle panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e) 
+	are $\approx 2.5$ times greater than those produced by the classical method 
+	(upper panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e).
+	Besides, they are generally concentrated at the boundaries of the study area.
+	
+	%%  Fourier 
+	
+	In contrast, the continuation residuals obtained by using the 
+	classical Fourier approach (lower row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2})
+	are, in most of the tests, approximately $6$ times greater than those produced by the classical method 
+	(upper row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) and $4$ times greater than
+	those produced by our method (middle row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}).
+	Note that, similarly to our method, the maximum absolute values of the continuation residuals 
+	obtained by using the classical Fourier approach are located at the boundaries of the simulated area.
+	However, the values are significantly higher.
+	
+	We call attention to the following aspects:
+	In applying the classical method, our method, or the classical Fourier approach, we do not expand 
+	the data by using a padding scheme.
+	The data residuals (upper and middle rows in Figure 
+	\ref{fig:synthetic_residuals_convergence_comparison_v2}) 
+	and the continuation residuals (Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) are
+	shown without removing the edge effects. 
+	The computational time required by our method is much lower than that required by the classical method
+	and has the same order of magnitude of that required by the classical Fourier approach.
+	However, the classical Fourier approach shows upward-continued data with strong border effects 
+	if no padding scheme is applied to expand the data. 
+	
+	\section{Application to field data}
+	
+	We applied the convolutional equivalent layer method to the aeromagnetic data of Carajás, 
+	northern Brazil.
+	The survey is composed of $131$ flight lines along north-south direction with line spacing of 
+	$\Delta y = 3,000$ m. 
+	Data were measured with spacing $\Delta x = 7.65$ m along lines, with an average distance 
+	to the ground of $900$ m.% (TEM QUE CHECAR)
+	The total number of observation points is $N = 6,081,345$. Figure \ref{fig:carajas_real_data_mag} 
+	shows the observed total-field anomaly data over the study area.
+	
+	We compare the results obtained with an interpolated regular grid of $10,000 \times 131$ points, 
+	by using the nearest neighbor algorithm, and a decimated irregular grid, also with $10,000 \times 131$
+	points, totaling $N = 1,310,000$ observation points in both cases. 
+	Both application were made with an Intel core i7 7700HQ@2.8GHz processor in single-processing and 
+	single-threading modes. 
+	Figures \ref{fig:carajas_real_data_decimated_gridline}a and 
+	\ref{fig:carajas_real_data_decimated_gridline}b show, respectively, the data obtained by interpolation
+	and decimation. 
+	With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of RAM to store the full
+	sensitivity matrix with the classical method. 
+	In this case, our method uses only $59.97$ Megabytes, allowing regular desktop computers to be able 
+	to process this amount of data.
+	
+	As the study area is very large, the main magnetic field varies with position.
+	For this application, we set the main field direction as that of a mid location 
+	(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ and
+	the inclination is $-7.4391^{\circ}$. Both values were calculated using the magnetic field calculator from NOAA
+	at 1st January, 2014 (epoch of the survey).
+	We set the equivalent layer at $300$ meters above the ground ($600$ m below the data).
+	By applying our method to the interpolated regular grid 
+	(Figure \ref{fig:carajas_real_data_decimated_gridline}a), we obtain the  predicted data shown in 
+	Figure \ref{fig:carajas_gz_predito_mag_gridline}a and data residuals 
+	(Figure \ref{fig:carajas_gz_predito_mag_gridline}b) with mean $0.0762$ nT and the standard deviation 
+	$0.4886$ nT, revealing an acceptable data fitting.
+	Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
+	
+	By applying our method to the decimated irregular grid 
+	(Figure \ref{fig:carajas_real_data_decimated_gridline}b), we obtain the predicted data shown in 
+	Figure \ref{fig:carajas_gz_predito_mag_decimated}a and data residuals 
+	(Figure \ref{fig:carajas_gz_predito_mag_decimated}b) with mean $0.0717$ nT and standard deviation 
+	$0.3144$ nT. In this case, our method took $\approx 385.56$ seconds 
+	to converge at about $200$ iterations (Figure \ref{fig:convergence_carajas_mag_decimated}).
+	The convergence curve reveals a good convergence rate obtained with the decimated 
+	irregular grid. This result shows the robustness of our method in processing irregular grid.
+	
+	Finally, Figure \ref{fig:up5000_carajas_decimated_mag} shows the upward-continued magnetic data to a
+	horizontal plane located at $5, \,000$ m using the estimated equivalent layer obtained by applying our
+	method to the decimated irregular grid (Figure \ref{fig:carajas_real_data_decimated_gridline}b).
+	This process took $\approx 2.64$ seconds, showing good results without visible errors or border 
+	effects.
+	
+	\section{Conclusions}
+	
+	We have proposed a fast equivalent-layer technique for processing magnetic data called
+	convolutional equivalent layer method.
+	We have demonstrated that the sensitivity matrix associated with planar 
+	equivalent layers of dipoles has a BTTB structure for the particular case in which 
+	the dipoles are aligned with the horizontal and regular grid of magnetic data.
+	The product of such matrices and arbitrary vectors represents a 2D discrete convolution
+	that can be efficiently computed via 2D Fast Fourier Transform by using only the 
+	elements forming the first column of the matrix.
+	By using this property, we have developed a fast and memory efficient iterative method for 
+	estimating the physical-property distribution on the equivalent layer.
+	
+	Comparisons between the estimated physical-property distribution obtained with our method and 
+	the classical approach that solves the least-squares normal equations via Cholesky decomposition 
+	show similar results. 
+	The differences in total number of floating-point operations (flops), memory usage and computation 
+	time, however, are noticeable. 
+	For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of
+	magnitude smaller than that required by the classical method. Besides, our method uses
+	less than $1\%$ of the RAM and takes about $3\%$ of the computation time associated with
+	the classical method in this case.% (TEM QUE CHECAR ESTAS VALORES)
+	Significantly better results can be obtained with larger data sets.
+	
+	Tests with synthetic data show that the computational time required by our method has 
+	the same order of magnitude of that required by the classical approach in the Fourier domain
+	to perform magnetic data processing.
+	However, the classical Fourier approach shows considerable larger border effects if no previous 
+	padding scheme is used to expand the data. 
+	Besides, although both methods require the magnetic data be on a planar and regular grid, 
+	tests with synthetic data show the robustness of our method to deal with data either on irregular grids
+	or on undulating observation surfaces.
+	
+	While the classical equivalent-layer method would require $12.49$ Terabytes of RAM to store the full
+	sensitivity matrix associated with the irregular grid of $1,310,000$ observation points over the
+	Carajás Province, northern Brazil, our method requires only $59.97$ Megabytes.
+	When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in
+	single-processing and single-threading modes, the total times spent by our method to estimate the
+	physical-property distribution over the equivalent layer and to compute the upward continuation
+	of the $1,310,000$ magnetic observations over the Carajás province was approximately $385.56$ 
+	seconds and $2.64$ seconds.
+	
+	Further investigation could usefully explore different preconditioning strategies to improve the
+	convergence rate of our method. Besides, considerably more work will need to be done to generalize
+	our convolutional equivalent layer method for dealing with irregularly spaced data sets on 
+	undulating observation surfaces.
+	
+	\clearpage
+	
+	\section{Figures}
+	
+	% Tables and figures
+	\plot{Figure 1}{width=\textwidth}{
+		{Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) with
+			$N_{x} = 3$ and $N_{y} = 2$, where each point has an associated index. This index may represent
+			$i$ or $j$, that are associated with observation points $(x_{i}, y_{i}, z_{0})$ and 
+			equivalent sources $(x_{j}, y_{j}, z_{c})$. Left panel shows an example of $x$-oriented grid,
+			with indices varying along $x$-axis, while right panel shows an example of $y$-oriented grid, 
+			with indices varying along $y$-axis.}
+		\label{fig:regular-grids}
+	}
+	
+	%% Computational performance
+	
+	\plot{Figure 2}{width=\textwidth}{
+		{Number of flops associated with classical method (equation \ref{eq:flops-classical-method}), 
+			the standard CGLS method (equation \ref{eq:flops-standard-cgls}) and our method (equation 
+			\ref{eq:flops-convolutional-method}, all of them with $N^{it} = 50$. 
+			The number of observation points $N$ varies from $5,000$ to $1,000,000$.}
+		\label{fig:flops}
+	}
+	
+	\plot{Figure 3}{width=\textwidth}{
+		{Comparison between the runtime of the equivalent-layer technique using the classical method, 
+			standard CGLS method and our method. The values for the standard CGLS and our method use
+			$N^{it} = 50$ iterations.}
+		\label{fig:solve_time}
+	}
+	
+	%% Synthetic data part I
+	
+	\plot{Figure 4}{width=10cm}{
+		{Synthetic tests: the simulated airborne magnetic surveys  - 
+			The first row shows the grids of observation points or the undulating observation surfaces that simulate the airborne magnetic surveys. 
+			The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. 
+			The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
+			at $z = -1,300$ m (the true upward-continued total-field anomalies).
+			The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
+			(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+			(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+			(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+			The black lines represent the horizontal projection of the sources
+			.}
+		\label{fig:synthetic_data_comparison_v2}
+	}
+	
+	\plot{Figure 5}{width=\textwidth}{
+		{Synthetic tests: the data residuals and convergence - 
+			The first row shows the data residuals using the classical method.
+			The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
+			The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+			(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+			(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+			(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+			The black lines represent the horizontal projection of the sources
+			.}
+		\label{fig:synthetic_residuals_convergence_comparison_v2}
+	}
+	
+	
+	\plot{Figure 6}{width=10cm}{
+		{Synthetic tests: the data residuals of the upward-continued total-field anomalies (second row 
+			in Figure \ref{fig:synthetic_data_comparison_v2}).
+			The data residuals of the upward-continued total-field anomalies are defined as the difference between 
+			the noise-free total-field anomaly produced by the synthetic sources at $z = -1,300$ m 
+			(third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and
+			the predicted total-field anomaly at $z = -1,300$ m  obtained by using three methods:
+			the classical method (first row); the convolutional equivalent layer (second row); and 
+			the classic approach in the Fourier domain (third row).
+			The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
+			(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $900$ m height. 
+			(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $900$ m height. 
+			(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
+			(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+			The black lines represent the horizontal projection of the sources
+			.}
+		\label{fig:synthetic_upward_residuals_comparison_v2}
+	}
+	
+	%% Field Data
+	
+	\plot{Figure 7}{width=\textwidth}{
+		{Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.}
+		\label{fig:carajas_real_data_mag}
+	}
+	
+	\plot{Figure 8}{width=8cm}{
+		{Observed total-field anomalies over the Carajás Province, northen Brazil, considering: 
+			(a) a regular grid ($10,000 \times 131$, totaling $N = 1,310,000$ observation points) of interpolated values from the original irregularly sampled data (Figure \ref{fig:carajas_real_data_mag}); and  	
+			(b) an irregular grid ($10,000 \times 131$, totaling $N = 1,310,000$ observation points) of decimated values from the the original irregularly sampled data (Figure \ref{fig:carajas_real_data_mag}).}
+		\label{fig:carajas_real_data_decimated_gridline}
+	}
+	
+	\plot{Figure 9}{width=8cm}{
+		{Results using our method applied to the interpolated $10,000 \times 131$ regular grid
+			(Figure \ref{fig:carajas_real_data_decimated_gridline}a) - 
+			(a) Predicted data and (b) Data residuals, defined as the difference between the observed 
+			(Figure \ref{fig:carajas_real_data_decimated_gridline}a) and the predicted data (panel a), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT.}
+		\label{fig:carajas_gz_predito_mag_gridline}
+	}
+	
+	\plot{Figure 10}{width=8cm}{
+		{Results using our method applied to the decimated  $10,000 \times 131$ irregular grid
+			(Figure \ref{fig:carajas_real_data_decimated_gridline}b) - 	
+			(a) Predicted data and (b) Data residuals, defined as the difference between the observed  (Figure \ref{fig:carajas_real_data_decimated_gridline}b) and the predicted data (panel a), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.}
+		\label{fig:carajas_gz_predito_mag_decimated}
+	}
+	
+	\plot{Figure 11}{width=\textwidth}{
+		{Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
+		\label{fig:convergence_carajas_mag_decimated}
+	}
+	
+	\plot{Figure 12}{width=\textwidth}{
+		{Upward continuation transformation of real data of Carajás Province, Brazil at $5, \,000$ m after $2.64$ seconds.}
+		\label{fig:up5000_carajas_decimated_mag}
+	}
+	
+	\clearpage
+	
+	\section{Tables}
+	
+	\tabl{RAM-usage}{This table shows the RAM memory usage (in Megabytes) for storing the whole 
+		$N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB
+		matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 
+		bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).
+		\label{tab:RAM-usage}}
+	{
+		\begin{center}
+			\begin{tabular}[]{|l|c|c|c|}
+				\hline
+				\textbf{$N$} & \textbf{$\mathbf{A}$} & \textbf{First columns of matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$} & \textbf{$\mathbf{L}$}\\
+				\hline 
+				$100$ & 0.0763 & 0.0183 & 0.00610\\
+				\hline
+				$400$ & 1.22 & 0.0744 & 0.0248\\
+				\hline
+				$2,500$ & 48 & 0.458 & 0.1528\\
+				\hline
+				$10,000$ & 763 & 1.831 & 0.6104\\
+				\hline
+				$40,000$ & 12,207 & 7.32 & 2.4416 \\
+				\hline
+				$250,000$ & 476,837 & 45.768 & 15.3 \\
+				\hline
+				$500,000$ & 1,907,349 & 91.56 & 30.518 \\
+				\hline
+				$1,000,000$ & 7,629,395 & 183.096 & 61.035 \\
+				\hline
+			\end{tabular}
+		\end{center} 
+	}
+	\clearpage
+	
+	\append{BTTB matrix-vector product}
+	
+	This appendix follows a similar approach to that presented by \citet{takahashi2020convolutional}
+	to efficiently compute the product of the sensitivity matrix
+	$\mathbf{A}$ (equations \ref{eq:A_expand}) and a generic vector $\mathbf{b}$. 
+	Let this product be represented by
+	\begin{equation}
+		\mathbf{t} = 
+		\mathbf{A} \, \mathbf{b} \: ,
+		\label{eq:t}
+	\end{equation}
+	where 
+	\begin{equation}
+		\mathbf{t} = \mathbf{t}_{\boldsymbol{xx}} + \mathbf{t}_{\boldsymbol{xy}} + \mathbf{t}_{\boldsymbol{xz}} +
+		\mathbf{t}_{\boldsymbol{yy}} + \mathbf{t}_{\boldsymbol{yz}} + \mathbf{t}_{\boldsymbol{zz}}
+		\label{eq:t-components}
+	\end{equation}
+	and
+	\begin{equation}
+		\mathbf{t}_{\boldsymbol{\alpha\beta}} = 
+		\mathbf{A_{\boldsymbol{\alpha\beta}}} \, \mathbf{b} \: .
+		\label{eq:t-alpha-beta}
+	\end{equation}
+	Let us also consider that vectors
+	\begin{equation}
+		\mathbf{t}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+			\mathbf{t}^{0}_{\boldsymbol{\alpha\beta}} \\
+			\vdots \\
+			\mathbf{t}^{Q-1}_{\boldsymbol{\alpha\beta}} \\
+		\end{bmatrix}_{N \times 1}
+		\label{eq:t-alpha-beta-partitioned}
+	\end{equation} 
+	and
+	\begin{equation}
+		\mathbf{b} = \begin{bmatrix}
+			\mathbf{b}^{0} \\
+			\vdots \\
+			\mathbf{b}^{Q-1} \\
+		\end{bmatrix}_{N \times 1}
+		\label{eq:b-partitioned}
+	\end{equation}
+	are composed of $P \times 1$ vectors $\mathbf{t}^{q}_{\boldsymbol{\alpha\beta}}$ and $\mathbf{b}^{q}$,
+	respectively, where $q$ is the block index (equations \ref{eq:q-x-oriented} and \ref{eq:q-y-oriented}). 
+	From equation \ref{eq:t-alpha-beta}, we obtain an auxiliary matrix-vector product given by
+	\begin{equation}
+		\mathbf{w}_{\boldsymbol{\alpha\beta}} = \mathbf{C}_{\boldsymbol{\alpha\beta}} \, \mathbf{v} \: ,
+		\label{eq:w_alpha_beta}
+	\end{equation}
+	where $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is a $4N \times 4N$ 
+	block circulant matrix with circulant blocks (BCCB) \citep[e.g., ][ p. 184]{davis1979},
+	\begin{equation}
+		\mathbf{w}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+			\mathbf{w}_{\boldsymbol{\alpha\beta}}^{0} \\
+			\vdots \\
+			\mathbf{w}_{\boldsymbol{\alpha\beta}}^{Q - 1} \\
+			\mathbf{0}_{2N \times 1}
+		\end{bmatrix}_{4N \times 1} \quad ,
+		\label{eq:w_alpha_beta_partitioned}
+	\end{equation}
+	\begin{equation}
+		\mathbf{w}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+			\mathbf{t}^{q}_{\boldsymbol{\alpha\beta}} \\
+			\mathbf{0}_{P \times 1}
+		\end{bmatrix}_{2P \times 1}
+		\label{eq:wq-vector} \quad ,
+	\end{equation}
+	\begin{equation}
+		\mathbf{v} = \begin{bmatrix}
+			\mathbf{v}^{0} \\
+			\vdots \\
+			\mathbf{v}^{Q - 1} \\
+			\mathbf{0}_{2N \times 1}
+		\end{bmatrix}_{4N \times 1}
+		\label{eq:v-vector}
+	\end{equation}
+	and
+	\begin{equation}
+		\mathbf{v}^{q} = \begin{bmatrix}
+			\mathbf{b}^{q} \\
+			\mathbf{0}_{P \times 1}
+		\end{bmatrix}_{2P \times 1} \: ,
+		\label{eq:vq-vector} 
+	\end{equation}
+	with $\mathbf{0}_{2N \times 1}$ and $\mathbf{0}_{P \times 1}$ being vectors of zeros.
+	The key point here is that the auxiliary matrix-vector product
+	(equation \ref{eq:w_alpha_beta}) represents a 2D discrete convolution and can be 
+	efficiently computed by using the 2D Fast Fourier Transform (2D FFT). 
+	
+	The BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta})
+	is formed by $2Q \times 2Q$ blocks, 
+	where each block $\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$ is a $2P \times 2P$ circulant matrix.
+	The entire BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is defined by properly
+	downshifting its first block column
+	\begin{equation}
+		\left[ \mathbf{C}_{\boldsymbol{\alpha\beta}} \right]_{(0)} = \begin{bmatrix}
+			\mathbf{C}_{\boldsymbol{\alpha\beta}}^{0} \\
+			\vdots \\
+			\mathbf{C}_{\boldsymbol{\alpha\beta}}^{Q-1} \\
+			\mathbf{0}_{2P \times 2P} \\
+			\mathbf{C}_{\boldsymbol{\alpha\beta}}^{-Q+1} \\
+			\vdots \\
+			\mathbf{C}_{\boldsymbol{\alpha\beta}}^{-1}
+		\end{bmatrix}_{4N \times 2P} \: ,
+		\label{eq:C_alpha_beta_first_block_column}
+	\end{equation}
+	where $\mathbf{0}_{2P \times 2P}$ is a matrix of zeros. Similarly, 
+	each block $\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$, $q = -Q+1, \dots, Q-1$,
+	is obtained by properly downshifting its first column
+	\begin{equation}
+		\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+			a^{\alpha\beta}_{q0} \\
+			\vdots \\
+			a^{\alpha\beta}_{q(P-1)} \\
+			0 \\
+			a^{\alpha\beta}_{q(-P+1)} \\
+			\vdots \\
+			a^{\alpha\beta}_{q(-1)}
+		\end{bmatrix}_{2P \times 1} \: ,
+		\label{eq:cq_alpha_beta}
+	\end{equation}
+	where $a^{\alpha\beta}_{qp}$, $p = -P+1, \dots, P-1$, are the elements of
+	matrix component $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ described in terms of
+	block indices $q$ and $p$ (equations \ref{eq:q-x-oriented}--\ref{eq:p-y-oriented}). 
+	The BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ is diagonalized by
+	$\mathbf{F}_{2Q} \otimes \mathbf{F}_{2P}$, where ``$\otimes$" denotes the Kronecker product
+	\citep[e.g.,][ p. 242]{horn_johnson1991} and $\mathbf{F}_{2Q}$ and $\mathbf{F}_{2P}$ are 
+	the $2Q \times 2Q$ and $2P \times 2P$ unitary DFT matrices \citep[][ p. 31]{davis1979}.
+	Due to this property, the auxiliary matrix-vector product (equation \ref{eq:w_alpha_beta}) 
+	can be computed as follows \citep{takahashi2020convolutional}:
+	\begin{equation}
+		\mathbf{F}_{2Q}^{\ast} \left[ 
+		\mathbf{L}_{\boldsymbol{\alpha\beta}} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+		\right] \mathbf{F}_{2P}^{\ast} = \mathbf{W}_{\boldsymbol{\alpha\beta}} \: ,
+		\label{eq:2d-discrete-convolution}
+	\end{equation}
+	where ``$\circ$" denotes the Hadamard (element-wise) product \citep[e.g.,][ p. 298]{horn_johnson1991},
+	``$\ast$" denotes the complex conjugate, 
+	$\mathbf{W}_{\boldsymbol{\alpha\beta}}$ and $\mathbf{V}$ are $2Q \times 2P$ matrices obtained
+	by rearranging, respectively, vectors $\mathbf{w}_{\boldsymbol{\alpha\beta}}$ 
+	(equation \ref{eq:w_alpha_beta_partitioned}) and $\mathbf{v}$ (equation \ref{eq:v-vector})
+	along their rows and $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ is a $2Q \times 2P$ matrix
+	given by
+	\begin{equation}
+		\mathbf{L}_{\boldsymbol{\alpha\beta}} = \sqrt{4QP} \; 
+		\mathbf{F}_{2Q} \, \mathbf{G}_{\boldsymbol{\alpha\beta}} \, \mathbf{F}_{2P} \: ,
+		\label{eq:L_alpha_beta}
+	\end{equation}
+	with
+	\begin{equation}
+		\mathbf{G}_{\boldsymbol{\alpha\beta}} = \begin{bmatrix}
+			\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{0} \right)^{\top} \\
+			\vdots \\
+			\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{Q-1} \right)^{\top} \\
+			\mathbf{0}_{1 \times 2P} \\
+			\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{-Q+1} \right)^{\top} \\
+			\vdots \\
+			\left( \mathbf{c}_{\boldsymbol{\alpha\beta}}^{-1} \right)^{\top}
+		\end{bmatrix}_{2Q \times 2P} \: ,
+		\label{eq:G_alpha_beta}
+	\end{equation}
+	defined by the first columns $\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q}$ 
+	(equation \ref{eq:cq_alpha_beta}), $q = -Q+1, \dots, Q-1$, of all circulant blocks
+	$\mathbf{C}_{\boldsymbol{\alpha\beta}}^{q}$ (equation \ref{eq:C_alpha_beta_first_block_column}).
+	Hence, the whole BCCB matrix $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ does not have to be
+	formed, but only its first column. 
+	Besides, the symmetries defined by equations 
+	\ref{eq:Axx_symmetry}--\ref{eq:Ayz_q_internal_block_symmetry_y_oriented} imply
+	that all elements of $\mathbf{G}_{\boldsymbol{\alpha\beta}}$ can be obtained by 
+	using only the first column of $\mathbf{A_{\boldsymbol{\alpha\beta}}}$. Consequently, 
+	the whole matrices $\mathbf{A_{\boldsymbol{\alpha\beta}}}$ do not have to be formed
+	as well, but only their first columns.
+	
+	It is important noting that the left side of equation \ref{eq:2d-discrete-convolution} represents 
+	the 2D Inverse Discrete Fourier Transform (2D IDFT) of the term in brackets. This term, in turn,
+	represents the Hadamard product of $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ 
+	(equation \ref{eq:L_alpha_beta}) and the 2D Discrete Fourier Transform (2D DFT) of $\mathbf{V}$.
+	Similarly, equation \ref{eq:L_alpha_beta} shows that $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ is
+	obtained by computing the 2D DFT of matrix $\mathbf{G}_{\boldsymbol{\alpha\beta}}$
+	(equation \ref{eq:G_alpha_beta}). Hence, equations \ref{eq:2d-discrete-convolution} and
+	\ref{eq:L_alpha_beta} can be efficiently computed by using the 2D FFT. After that, the elements of
+	vector $\mathbf{t}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:t-alpha-beta}) can be
+	retrieved from the first quadrant of matrix $\mathbf{W}_{\boldsymbol{\alpha\beta}}$
+	(equation \ref{eq:2d-discrete-convolution}). By combining the results obtained for all
+	components $\boldsymbol{\alpha\beta}$, 
+	$\boldsymbol{\alpha}, \boldsymbol{\beta} = \boldsymbol{x}, \boldsymbol{y}, \boldsymbol{z}$,
+	we can show that
+	\begin{equation}
+		\mathbf{F}_{2Q}^{\ast} \left[ 
+		\mathbf{L} \circ \left(\mathbf{F}_{2Q} \, \mathbf{V} \, \mathbf{F}_{2P} \right) 
+		\right] \mathbf{F}_{2P}^{\ast} = \mathbf{W} \: ,
+		\label{eq:2d-discrete-convolution-complete}
+	\end{equation}
+	where
+	\begin{equation}
+		\mathbf{W} = \mathbf{W}_{\boldsymbol{xx}} + \mathbf{W}_{\boldsymbol{xy}} + \mathbf{W}_{\boldsymbol{xz}} + \mathbf{W}_{\boldsymbol{yy}} + \mathbf{W}_{\boldsymbol{yz}} + \mathbf{W}_{\boldsymbol{zz}}
+		\label{eq:W}
+	\end{equation}
+	and
+	\begin{equation}
+		\mathbf{L} = \mathbf{L}_{\boldsymbol{xx}} + \mathbf{L}_{\boldsymbol{xy}} + \mathbf{L}_{\boldsymbol{xz}} + \mathbf{L}_{\boldsymbol{yy}} + \mathbf{L}_{\boldsymbol{yz}} + \mathbf{L}_{\boldsymbol{zz}} \: ,
+		\label{eq:L}
+	\end{equation}
+	with $\mathbf{L}_{\boldsymbol{\alpha\beta}}$ defined by equation \ref{eq:L_alpha_beta}.
+	Then, the elements of $\mathbf{t}$ (equation \ref{eq:t}) are obtained from the first
+	quadrant of $\mathbf{W}$ (equations \ref{eq:2d-discrete-convolution-complete} and
+	\ref{eq:W}).
+	
+	Finally, it can be shown that the product 
+	\begin{equation}
+		\mathbf{t} = 
+		\mathbf{A}^{\top} \mathbf{b}
+		\label{eq:t_AT}
+	\end{equation}
+	can be computed by using equation \ref{eq:2d-discrete-convolution-complete}.
+	The difference is that, in this case, matrices $\mathbf{G}_{\boldsymbol{\alpha\beta}}$
+	(equation \ref{eq:G_alpha_beta}) are defined by using the new vectors
+	\begin{equation}
+		\mathbf{c}_{\boldsymbol{\alpha\beta}}^{q} = \begin{bmatrix}
+			a^{\alpha\beta}_{q0} \\
+			\vdots \\
+			a^{\alpha\beta}_{q(-P+1)} \\
+			0 \\
+			a^{\alpha\beta}_{q(P-1)} \\
+			\vdots \\
+			a^{\alpha\beta}_{q1}
+		\end{bmatrix}_{2P \times 1} \: .
+		\label{eq:cq_alpha_beta_trnasposed}
+	\end{equation}
+	
+	\clearpage
+	
+	\bibliographystyle{seg}  % style file is seg.bst
+	\bibliography{references}
+	
+	\clearpage
+	
+	
+\end{document}

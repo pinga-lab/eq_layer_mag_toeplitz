@@ -72,9 +72,9 @@ Le\~{a}o, J. W.~D., and J.~B.~C. Silva,  1989, Discrete linear transformations
   of potential field data: Geophysics, {\bf 54}, no. 4, 497--507.
 
 \bibitem[Levinson, 1946]{levinson1946}
-Levinson, N.,  1946, The wiener (root mean square) error criterion in filter
-  design and prediction: Journal of Mathematics and Physics, {\bf 25}, no. 1-4,
-  261--278.
+Levinson, N.,  1946, The \uppercase{W}iener (root mean square) error criterion
+  in filter design and prediction: Journal of Mathematics and Physics, {\bf
+  25}, no. 1-4, 261--278.
 
 \bibitem[Li et~al., 2014]{li2014using}
 Li, Y., M. Nabighian, and D.~W. Oldenburg,  2014, Using an equivalent source
@@ -111,7 +111,8 @@ Siqueira, F.~C., V.~C. Oliveira{ }Jr, and V.~C. Barbosa,  2017, Fast iterative
 \bibitem[Sun et~al., 2019]{sun2019constrained}
 Sun, S., C. Chen, and Y. Liu,  2019, Constrained 3d inversion of magnetic data
   with structural orientation and borehole lithology: A case study in the
-  macheng iron deposit, hebei, china: Geophysics, {\bf 84}, B121--B133.
+  \uppercase{M}acheng iron deposit, \uppercase{H}ebei, \uppercase{C}hina:
+  Geophysics, {\bf 84}, B121--B133.
 
 \bibitem[Takahashi et~al., 2020]{takahashi2020convolutional}
 Takahashi, D., V.~C. Oliveira~Jr, and V.~C. Barbosa,  2020, Convolutional

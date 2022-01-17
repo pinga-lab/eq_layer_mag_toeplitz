@@ -13,15 +13,15 @@ Note that the simulated surveys in (ii) and (iii) violate the premises of our me
 \subsection*{Simulated airborne surveys}
 %=======================================
 
-The upper and middle rows in Figure \ref{fig:synthetic_data_comparison_v2} show, respectively, 
+The first and second rows in Figure \ref{fig:synthetic_data_comparison_v2} show, respectively, 
 the simulated flight patterns and noise-corrupted total-field anomalies of the airborne magnetic 
-surveys used in our tests. The lower row in Figure \ref{fig:synthetic_data_comparison_v2} shows 
-the true upward-continued total-field anomalies at $z = -1, \, 300$ m.
-All magnetic data (middle and lower rows in Figure \ref{fig:synthetic_data_comparison_v2}) 
+surveys used in our tests. The third row in Figure \ref{fig:synthetic_data_comparison_v2} shows 
+the true upward-continued total-field anomalies at a height of $z = -1, \, 300$ m. The fourth row in Figure \ref{fig:synthetic_data_comparison_v2} shows the true reduced to pole total-field anomalies.
+All magnetic data (second and lower rows in Figure \ref{fig:synthetic_data_comparison_v2}) 
 are produced by the same three synthetic bodies: two prisms and one sphere with 
 constant total-magnetization vector having inclination, declination and intensity of 
-$0^{\circ}$, $45^{\circ}$, and $2.8284$ A/m, respectively. 
-The simulated main geomagnetic field has inclination and declination of $10^{\circ}$ and $37^{\circ}$,
+$35.26^{\circ}$, $45^{\circ}$, and $3.4641$ A/m, respectively. 
+The simulated main geomagnetic field has inclination and declination of $35.26^{\circ}$ and $45^{\circ}$,
 respectively. 
 
 %% regular grid on a flat surface
@@ -30,8 +30,8 @@ Figure \ref{fig:synthetic_data_comparison_v2}a shows the simulated airborne surv
 a regular grid of $100 \times 50$ observation points (totaling  $N = 5,\, 000$ observation points),
 with a grid spacing of $\Delta x = 101.01$ m and $\Delta y = 163.265$ m along the
 $x$- and $y$-axis, respectively.
-The noise-corrupted total-field anomaly (middle panel) is calculated at $z = -900$ m, with a
-pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+The noise-corrupted total-field anomaly (second panel of Figure \ref{fig:synthetic_data_comparison_v2}a) 
+is calculated at $z = -900$ m, with pseudorandom Gaussian noise added having null mean and standard deviation of $0.2961$ nT.
 
 %% irregular grids on a flat surface
 
@@ -45,28 +45,28 @@ absolute values of $20.2$ m and $32.6$ m, along the $x$- and $y$-directions, res
 For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}c, the standard deviations
 are equal to $30\%$ of the corresponding grid spacing, which results in absolute values of 
 $30.3$ m and $49.0$ m along the $x$- and $y$-directions, respectively.
-Their noise-corrupted total-field anomalies (middle panels in Figures 
+Their noise-corrupted total-field anomalies (second panels in Figures 
 \ref{fig:synthetic_data_comparison_v2}b and \ref{fig:synthetic_data_comparison_v2}c) are calculated 
 on their corresponding irregular grids, on a flat observation surface at $z = -900$ m, 
-with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+with pseudorandom Gaussian noise added having null mean and standard deviation of $0.2961$ nT.
 
 %% regular grid on undulating surfaces
 
 Figures \ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e 
-show the simulated surveys on the same regular grid shown in Figure 
-\ref{fig:synthetic_data_comparison_v2}a (upper panel). The difference is that 
-they are no longer on a flat, but on undulating surfaces.
+show the simulated surveys on the same regular grid as shown in Figure 
+\ref{fig:synthetic_data_comparison_v2}a (upper panel). The difference is that observation points
+are located no longer on a flat, but on undulating surfaces.
 For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}d, the $z$ coordinates 
 of the undulating surface are defined by a sequence of pseudorandom Gaussian noise having mean 
 $-900$ m and standard deviation equal to $5\%$ of $900$ m, which corresponds to $45$ m.
 For the survey shown in Figure \ref{fig:synthetic_data_comparison_v2}e, the standard deviation 
 is equal to $10\%$ of $900$ m, which corresponds to $90$ m.
-The noise-corrupted total-field anomalies of these simulated surveys (middle panels in Figures 
+The noise-corrupted total-field anomalies of these simulated surveys (second panels in Figures 
 \ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e) are calculated 
 on their corresponding undulating surfaces (upper panels in Figures 
 \ref{fig:synthetic_data_comparison_v2}d and \ref{fig:synthetic_data_comparison_v2}e),
 on the same regular grid shown in Figure \ref{fig:synthetic_data_comparison_v2}a,
-with a pseudorandom Gaussian noise having null mean and standard deviation of $0.2961$ nT.
+with pseudorandom Gaussian noise added having null mean and standard deviation of $0.2961$ nT.
 
 
 %% Regular grid
@@ -75,26 +75,26 @@ with a pseudorandom Gaussian noise having null mean and standard deviation of $0
 %======================================================================================
 
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2} show the 
-difference between the simulated (middle row in Figure \ref{fig:synthetic_data_comparison_v2})
+difference between the simulated (second row in Figure \ref{fig:synthetic_data_comparison_v2})
 and predicted data (not shown) obtained by using the classical (the upper row) and 
-our method (the middle row). From now on, we designate this difference as data residuals. 
+our method (the second row). From now on, we designate this difference as data residuals. 
 The lower row in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2} shows the 
 convergence curve of our method.
 
 The data residuals using the classical method (equation \ref{eq:classical-method})  
 are shown in the upper panel of Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a, 
-with mean $0.3627$ nT and standard deviation $0.2724$ nT. This process took $17.10$ seconds.
+with mean $0.4118$ nT and standard deviation $0.3780$ nT. This process took $17.10$ seconds.
 Using our method, the data residuals (the middle panel in Figure
-\ref{fig:synthetic_residuals_convergence_comparison_v2}a) have mean $0.5223$ nT and standard
-deviation $0.4323$ nT. In this case, however, the processing time was only $0.18$ seconds.
+\ref{fig:synthetic_residuals_convergence_comparison_v2}a) have mean $0.9972$ nT and standard
+deviation $1.3904$ nT. In this case, however, the processing time was only $0.25$ seconds.
 As expected, the Euclidean norm of the data residuals produced by our method 
-(lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a) decreases 
-and the convergence criterion is satisfied close to iteration $50$. 
-This result shows that, in practice, our method converges way before $N$ iterations,
-where $N$ is the number of observations.
-Setting the convergence to $N$ iterations, besides being unnecessary, it also demands a larger 
-computer processing time, even in this synthetic test with a small number 
-of $N = 5,\, 000$ observations.
+(lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a) decreases. 
+The convergence criterion was satisfied close to iteration $50$.
+%This result shows that, in practice, our method converges way before $N$ iterations,
+%where $N$ is the number of observations.
+%Setting the convergence to $N$ iterations, besides being unnecessary, it also demands a larger 
+%computer processing time, even in this synthetic test with a small number 
+%of $N = 5,\, 000$ observations.
 
 %======================================================================================
 \subsection*{Tests with irregular data grids on a flat surface}
@@ -103,20 +103,20 @@ of $N = 5,\, 000$ observations.
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b shows the results obtained
 with the irregular data grid perturbed by using $20\%$ of the regular grid spacing.
 In this Figure we can see that the data residuals 
-using the classical method (upper panel) yield a good data fit with mean $0.3630$ nT and standard
-deviation $0.2731$ nT. 
+using the classical method (upper panel) yield a good data fit with mean $0.4084$ nT and standard
+deviation $0.3862$ nT. 
 Using our method, the data residuals (middle panel in Figure 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}b) also produced an acceptable data 
-fitting with mean of  $0.7147$ nT and standard deviation of $0.5622$ nT. 
+fitting with mean of  $1.3125$ nT and standard deviation of $1.7187$ nT. 
 The Euclidean norm of the data residuals obtained by our method 
 (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b) decreases, 
 as expected, and converges to a constant value close to iteration $50$. 
 
-Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}b shows the results obtained
+Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}c shows the results obtained
 with the irregular data grid perturbed by using $30\%$ of the regular grid spacing.
 This figure shows that the data residuals 
-obtained by the classical method (upper panel) produced an acceptable data fitting, having mean 
-$0.3634$ nT and standard deviation $0.2735$ nT. 
+obtained by the classical method (upper panel) produced an acceptable data fit, having mean 
+$0.4070$ nT and standard deviation $0.3899$ nT. 
 %Using our method, the data residuals (middle panel in Figure 
 %\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9788$ nT and 
 %standard deviation $0.7462$ nT produced a worse data fitting.
@@ -128,14 +128,13 @@ $0.3634$ nT and standard deviation $0.2735$ nT.
 %\textbf{Alternative text} $\rightarrow$
 %
 Using our method, the data residuals (middle panel in Figure 
-\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9186$ nT and 
-standard deviation $0.7354$ nT also produced a good data fitting.
+\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $1.5129$ nT and 
+standard deviation $1.8526$ nT also produced a good data fitting.
 The convergence of our method (lower panel in Figure 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
-similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
-increasing without achieving an invariance. In this case, we have to stop the algorithm
-at iteration $40$. Note that this good result was obtained by using a very perturbed
-data grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}c).
+similarly to the previous results, the Euclidean norm of the residuals decreases; converging 
+to a constant value close to iteration $50$. Note that this good result was obtained by 
+using a very perturbed data grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}c).
 %
 %$\leftarrow$ \textbf{Alternative text}
 
@@ -149,25 +148,26 @@ In this case, the data residuals either using the classical method
 (upper panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) or
 our method (middle panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) reveal
 acceptable data fittings.
-Using the classical method, data residuals have mean $0.3712$ nT and standard deviation $0.2870$ nT.
-Using our method, they have mean $0.9542$ nT and standard deviation $0.8943$ nT. 
+Using the classical method, data residuals have mean $0.4316$ nT and standard deviation $0.4762$ nT.
+Using our method, they have mean $2.1069$ nT and standard deviation $2.5023$ nT. 
 Likewise, the Euclidean norm of the data residuals produced by our method 
 (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}d) decreases up to 
-iteration 50 and reaches an invariance in the subsequent iterations.
+iteration 50 and reaches the convergence criterion in the subsequent iterations (mean residulas are less than 
+0.00015 between iterations).
 
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e shows the results obtained
 with data on the undulating surface varying $10\%$ of $z = 900$ m.
 By using the classical approach, the data residuals (upper panel in 
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e) 
-yielded a good data fitting, with mean $0.3865$ nT and standard deviation $0.3216$ nT. 
+yielded a good data fitting, with mean $0.4818$ nT and standard deviation $0.6565$ nT. 
 By using our method, the data residuals (middle panel in 
 Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e) yielded a worse data fitting 
-with mean $1.6109$ nT and standard deviation $1.6231$ nT.
+with mean $3.4981$ nT and standard deviation $3.8153$ nT.
 The convergence curve (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}e)
 reveals the inadequacy of our method in dealing with observations on rugged surfaces, as 
-the Euclidean norm of the data residuals decreases slower than in previous tests. 
+the Euclidean norm of the data residuals do not decrease as much as in previous tests. 
 We stress that, in this test, the undulating surface (upper panel in Figure 
-\ref{fig:synthetic_data_comparison_v2}e) varies in a broad range from $z = - 570$ m to about 
+\ref{fig:synthetic_data_comparison_v2}e) varies in a broad range of flight values, from $z = - 570$ m to about 
 $z = -1,\, 230$ m. Thus, this simulated airborne magnetic survey greatly violates the requirement 
 of a flat observation surface demanded by our method.
 
@@ -176,10 +176,10 @@ a horizontally regular grid, on a flat surface, the results obtained with synthe
 data show that our method is robust in dealing either with irregular grids in the 
 horizontal directions or with uneven surfaces.
 However, the robustness of our method has limitations.
-The performance limitation of our method depends on the degree of 
-departure of the (i) $x$- and $y$-coordinates from those of the closest 
-regular grid and (ii) the $z$ coordinates from a constant value.
-High departures in the $x$-, $y$, and $z$-coordinates lead to unacceptable 
+%The performance limitation of our method depends on the degree of 
+%departure of the (i) $x$- and $y$-coordinates from those of the closest 
+%regular grid and (ii) the $z$ coordinates from a constant value.
+High discrepancies in the $x$-, $y$, and $z$-coordinates lead to unacceptable 
 data fittings (large data residuals), as shown the middle panels in Figures 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}c and
 \ref{fig:synthetic_residuals_convergence_comparison_v2}e.
@@ -189,14 +189,14 @@ data fittings (large data residuals), as shown the middle panels in Figures
 %======================================================================================
 
 We performed the upward continuations of the synthetic total-field anomalies 
-(middle row in Figure \ref{fig:synthetic_data_comparison_v2}) by using 
+(second row in Figure \ref{fig:synthetic_data_comparison_v2}) by using 
 the classical method, our convolutional equivalent layer method, and 
 the classical approach in the Fourier domain,
 which consists in computing the Fourier transform of the total-field anomaly 
 \citep[e.g.,][ p. 317]{blakely1996}. 
 
 Figure \ref{fig:synthetic_upward_residuals_comparison_v2} shows the differences
-between the true upward-continued total-field anomalies (lower row in Figure
+between the true upward-continued total-field anomalies (third row in Figure
 \ref{fig:synthetic_data_comparison_v2}) and the predicted upward-continued total-field 
 anomalies (not shown). We conveniently denote these differences as continuation
 residuals.
@@ -206,37 +206,57 @@ residuals.
 Figure \ref{fig:synthetic_upward_residuals_comparison_v2} shows that the continuation residuals 
 obtained by using the classical method (upper row) and our method (middle row) are 
 similar to each other in most of the tests.
-One exception is the synthetic test with data over an undulating surface 
+The exceptions are the synthetic test with data over irregular grid (Figures \ref{fig:synthetic_data_comparison_v2}c and \ref{fig:synthetic_residuals_convergence_comparison_v2}c) and over an undulating surface 
 (Figures \ref{fig:synthetic_data_comparison_v2}e and 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}e), which greatly violates the 
-requirement of a flat observation surface demanded by our method.
+requirement of regular grids or a flat observation surface, demanded by our method.
 Note that the maximum absolute value of the continuation residuals produced by using our 
 method (middle panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e) 
-are $\approx 2.5$ times greater than those produced by the classical method 
+are $\approx 2$ times greater than those produced by the classical method 
 (upper panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e).
-Besides, they are generally concentrated at the boundaries of the study area.
+%Besides, they are generally concentrated at the boundaries of the study area.
 
 %%  Fourier 
 
 In contrast, the continuation residuals obtained by using the 
 classical Fourier approach (lower row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2})
-are, in most of the tests, approximately $6$ times greater than those produced by the classical method 
-(upper row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) and $4$ times greater than
+are, in most of the tests, approximately $2$ times greater than those produced by the classical method 
+(upper row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) and $1.5$ times greater than
 those produced by our method (middle row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}).
-Note that, similarly to our method, the maximum absolute values of the continuation residuals 
+Note that, similar to our method, the maximum absolute values of the continuation residuals 
 obtained by using the classical Fourier approach are located at the boundaries of the simulated area.
 However, the values are significantly higher.
 
-We call attention to the following aspects:
+%% Reduction to pole
+Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2} shows the differences
+between the true reduced to pole total-field anomalies (fourth row in Figure
+\ref{fig:synthetic_data_comparison_v2}) and the predicted reduced to pole total-field 
+anomalies (not shown). The true reduced to pole total-field anomalies are generated by using only induced magnetization, with $I_{0} = 90^{\circ}$ and $D_{0} = 0^{\circ}$.
+
+%% Classical and our method 
+
+Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2} shows that the reduced to pole residuals 
+obtained by using the classical method (upper row) and our method (middle row) have differences when high irregular grids or non flat surfaces are used (Figures and \ref{fig:synthetic_zrtp_residuals_comparison_v2}c \ref{fig:synthetic_zrtp_residuals_comparison_v2}e). The absolute values of the reduced to pole residuals are almost $\approx 2$ times greater than those of classical method when the $10\%$ standard deviation was used (upper and middle panels in Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2}e, respectively).
+As in the the continuation test, they are generally concentrated at the boundaries of the study area.
+
+%%  Fourier 
+
+The reduced to pole residuals obtained by using the 
+classical Fourier approach (lower row in Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2})
+are approximately $3.5$ times greater than those produced by the classical method 
+(upper row in Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2}) and $3$ times greater than
+those produced by our method (middle row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}).
+
+Important to note that the reduction to pole, using the equivalent layer, has the requirement of a previously knowledge of the sources magnetization directions (equation \ref{eq:u_hat}) to obtain a correct source parameter estimative, otherwise, only non-phase dependent processing can be used (upward continuation for example).
+
+We also call attention to the following aspects:
 In applying the classical method, our method, or the classical Fourier approach, we do not expand 
 the data by using a padding scheme.
 The data residuals (upper and middle rows in Figure 
-\ref{fig:synthetic_residuals_convergence_comparison_v2}) 
-and the continuation residuals (Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) are
-shown without removing the edge effects. 
+\ref{fig:synthetic_residuals_convergence_comparison_v2}), 
+the continuation and reduction to pole residuals (Figure \ref{fig:synthetic_upward_residuals_comparison_v2}) are shown without removing edge effects. 
 The computational time required by our method is much lower than that required by the classical method
 and has the same order of magnitude of that required by the classical Fourier approach.
-However, the classical Fourier approach shows upward-continued data with strong border effects 
-if no padding scheme is applied to expand the data. 
+However, the classical Fourier approach shows upward-continued and reduced to pole data with strong border effects if no padding scheme is applied to expand the data.
 
 
