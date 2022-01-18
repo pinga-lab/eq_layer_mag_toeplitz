@@ -55,12 +55,10 @@ The second row shows the noise-corrupted total-field anomalies produced by the s
 The third row shows the  noise-free total-field anomalies produced by the synthetic sources 
 at $z = -1,300$ m (the true upward-continued total-field anomalies).
 The fourth row shows the noise-free total-field anomalies produced by the synthetic sources at inclination $I_{0} = 90\circ$ (the true reduced to pole total-field anomalies).
-The results shown in these three rows were obtained by using the simulated airborne magnetic surveys as follows: 
-(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $-900$ m height. 
-(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+The results shown in these last three rows were obtained by using the simulated airborne magnetic surveys as follows:
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. 
+An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m . 
+A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$.
 The black lines represent the horizontal projection of the sources
 .}
 \label{fig:synthetic_data_comparison_v2}
@@ -71,18 +69,16 @@ The black lines represent the horizontal projection of the sources
 The first row shows the data residuals using the classical method.
 The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method).
 The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
-(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $-900$ m height. 
-(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. 
+An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m . 
+A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$.
 The black lines represent the horizontal projection of the sources
 .}
 \label{fig:synthetic_residuals_convergence_comparison_v2}
 }
 
 
-\plot{synthetic_upward_residuals_comparison_v2}{width=10cm}{
+\plot{synthetic_upward_residuals_comparison_v2}{width=\textwidth}{
 {Synthetic tests: the data residuals of the upward-continued total-field anomalies (third row 
 in Figure \ref{fig:synthetic_data_comparison_v2}).
 The data residuals of the upward-continued total-field anomalies are defined as the difference between 
@@ -92,17 +88,15 @@ the predicted total-field anomaly at $z = -1,300$ m  obtained by using three met
 the classical method (first row); the convolutional equivalent layer (second row); and 
 the classic approach in the Fourier domain (third row).
 The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
-(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $-900$ m height. 
-(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. 
+An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m . 
+A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$.
 The black lines represent the horizontal projection of the sources
 .}
 \label{fig:synthetic_upward_residuals_comparison_v2}
 }
 
-\plot{synthetic_zrtp_residuals_comparison_v2}{width=10cm}{
+\plot{synthetic_zrtp_residuals_comparison_v2}{width=\textwidth}{
 {Synthetic tests: the data residuals of the reduced to pole total-field anomalies (fourth row 
 in Figure \ref{fig:synthetic_data_comparison_v2}).
 The data residuals of the reduced to pole total-field anomalies are defined as the difference between 
@@ -110,11 +104,9 @@ the noise-free total-field anomaly produced by the synthetic sources at the pole
 the classical method (first row); the convolutional equivalent layer (second row); and 
 the classic approach in the Fourier domain (third row).
 The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.:
-(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $-900$ m height. 
-(b) A irregular grid with uncertainty of $20\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(c) A irregular grid with uncertainty of $30\%$  in the $x-$ and $y-$coordinates and a flat observation surface at $-900$ m height. 
-(d) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $5\%$. 
-(e) A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainty of $10\%$. 
+(a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. 
+An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m . 
+A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an undulating observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$.
 The black lines represent the horizontal projection of the sources
 .}
 	\label{fig:synthetic_zrtp_residuals_comparison_v2}
@@ -131,8 +123,8 @@ The black lines represent the horizontal projection of the sources
 }
 
 \plot{carajas_upward_comparison}{width=13cm}{
-	{(a) Upward continuation transformation of real data of Carajás Province, Brazil at $5, \,000$ m using our method.
-	 (b) Upward continuation transformation of real data of Carajás Province, Brazil at $5, \,000$ m using the classical Fourier method.}
+	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
+	(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
 	\label{fig:carajas_upward_comparison}
 }
 
