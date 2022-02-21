@@ -29,6 +29,9 @@ MEAN_EARTH_RADIUS = 6378137.0
 PERM_FREE_SPACE = 4 * \
     3.141592653589793115997963468544185161590576171875 * (10 ** -7)
 
+def utils_ang2vec(intensity, inc, dec):
+    return np.transpose([intensity * i for i in utils_dircos(inc, dec)])
+
 def utils_contaminate(data, stddev, percent=False, return_stddev=False, seed=None):
     r"""
     Add pseudorandom gaussian noise to an array.
@@ -1531,3 +1534,36 @@ def sphere_gz(xp, yp, zp, prisms):
         res += kernel*density
     res *= G*SI2MGAL
     return res
+
+def reduce_to_pole(x, y, data, shape, inc, dec, sinc, sdec):
+    fx, fy, fz = utils_ang2vec(1, inc, dec)
+    if sinc is None or sdec is None:
+        mx, my, mz = fx, fy, fz
+    else:
+        mx, my, mz = utils_ang2vec(1, sinc, sdec)
+    kx, ky = [k for k in _fftfreqs(x, y, shape)]
+    kz_sqr = kx**2 + ky**2
+    a1 = mz*fz - mx*fx
+    a2 = mz*fz - my*fy
+    a3 = -my*fx - mx*fy
+    b1 = mx*fz + mz*fx
+    b2 = my*fz + mz*fy
+    # The division gives a RuntimeWarning because of the zero frequency term.
+    # This suppresses the warning.
+    with np.errstate(divide='ignore', invalid='ignore'):
+        rtp = (kz_sqr)/(a1*kx**2 + a2*ky**2 + a3*kx*ky +
+                        1j*np.sqrt(kz_sqr)*(b1*kx + b2*ky))
+    rtp[0, 0] = 0
+    ft_pole = rtp*np.fft.fft2(np.reshape(data, shape))
+    return np.real(np.fft.ifft2(ft_pole)).ravel()
+
+def _fftfreqs(x, y, shape):
+    """
+    Get two 2D-arrays with the wave numbers in the x and y directions.
+    """
+    nx, ny = shape
+    dx = (x.max() - x.min())/(nx - 1)
+    fx = 2*np.pi*np.fft.fftfreq(nx, dx)
+    dy = (y.max() - y.min())/(ny - 1)
+    fy = 2*np.pi*np.fft.fftfreq(ny, dy)
+    return np.meshgrid(fy, fx)[::-1]

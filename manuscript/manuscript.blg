@@ -34,7 +34,7 @@ You can't pop an empty literal stack for entry chan-jin2007
 while executing---line 1586 of file seg.bst
 You've used 31 entries,
             2639 wiz_defined-function locations,
-            902 strings with 10794 characters,
+            902 strings with 10842 characters,
 and the built_in function-call counts, 11461 in all, are:
 = -- 1235
 > -- 374
