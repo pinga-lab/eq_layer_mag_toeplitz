@@ -799,7 +799,7 @@ using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
 	
 	7 - $it = it + 1$
 	
-	8 - Repeat previous steps until convergence (stops if $\delta = |\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}| \leq 10^{-3}$).
+	8 - Repeat previous steps until convergence (stops if $\delta = \dfrac{|\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}|}{N} \leq 10^{-3}$).
 	
 	\caption{Standard CGLS pseudocode \citep[][ p. 166]{aster2019parameter}.}
 	\label{al:std-cgls-algorithm}
@@ -1185,14 +1185,14 @@ As the study area is very large, the main magnetic field varies with position.
 For this application, we set the main field direction as that of a mid location 
 (latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ and
 the inclination is $-7.4391^{\circ}$. Both values were calculated using the magnetic field calculator from NOAA
-at 1st January, 2014 (epoch of the survey). We set the equivalent layer at $300$ meters above the ground ($600$ m below the data).
+at 1st January, 2014 (epoch of the survey). We set the equivalent layer depth at $1200$ meters ($2100$ m below the data).
 Figure \ref{fig:carajas_residuals_comparison}b shows the residuals obtained after using our method to fit
-the interpolated data with mean $0.0762$ nT and the standard deviation  $0.4886$ nT, revealing an acceptable data fitting. Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
+the interpolated data with mean $0.9089$ nT and the standard deviation  $3.6425$ nT, revealing an acceptable data fitting. Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
 Figure \ref{fig:carajas_residuals_comparison}c shows the residuals obtained after using our method to fit
-the decimated data with mean $0.0717$ nT and standard deviation 
-$0.3144$ nT with a better fit than the produced by the interpolated data. In this case, our method took $\approx 385.56$ seconds to converge at about $200$ iterations (Figure \ref{fig:carajas_residuals_comparison}d). 
+the decimated data with mean $0.9936$ nT and standard deviation 
+$4.0479$ nT with a equally acceptable fit produced by the interpolated data. In this case, our method took $\approx 385.56$ seconds to converge at about $200$ iterations (Figure \ref{fig:carajas_residuals_comparison}d). 
 The convergence curve reveals a good convergence rate obtained with the decimated 
-irregular grid. This result shows the robustness of our method in processing irregular grid. Notice that we used $200$ iterations in our method of the interpolated regular grid and the mean residual still decreasing up to $2000$. This happens because the invariance convergence criterion was met as the mean residuals are very small and each iteration decreases less than $0.00001$
+irregular grid. This result shows the robustness of our method in processing irregular grids. Notice that we used $200$ iterations in our method of the interpolated regular grid and the mean residual still decreasing up to $2000$. This happens because the invariance convergence criterion was met and the mean residuals are very small, decreasing less than $0.001$ at each iteration
 
 With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of RAM to store the full
 sensitivity matrix with the classical method. 
@@ -1242,8 +1242,11 @@ method to the decimated irregular grid. This process took $\approx 2.64$ seconds
 without visible errors or border effects. 
 Figure \ref{fig:carajas_upward_comparison}b shows the upward-continued magnetic data to a
 horizontal plane located at an altitude of $5, \,000$ m using the classical Fourier filtering method to the decimated irregular grid.
-This process took $\approx 0.5$ seconds. Altough, no border effect could be observed, this result showed unexpected high values in some regions, for example, the upper left corner,
-which has values near to the same magnitude as the observed data, despite the general attenuation of the anomalies occured as expected. We stress that we did not use a padding scheme to expand the data.
+This process took $\approx 0.5$ seconds.
+The comparison between the upward results shows a similar total-field magnetic for both cases with attenuation of the anomalies. Interestingly, the Fourier method did not present border effects to this real data. We stress that we did not use a padding scheme to expand the data.
+%Altough, no border effect could be observed, this result showed unexpected high values in some regions, for example, the upper left corner,
+%which has values near to the same magnitude as the observed data, despite the general attenuation of the anomalies occured as expected.
+
 
 \section{Conclusions}
 
@@ -1410,7 +1413,7 @@ undulating observation surfaces.
 
 %% Field Data
 
-\plot{carajas_residuals_comparison_edit}{width=\textwidth}{
+\plot{carajas_residuals_comparison_1200_edit}{width=\textwidth}{
 	{(a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.
 		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT. 
 		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.
@@ -1418,7 +1421,7 @@ undulating observation surfaces.
 	\label{fig:carajas_residuals_comparison}
 }
 
-\plot{carajas_upward_comparison}{width=13cm}{
+\plot{carajas_upward_comparison_1200}{width=13cm}{
 	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
 		(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
 	\label{fig:carajas_upward_comparison}
