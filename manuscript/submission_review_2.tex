@@ -50,7 +50,7 @@ Synthetic tests with a mid-size $100 \times 50$ grid of total-field anomaly data
 show a decrease of $\approx 10^4$ in floating-point operations and $\approx 25\times$ 
 in computation runtime of our method compared to the classical approach of solving
 the least-squares normal equations via Cholesky decomposition. 
-Faster results are obtained for millions of data, showing drastic decreases in RAM usage
+Faster results are obtained for millions of data, showing drastic decreases in computer memory usage
 and runtime, allowing to perform magnetic data processing of large data sets on regular 
 desktop computers. 
 Our results also show that, compared to the classical Fourier approach, the magnetic
@@ -300,7 +300,7 @@ and
 	y_{i} = y_{1} + \left[ l(i) - 1 \right] \, \Delta_{y} \: ,
 	\label{eq:yi}
 \end{equation}
-where $x_{1}$ and $y_{1}$ are the lower left corners coordinates for $x_{i}$ and $y_{i}$, respectively,
+where $x_{1}$ and $y_{1}$ are the starting grid coordinates for $x_{i}$ and $y_{i}$, respectively,
 and $k(i)$ and $l(i)$ are integer functions defined according to the orientation
 of the data grid (Figure \ref{fig:regular-grids}). 
 For $x$-\textit{oriented grids}, the integer functions are given by
@@ -901,7 +901,7 @@ Using the same number of observation points $N = 10,000$, our method requires on
 $1.831$ Megabytes to store the first columns of the BCCB matrices
 $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) and 
 $0.6104$ Megabytes to store the complex matrix $\mathbf{L}$ (equation \ref{eq:L}) 
-(16 bytes per element). For a bigger dataset with $N = 1,000,000$, the amount of necessary RAM 
+(16 bytes per element). For a bigger dataset with $N = 1,000,000$, the amount of necessary computer memory 
 goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively.
 
 \section{Application to synthetic data}
@@ -1194,7 +1194,7 @@ $4.0479$ nT with a equally acceptable fit produced by the interpolated data. In 
 The convergence curve reveals a good convergence rate obtained with the decimated 
 irregular grid. This result shows the robustness of our method in processing irregular grids. Notice that we used $200$ iterations in our method of the interpolated regular grid and the mean residual still decreasing up to $2000$. This happens because the invariance convergence criterion was met and the mean residuals are very small, decreasing less than $0.001$ at each iteration
 
-With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of RAM to store the full
+With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of computer memory to store the full
 sensitivity matrix with the classical method. 
 In this case, our method uses only $59.97$ Megabytes, allowing regular desktop computers to be able 
 to process this amount of data.
@@ -1268,7 +1268,7 @@ The differences in total number of floating-point operations (flops), memory usa
 time, however, are noticeable. 
 For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of
 magnitude smaller than that required by the classical method. Besides, our method uses
-less than $1\%$ of the RAM and takes about $3\%$ of the computation time associated with
+less than $1\%$ of the computer memory and takes about $3\%$ of the computation time associated with
 the classical method in this case.% (TEM QUE CHECAR ESTAS VALORES)
 Significantly better results can be obtained with larger data sets.
 
@@ -1281,7 +1281,7 @@ Besides, although both methods require the magnetic data be on a planar and regu
 tests with synthetic data show the robustness of our method to deal with data either on irregular grids
 or on undulating observation surfaces.
 
-While the classical equivalent-layer method would require $12.49$ Terabytes of RAM to store the full
+While the classical equivalent-layer method would require $12.49$ Terabytes of computer memory to store the full
 sensitivity matrix associated with the irregular grid of $1,310,000$ observation points over the
 Carajás Province, northern Brazil, our method requires only $59.97$ Megabytes.
 When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in
@@ -1466,7 +1466,7 @@ undulating observation surfaces.
 
 \section{Tables}
 
-\tabl{RAM-usage}{This table shows the RAM usage (in Megabytes) for storing the whole 
+\tabl{RAM-usage}{This table shows the computer memory usage (in Megabytes) for storing the whole 
 	$N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB
 	matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 
 	bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).

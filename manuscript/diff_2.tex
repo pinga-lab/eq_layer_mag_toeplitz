@@ -1,4 +1,7 @@
 %\documentclass[paper,twocolumn,twoside]{geophysics}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL submission.tex            Tue Mar 22 09:36:56 2022
+%DIF ADD submission_review_2.tex   Tue Mar 22 10:24:31 2022
 %\documentclass[manuscript,noblind]{geophysics}
 \documentclass[manuscript]{geophysics}
 
@@ -21,18 +24,19 @@
 \usepackage[titletoc,title]{appendix}
 
 \renewcommand{\figdir}{Fig} % figure directory
-
 %DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
 %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
 \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
 %DIF SAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
 \providecommand{\DIFaddend}{} %DIF PREAMBLE
 \providecommand{\DIFdelbegin}{} %DIF PREAMBLE
 \providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
 %DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
 \providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
@@ -40,10 +44,29 @@
 \providecommand{\DIFaddendFL}{} %DIF PREAMBLE
 \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
 \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
 %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
-	
+
 \renewcommand{\thefootnote}{\fnsymbol{footnote}} 
 
 %\ms{GEO-XXXX} % manuscript number
@@ -70,7 +93,7 @@ Synthetic tests with a mid-size $100 \times 50$ grid of total-field anomaly data
 show a decrease of $\approx 10^4$ in floating-point operations and $\approx 25\times$ 
 in computation runtime of our method compared to the classical approach of solving
 the least-squares normal equations via Cholesky decomposition. 
-Faster results are obtained for millions of data, showing drastic decreases in RAM usage
+Faster results are obtained for millions of data, showing drastic decreases in \DIFdelbegin \DIFdel{RAM }\DIFdelend \DIFaddbegin \DIFadd{computer memory }\DIFaddend usage
 and runtime, allowing to perform magnetic data processing of large data sets on regular 
 desktop computers. 
 Our results also show that, compared to the classical Fourier approach, the magnetic
@@ -95,7 +118,7 @@ However, the techniques for  processing potential-field data in space-domain wer
 \cite{Dean1958} pointed out that the operations of second order derivatives, analytic continuation, smoothing, the removing of residuals or regionals, and others for processing  potential-field data are
 similar to the electric filter circuits in Fourier domain.
 \cite{Dean1958} was the first to develop the theory of linear filters in Fourier domain for gravity and magnetic processing and to present filters in Fourier domain \citep[][ see Table I, p 113]{Dean1958} 
-for some theoretical geophysical operations (e.g., derivatives and \DIFaddbegin \DIFadd{upward- and downward-continuations}\DIFaddend \DIFdelbegin \DIFdel{upward and downward continuations}\DIFdelend ).
+for some theoretical geophysical operations (e.g., derivatives and \DIFdelbegin \DIFdel{upward and downward continuations}\DIFdelend \DIFaddbegin \DIFadd{upward- and downward-continuations}\DIFaddend ).
 \cite{GUNN1975} presented a comprehensive analysis of processing potential-field data in Fourier domain.
 
 
@@ -132,8 +155,8 @@ This work showed an decrease in the order of $10^4$ in floating-point operations
 Moreover, \cite{takahashi2020convolutional} method yielded neither significant boundary effects nor noise amplification.
 
 In this work, the convolutional equivalent layer using the block-Toeplitz Toeplitz-block idea, presented in \cite{takahashi2020convolutional}, will be used to solve the linear system required to estimate the physical property that produces a magnetic field on regular grids. 
-Here, we achieve very fast solutions using a conjugate gradient algorithm combined with the fast Fourier transform. We present a novel method of exploring the symmetric structures of the second \DIFaddbegin \DIFadd{order }\DIFaddend derivatives of the inverse of the distance contained in the magnetic kernel, to keep the \DIFaddbegin \DIFadd{computer memory }\DIFaddend \DIFdelbegin \DIFdel{memory RAM }\DIFdelend usage to the minimal by using only one equivalent source to carry the calculations of the forward problem. We also show tests of the magnetic convolutional equivalent layer when irregular grids are used. The convergence of the conjugate gradient maintains in an acceptable level even using irregular grids. 
-Our results show \DIFaddbegin \DIFadd{a }\DIFaddend \DIFdelbegin \DIFdel{the }\DIFdelend good performance of our method in producing fast and robust solutions for processing large amounts of magnetic data using the equivalent layer technique.
+Here, we achieve very fast solutions using a conjugate gradient algorithm combined with the fast Fourier transform. We present a novel method of exploring the symmetric structures of the second \DIFaddbegin \DIFadd{order }\DIFaddend derivatives of the inverse of the distance contained in the magnetic kernel, to keep the \DIFdelbegin \DIFdel{memory RAM }\DIFdelend \DIFaddbegin \DIFadd{computer memory }\DIFaddend usage to the minimal by using only one equivalent source to carry the calculations of the forward problem. We also show tests of the magnetic convolutional equivalent layer when irregular grids are used. The convergence of the conjugate gradient maintains in an acceptable level even using irregular grids. 
+Our results show \DIFdelbegin \DIFdel{the }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend good performance of our method in producing fast and robust solutions for processing large amounts of magnetic data using the equivalent layer technique.
 
 
 \section{Methodology}
@@ -144,7 +167,7 @@ Our results show \DIFaddbegin \DIFadd{a }\DIFaddend \DIFdelbegin \DIFdel{the }\D
 \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend Let $\mathbf{d}^{o}$ be \DIFaddbegin \DIFadd{a }\DIFaddend \DIFdelbegin \DIFdel{the }\DIFdelend $N \times 1$ observed data vector \DIFaddbegin \DIFadd{where, $d^{o}_{i}$ }\DIFaddend $(x_{i}, y_{i}, z_{i})$, $i =  1, \dots, N $,
+\DIFdelend Let $\mathbf{d}^{o}$ be \DIFdelbegin \DIFdel{the }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend $N \times 1$ observed data vector \DIFaddbegin \DIFadd{where, $d^{o}_{i}$ }\DIFaddend $(x_{i}, y_{i}, z_{i})$, $i =  1, \dots, N $,
 \DIFdelbegin \DIFdel{whose $i$th element }\DIFdelend is the total-field anomaly  \DIFdelbegin \DIFdel{$d^{o}_{i}$ }\DIFdelend produced by arbitrarily magnetized sources \DIFaddbegin \DIFadd{at the $i$th position,
 }\DIFaddend aranged in a right-handed Cartesian coordinate system with $x$-, $y$- and $z$-axis 
 pointing to north, east and down, respectively.
@@ -169,8 +192,10 @@ direction is constant at the limited study area and can be defined by the unit v
 	\label{eq:unit_vector_F}
 \end{equation}
 with constant inclination $I_{0}$ and declination $D_{0}$.
-In this case, $d^{o}_{i}$ can be approximated by the predicted total-field anomaly \DIFaddbegin \citep{blakely1996}
-\DIFaddend \begin{equation}
+In this case, $d^{o}_{i}$ can be approximated by the predicted total-field anomaly \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\citep{blakely1996}
+}\hskip0pt%DIFAUXCMD
+}\DIFaddend \begin{equation}
 	\Delta T_{i} = \sum_{j=1}^{M} \, p_{j} a_{ij} \: ,
 	\label{eq:integral-sum_mag}
 \end{equation}
@@ -255,7 +280,7 @@ systems \citep[][ p. 262]{golub-vanloan2013}:
 	\end{split} \: ,
 	\label{eq:classical-method}
 \end{equation}
-where $\mathbf{w}$ is a \DIFaddbegin \DIFadd{temporary }\DIFaddend \DIFdelbegin \DIFdel{temporarily }\DIFdelend variable.
+where $\mathbf{w}$ is a \DIFdelbegin \DIFdel{temporarily }\DIFdelend \DIFaddbegin \DIFadd{temporary }\DIFaddend variable.
 This approach to estimating the parameter vector will be 
 referenced throughout this work as the \textit{classical method}.
 The computational cost associated with the classical method can be very high
@@ -293,7 +318,7 @@ are defined by the elements of $\hat{\mathbf{F}}$
 (equation \ref{eq:unit_vector_F}), $\hat{\mathbf{u}}$ (equation \ref{eq:u_hat}) and 
 $\mathbf{H}_{ij}$ (equations \ref{eq:Hij} and \ref{eq:hij_alpha_beta}).
 Then, we can rewrite the sensitivity matrix $\mathbf{A}$ 
-(equation \ref{eq:predicted-data-vector_mag}) \DIFaddbegin \DIFadd{as}\DIFaddend \DIFdelbegin \DIFdel{according to}\DIFdelend :
+(equation \ref{eq:predicted-data-vector_mag}) \DIFdelbegin \DIFdel{according to}\DIFdelend \DIFaddbegin \DIFadd{as}\DIFaddend :
 \begin{equation}
 	\mathbf{A} = \mathbf{A_{xx}} + \mathbf{A_{xy}} + \mathbf{A_{xz}} + 
 	\mathbf{A_{yy}} + \mathbf{A_{yz}} + \mathbf{A_{zz}} \: ,
@@ -323,7 +348,7 @@ and
 	y_{i} = y_{1} + \left[ l(i) - 1 \right] \, \Delta_{y} \: ,
 	\label{eq:yi}
 \end{equation}
-where $x_{1}$ and $y_{1}$ are the \DIFaddbegin \DIFadd{lower left corners }\DIFaddend \DIFdelbegin \DIFdel{start grid }\DIFdelend coordinates for $x_{i}$ and $y_{i}$, respectively,
+where $x_{1}$ and $y_{1}$ are the \DIFdelbegin \DIFdel{start }\DIFdelend \DIFaddbegin \DIFadd{starting }\DIFaddend grid coordinates for $x_{i}$ and $y_{i}$, respectively,
 and $k(i)$ and $l(i)$ are integer functions defined according to the orientation
 of the data grid (Figure \ref{fig:regular-grids}). 
 For $x$-\textit{oriented grids}, the integer functions are given by
@@ -822,7 +847,7 @@ using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
 
 	7 - $it = it + 1$
 
-	8 - Repeat previous steps until convergence (\DIFaddbegin \DIFadd{stops if $\delta = \dfrac{|\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}|}{N} \leq 10^{-3}$}\DIFaddend \DIFdelbegin \DIFdel{$\delta$}\DIFdelend ).
+	8 - Repeat previous steps until convergence (\DIFdelbegin \DIFdel{$\delta$}\DIFdelend \DIFaddbegin \DIFadd{stops if $\delta = \dfrac{|\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}|}{N} \leq 10^{-3}$}\DIFaddend ).
 
 	\caption{Standard CGLS pseudocode \citep[][ p. 166]{aster2019parameter}.}
 	\label{al:std-cgls-algorithm}
@@ -830,7 +855,7 @@ using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
 
 Setting a convergence criterion $\delta$ (Algorithm \ref{al:std-cgls-algorithm}) based on the minimum tolerance 
 of the residuals is a good option to carry out this algorithm efficiently and still obtaining very good results. 
-Another possibility is to set an invariance \DIFaddbegin \DIFadd{limit to the normalized }\DIFaddend \DIFdelbegin \DIFdel{to the }\DIFdelend Euclidean norm of residuals between iterations,
+Another possibility is to set an invariance \DIFdelbegin \DIFdel{to the }\DIFdelend \DIFaddbegin \DIFadd{limit to the normalized }\DIFaddend Euclidean norm of residuals between iterations,
 which would increase algorithm runtime, but with smaller residuals. 
 We chose the latter option, as we could achieve better results.
 
@@ -915,7 +940,7 @@ The CPU used for this test was a Intel Core i7-7700HQ@2.8GHz.
 
 %In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
 
-Table \ref{tab:RAM-usage} shows a comparison between the \DIFaddbegin \DIFadd{computer }\DIFaddend \DIFdelbegin \DIFdel{RAM }\DIFdelend memory storage 
+Table \ref{tab:RAM-usage} shows a comparison between the \DIFdelbegin \DIFdel{RAM }\DIFdelend \DIFaddbegin \DIFadd{computer }\DIFaddend memory storage 
 associated with each method. In the classical and standard CGLS methods, the whole 
 matrix $\mathbf{A}$ (equation \ref{eq:A_expand}) has to be stored. For example, a dataset with 
 $N = 10,000$ observation points has an associated sensitivity matrix $\mathbf{A}$ formed by 
@@ -924,8 +949,9 @@ Using the same number of observation points $N = 10,000$, our method requires on
 $1.831$ Megabytes to store the first columns of the BCCB matrices
 $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) and 
 $0.6104$ Megabytes to store the complex matrix $\mathbf{L}$ (equation \ref{eq:L}) 
-(16 bytes per element). For a bigger dataset with $N = 1,000,000$, the amount of necessary RAM 
-goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively.
+(16 bytes per element). For a bigger dataset with $N = 1,000,000$, the amount of necessary \DIFdelbegin \DIFdel{RAM 
+}\DIFdelend \DIFaddbegin \DIFadd{computer memory 
+}\DIFaddend goes to $7,629,395$, $183.096$ and $61.035$ Megabytes, respectively.
 
 \section{Application to synthetic data}
 
@@ -1208,18 +1234,18 @@ As the study area is very large, the main magnetic field varies with position.
 For this application, we set the main field direction as that of a mid location 
 (latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ and
 the inclination is $-7.4391^{\circ}$. Both values were calculated using the magnetic field calculator from NOAA
-at 1st January, 2014 (epoch of the survey). We set the equivalent layer \DIFaddbegin \DIFadd{depth at $1200$ meters ($2100$ }\DIFaddend \DIFdelbegin \DIFdel{at $300$ meters above the ground ($600$ }\DIFdelend m below the data).
+at 1st January, 2014 (epoch of the survey). We set the equivalent layer \DIFdelbegin \DIFdel{at $300$ meters above the ground ($600$ }\DIFdelend \DIFaddbegin \DIFadd{depth at $1200$ meters ($2100$ }\DIFaddend m below the data).
 Figure \ref{fig:carajas_residuals_comparison}b shows the residuals obtained after using our method to fit
-the interpolated data with mean \DIFaddbegin \DIFadd{$0.9089$ }\DIFaddend \DIFdelbegin \DIFdel{$0.0762$ }\DIFdelend nT and the standard deviation  \DIFaddbegin \DIFadd{$3.6425$ }\DIFaddend \DIFdelbegin \DIFdel{$0.4886$ }\DIFdelend nT, revealing an acceptable data fitting. Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
+the interpolated data with mean \DIFdelbegin \DIFdel{$0.0762$ }\DIFdelend \DIFaddbegin \DIFadd{$0.9089$ }\DIFaddend nT and the standard deviation  \DIFdelbegin \DIFdel{$0.4886$ }\DIFdelend \DIFaddbegin \DIFadd{$3.6425$ }\DIFaddend nT, revealing an acceptable data fitting. Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
 Figure \ref{fig:carajas_residuals_comparison}c shows the residuals obtained after using our method to fit
-the decimated data with mean \DIFaddbegin \DIFadd{$0.9936$ }\DIFaddend \DIFdelbegin \DIFdel{$0.0717$ }\DIFdelend nT and standard deviation 
-\DIFaddbegin \DIFadd{$4.0479$ }\DIFaddend \DIFdelbegin \DIFdel{$0.3144$ }\DIFdelend nT with a \DIFaddbegin \DIFadd{equally acceptable fit }\DIFaddend \DIFdelbegin \DIFdel{better fit than the }\DIFdelend produced by the interpolated data. In this case, our method took $\approx 385.56$ seconds to converge at about $200$ iterations (Figure \ref{fig:carajas_residuals_comparison}d). 
+the decimated data with mean \DIFdelbegin \DIFdel{$0.0717$ }\DIFdelend \DIFaddbegin \DIFadd{$0.9936$ }\DIFaddend nT and standard deviation 
+\DIFdelbegin \DIFdel{$0.3144$ }\DIFdelend \DIFaddbegin \DIFadd{$4.0479$ }\DIFaddend nT with a \DIFdelbegin \DIFdel{better fit than the }\DIFdelend \DIFaddbegin \DIFadd{equally acceptable fit }\DIFaddend produced by the interpolated data. In this case, our method took $\approx 385.56$ seconds to converge at about $200$ iterations (Figure \ref{fig:carajas_residuals_comparison}d). 
 The convergence curve reveals a good convergence rate obtained with the decimated 
-irregular grid. This result shows the robustness of our method in processing irregular \DIFaddbegin \DIFadd{grids}\DIFaddend \DIFdelbegin \DIFdel{grid}\DIFdelend . Notice that we used $200$ iterations in our method of the interpolated regular grid and the mean residual still decreasing up to $2000$. This happens because the invariance convergence criterion was met \DIFaddbegin \DIFadd{and }\DIFaddend \DIFdelbegin \DIFdel{as }\DIFdelend the mean residuals are very small\DIFaddbegin \DIFadd{, decreasing less than $0.001$ at each iteration
-}\DIFaddend \DIFdelbegin \DIFdel{and each iteration decreases less than $0.00001$
-}\DIFdelend 
+irregular grid. This result shows the robustness of our method in processing irregular \DIFdelbegin \DIFdel{grid}\DIFdelend \DIFaddbegin \DIFadd{grids}\DIFaddend . Notice that we used $200$ iterations in our method of the interpolated regular grid and the mean residual still decreasing up to $2000$. This happens because the invariance convergence criterion was met \DIFdelbegin \DIFdel{as }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend the mean residuals are very small\DIFdelbegin \DIFdel{and each iteration decreases less than $0.00001$
+}\DIFdelend \DIFaddbegin \DIFadd{, decreasing less than $0.001$ at each iteration
+}\DIFaddend 
 
-With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of RAM to store the full
+With $1,310,000$ observation points, it would be necessary $12.49$ Terabytes of \DIFdelbegin \DIFdel{RAM }\DIFdelend \DIFaddbegin \DIFadd{computer memory }\DIFaddend to store the full
 sensitivity matrix with the classical method. 
 In this case, our method uses only $59.97$ Megabytes, allowing regular desktop computers to be able 
 to process this amount of data.
@@ -1268,7 +1294,7 @@ without visible errors or border effects.
 Figure \ref{fig:carajas_upward_comparison}b shows the upward-continued magnetic data to a
 horizontal plane located at an altitude of $5, \,000$ m using the classical Fourier filtering method to the decimated irregular grid.
 This process took $\approx 0.5$ seconds.
-\DIFaddbegin \DIFadd{The comparison between the upward results shows a similar total-field magnetic for both cases with }\DIFaddend \DIFdelbegin \DIFdel{Altough, no border effect could be observed, this result showed unexpected high values instead of the expected }\DIFdelend attenuation of the anomalies. \DIFaddbegin \DIFadd{Interestingly, the Fourier method did not present border effects to this real data. }\DIFaddend We stress that we did not use a padding scheme to expand the data.
+\DIFdelbegin \DIFdel{Altough, no border effect could be observed, this result showed unexpected high values instead of the expected }\DIFdelend \DIFaddbegin \DIFadd{The comparison between the upward results shows a similar total-field magnetic for both cases with }\DIFaddend attenuation of the anomalies. \DIFaddbegin \DIFadd{Interestingly, the Fourier method did not present border effects to this real data. }\DIFaddend We stress that we did not use a padding scheme to expand the data.
 %DIF > Altough, no border effect could be observed, this result showed unexpected high values in some regions, for example, the upper left corner,
 %DIF > which has values near to the same magnitude as the observed data, despite the general attenuation of the anomalies occured as expected.
 
@@ -1293,7 +1319,7 @@ The differences in total number of floating-point operations (flops), memory usa
 time, however, are noticeable. 
 For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of
 magnitude smaller than that required by the classical method. Besides, our method uses
-less than $1\%$ of the RAM and takes about $3\%$ of the computation time associated with
+less than $1\%$ of the \DIFdelbegin \DIFdel{RAM }\DIFdelend \DIFaddbegin \DIFadd{computer memory }\DIFaddend and takes about $3\%$ of the computation time associated with
 the classical method in this case.% (TEM QUE CHECAR ESTAS VALORES)
 Significantly better results can be obtained with larger data sets.
 
@@ -1306,7 +1332,7 @@ Besides, although both methods require the magnetic data be on a planar and regu
 tests with synthetic data show the robustness of our method to deal with data either on irregular grids
 or on undulating observation surfaces.
 
-While the classical equivalent-layer method would require $12.49$ Terabytes of RAM to store the full
+While the classical equivalent-layer method would require $12.49$ Terabytes of \DIFdelbegin \DIFdel{RAM }\DIFdelend \DIFaddbegin \DIFadd{computer memory }\DIFaddend to store the full
 sensitivity matrix associated with the irregular grid of $1,310,000$ observation points over the
 Carajás Province, northern Brazil, our method requires only $59.97$ Megabytes.
 When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in
@@ -1438,35 +1464,35 @@ undulating observation surfaces.
 
 %% Field Data
 
-\DIFaddbegin \plot{carajas_residuals_comparison_1200_edit}{width=\textwidth}{
-	{(a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.
-		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT. 
-		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.
-		(d) Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
-	\label{fig:carajas_residuals_comparison}
-}
-\DIFaddend \DIFdelbegin %DIFDELCMD < \plot{carajas_residuals_comparison_edit}{width=\textwidth}{
+\DIFdelbegin %DIFDELCMD < \plot{carajas_residuals_comparison_edit}{width=\textwidth}{
 %DIFDELCMD < 	{(a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.
 %DIFDELCMD < 		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT. 
 %DIFDELCMD < 		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.
 %DIFDELCMD < 		(d) Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
 %DIFDELCMD < 	\label{fig:carajas_residuals_comparison}
 %DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelend 
-
-\DIFaddbegin \plot{carajas_upward_comparison_1200}{width=13cm}{
-	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
-		(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
-	\label{fig:carajas_upward_comparison}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \plot{carajas_residuals_comparison_1200_edit}{width=\textwidth}{
+	{(a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.
+		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT. 
+		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.
+		(d) Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
+	\label{fig:carajas_residuals_comparison}
 }
-\DIFaddend \DIFdelbegin %DIFDELCMD < \plot{carajas_upward_comparison}{width=13cm}{
+\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \plot{carajas_upward_comparison}{width=13cm}{
 %DIFDELCMD < 	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
 %DIFDELCMD < 		(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
 %DIFDELCMD < 	\label{fig:carajas_upward_comparison}
 %DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelend 
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \plot{carajas_upward_comparison_1200}{width=13cm}{
+	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
+		(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
+	\label{fig:carajas_upward_comparison}
+}
+\DIFaddend 
 
 %\plot{carajas_real_data_mag}{width=\textwidth}{
 %	{Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.}
@@ -1507,18 +1533,18 @@ undulating observation surfaces.
 
 \section{Tables}
 
-\DIFaddbegin \tabl{RAM-usage}{This table shows the RAM usage (in Megabytes) for storing the whole 
-	$N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB
-	matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 
-	bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).
-	\label{tab:RAM-usage}}
-\DIFaddend \DIFdelbegin %DIFDELCMD < \tabl{RAM-usage}{This table shows the RAM memory usage (in Megabytes) for storing the whole 
+\DIFdelbegin %DIFDELCMD < \tabl{RAM-usage}{This table shows the RAM memory usage (in Megabytes) for storing the whole 
 %DIFDELCMD < 	$N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB
 %DIFDELCMD < 	matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 
 %DIFDELCMD < 	bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).
 %DIFDELCMD < 	\label{tab:RAM-usage}}
 %DIFDELCMD < %%%
-\DIFdelend {
+\DIFdelend \DIFaddbegin \tabl{RAM-usage}{This table shows the computer memory usage (in Megabytes) for storing the whole 
+	$N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB
+	matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 
+	bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).
+	\label{tab:RAM-usage}}
+\DIFaddend {
 	\begin{center}
 		\begin{tabular}[]{|l|c|c|c|}
 			\hline
