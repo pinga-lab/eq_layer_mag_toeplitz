@@ -59,8 +59,7 @@ smaller border effects without using any padding scheme and also is more robust 
 deal with data on irregularly spaced points or on undulating observation surfaces.
 A test with $1,310,000$ irregularly spaced field data over the Caraj{\'a}s Province, Brazil, 
 confirms the efficiency of our method by taking $\approx 385.56$ seconds to estimate the physical-property
-distribution over the equivalent layer and $\approx 2.64$ seconds to compute the upward 
-continuation.
+distribution over the equivalent layer and $\approx 2.64$ seconds to compute the upward-continuation.
 		
 \end{abstract}
 
@@ -72,18 +71,16 @@ The earliest techniques of potential-field data processing  were developed in th
 For example, \cite{Peters1949} accomplished, in the space domain, the second and fourth derivatives of magnetic data and the upward- and downward-continuations of magnetic data by deriving coefficients that are
 used in a  graphical convolution with the magnetic data.
 However, the techniques for  processing potential-field data in space-domain were soon substituted by the Fourier-domain techniques. 
-\cite{Dean1958} pointed out that the operations of second order derivatives, analytic continuation, smoothing, the removing of residuals or regionals, and others for processing  potential-field data are
-similar to the electric filter circuits in Fourier domain.
+\cite{Dean1958} pointed out that the operations of second order derivatives, analytic continuation, smoothing, the removing of residuals or regionals and others for processing  potential-field data are similar to the electric filter circuits in Fourier domain.
 \cite{Dean1958} was the first to develop the theory of linear filters in Fourier domain for gravity and magnetic processing and to present filters in Fourier domain \citep[][ see Table I, p 113]{Dean1958} 
 for some theoretical geophysical operations (e.g., derivatives and upward- and downward-continuations).
 \cite{GUNN1975} presented a comprehensive analysis of processing potential-field data in Fourier domain.
-
 
 An approach for processing potential-field data in space domain is the equivalent-layer technique.
 The deductions of the equivalent layer equations as a solution of the Laplace's equation in the region above the source was first presented by \cite{kellogg1929} and detailed explanations can also be found in \cite{blakely1996}. 
 Although the equivalent-layer technique  has been known since the 1960s in geophysical literature \citep{danes1961structure,bott1967solution,dampney1969}, its use has become feasible only recently 
 because of the advances in computational power.
-In magnetic data procesing, some authors explored this technique for calculating the first and second vertical derivatives of the fields \citep{emilia1973}, reduction to the pole \citep{silva1986,oliveirajr-etal2013,li2014using}, upward/downward continuations \citep{hansen-miyazaki1984,li-oldenburg2010} and total magnetic induction vector components calculation \citep{sun2019constrained}.
+In magnetic data procesing, some authors explored this technique for calculating the first and second vertical derivatives of the fields \citep{emilia1973}, reduction to the pole \citep{silva1986,oliveirajr-etal2013,li2014using}, upward- and downward-continuations \citep{hansen-miyazaki1984,li-oldenburg2010} and total magnetic induction vector components calculation \citep{sun2019constrained}.
 
 Together with the rise in computational processing power, some works tried new implementations to increase the efficiency of the equivalent layer. 
 In \cite{leao-silva1989} the authors used a shifting window over the layer to increase the number of linear systems to be solved, but to reduced the size of each linear system at the same time. 
@@ -105,7 +102,7 @@ proportional to observed gravity data and it is updated at each iteration by add
 One of the greatest obstacles to the use of the equivalent-layer technique for processing potential-field data is the solution of the associated linear system.
 A wide variety of applications in mathematics and engineering that fall into Toeplitz systems propelled the development of a large variety of  methods for solving them. Direct methods were conceived by \cite{levinson1946} and by \cite{trench1964}. Currently, the iterative method of conjugate gradient is used in most cases, in \cite{chan-jin2007} the authors presented an introduction on the topic for 1D data structures of Toeplitz matrices and also for 2D data structures, which they called block-Toeplitz Toeplitz-block matrices. In both cases, the solving strategy is to embed the Toeplitz/BTTB matrix into a Circulant/Block-Circulant Circulant-Block matrix, calculate its eigenvalues by a 1D or 2D fast Fourier transform of its first column, respectively and carry the matrix-vector product between kernel and parameters at each iteration of the conjugate gradient method in a very fast manner.
 
-In potential field methods, the properties of Toeplitz system have been used for downward continuation \citep{zhang-etal2016} and for 3D gravity-data inversion using a 2D multilayer model \citep{zhang-wong2015}. More recently, \cite{hogue2020tutorial} provided an overview on modeling the gravity and magnetic kernels using the BTTB structures and \cite{renaut2020fast} used BTTB the structures for inversion of both gravity and magnetic data to recover sparse subsurface structures.
+In potential field methods, the properties of Toeplitz system have been used for downward-continuation \citep{zhang-etal2016} and for 3D gravity-data inversion using a 2D multilayer model \citep{zhang-wong2015}. More recently, \cite{hogue2020tutorial} provided an overview on modeling the gravity and magnetic kernels using the BTTB structures and \cite{renaut2020fast} used BTTB the structures for inversion of both gravity and magnetic data to recover sparse subsurface structures.
 \cite{takahashi2020convolutional} combined the fast equivalent source technique presented by \cite{siqueira-etal2017} with the concept of symmetric block-Toeplitz Toeplitz-block (BTTB) matrices to introduce the convolutional equivalent layer for gravimetric data technique. 
 \cite{takahashi2020convolutional} showed that the BTTB structure appears when the sensitivity matrix of the linear system, required to solve the gravimetric equivalent layer, is calculated on a regular spaced grid of dataset with constant height and each equivalent source is exactly beneath each observed data point. 
 This work showed an decrease in the order of $10^4$ in floating-point operations needed to estimate the equivalent sources; thus, the \cite{takahashi2020convolutional} method was able to efficiently process very large gravity data sets. 
@@ -1094,7 +1091,7 @@ data fittings (large data residuals), as shown the middle panels in Figures
 \subsection*{Magnetic data processing}
 %======================================================================================
 
-We performed the upward continuations of the synthetic total-field anomalies 
+We performed the upward-continuations of the synthetic total-field anomalies 
 (second row in Figure \ref{fig:synthetic_data_comparison_v2}) by using 
 the classical method, our convolutional equivalent layer method, and 
 the classical approach in the Fourier domain,
@@ -1148,7 +1145,7 @@ are approximately $3.5$ times greater than those produced by the classical metho
 (upper row in Figure \ref{fig:synthetic_zrtp_residuals_comparison_v2}) and $3$ times greater than
 those produced by our method (middle row in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}).
 
-Important to note that the reduction to pole, either using the equivalent layer or the Fourier approach, has the requirement of a previously knowledge of the sources magnetization directions (equation \ref{eq:u_hat}) to obtain a correct source parameter estimative, otherwise, only non-phase dependent processing can be used (upward continuation for example).
+Important to note that the reduction to pole, either using the equivalent layer or the Fourier approach, has the requirement of a previously knowledge of the sources magnetization directions (equation \ref{eq:u_hat}) to obtain a correct source parameter estimative, otherwise, only non-phase dependent processing can be used (upward-continuation for example).
 
 We also call attention to the following aspects:
 In applying the classical method, our method, or the classical Fourier approach, we do not expand 
@@ -1286,7 +1283,7 @@ sensitivity matrix associated with the irregular grid of $1,310,000$ observation
 Carajás Province, northern Brazil, our method requires only $59.97$ Megabytes.
 When performed on a standard laptop computer with an Intel Core i7 7700HQ@2.8GHz processor in
 single-processing and single-threading modes, the total times spent by our method to estimate the
-physical-property distribution over the equivalent layer and to compute the upward continuation
+physical-property distribution over the equivalent layer and to compute the upward-continuation
 of the $1,310,000$ magnetic observations over the Carajás province was approximately $385.56$ 
 seconds and $2.64$ seconds.
 
@@ -1415,14 +1412,14 @@ undulating observation surfaces.
 
 \plot{carajas_residuals_comparison_1200_edit}{width=\textwidth}{
 	{(a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points.
-		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.0762$ nT and standard deviation of $0.4886$ nT. 
-		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $ 0.0717$ nT and standard deviation of $0.3144$ nT.
+		(b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.9089$ nT and standard deviation of $3.6425$ nT. 
+		(c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $0.9936$ nT and standard deviation of $4.0479$ nT.
 		(d) Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
 	\label{fig:carajas_residuals_comparison}
 }
 
-\plot{carajas_upward_comparison_1200}{width=13cm}{
-	{Upward continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
+\plot{carajas_upward_comparison_1200_uni}{width=13cm}{
+	{Upward-continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using:
 		(a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
 	\label{fig:carajas_upward_comparison}
 }
