@@ -46,7 +46,7 @@ continuation.
 
 **Figure 1:** *Number of flops associated with classical method, 
 the standard CGLS method and our method, all of them with 50 iterations. 
-The number of observation points $N$ varies from 5,000 to 1,000,000.*
+The number of observation points N varies from 5,000 to 1,000,000.*
 
 
 ![](manuscript/Fig/time_comparison_mag.png)
