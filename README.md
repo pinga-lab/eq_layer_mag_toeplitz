@@ -26,8 +26,8 @@ Our convolutional equivalent layer method uses this approach to compute
 the matrix-vector products in the iterative conjugate gradient algorithm with the purpose 
 of estimating the physical-property distribution over the equivalent layer for 
 large data sets.
-Synthetic tests with a mid-size $100 \times 50$ grid of total-field anomaly data
-show a decrease of $\approx 10^4$ in floating-point operations and $\approx 25\times$ 
+Synthetic tests with a mid-size 100x50 grid of total-field anomaly data
+show a decrease of approximate 4 orders of magnitude in floating-point operations and approximate 25x 
 in computation runtime of our method compared to the classical approach of solving
 the least-squares normal equations via Cholesky decomposition. 
 Faster results are obtained for millions of data, showing drastic decreases in RAM usage
@@ -37,23 +37,22 @@ Our results also show that, compared to the classical Fourier approach, the magn
 data processing with our method requires similar computation time, but produces significantly 
 smaller border effects without using any padding scheme and also is more robust to 
 deal with data on irregularly spaced points or on undulating observation surfaces.
-A test with $1,310,000$ irregularly spaced field data over the Caraj{\'a}s Province, Brazil, 
-confirms the efficiency of our method by taking $\approx 385.56$ seconds to estimate the physical-property
-distribution over the equivalent layer and $\approx 2.64$ seconds to compute the upward 
+A test with 1,310,000 irregularly spaced field data over the Carajás Province, Brazil, 
+confirms the efficiency of our method by taking approximate 385.56 seconds to estimate the physical-property
+distribution over the equivalent layer and approximate 2.64 seconds to compute the upward 
 continuation.
 
 ![](manuscript/Fig/flops_mag.png)
 
 **Figure 1:** *Number of flops associated with classical method, 
-the standard CGLS method and our method, all of them with $N^{it} = 50$. 
-The number of observation points $N$ varies from $5,000$ to $1,000,000$.*
+the standard CGLS method and our method, all of them with 50 iterations. 
+The number of observation points $N$ varies from 5,000 to 1,000,000.*
 
 
 ![](manuscript/Fig/time_comparison_mag.png)
 
 **Figure 2:** *Comparison between the runtime of the equivalent-layer technique using the classical method, 
-standard CGLS method and our method. The values for the standard CGLS and our method use
-$N^{it} = 50$ iterations.*
+standard CGLS method and our method. The values for the standard CGLS and our method use 50 iterations.*
 
 
 ## Reproducing the results
