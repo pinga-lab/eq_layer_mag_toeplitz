@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: submission.aux
+Reallocating 'name_of_file' (item size: 1) to 4 items.
+The style file: seg.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+I was expecting a `,' or a `}'---line 543 of file references.bib
+ : 
+ : @article{mendoncca2020subspace,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You can't pop an empty literal stack for entry chan-jin2007
+while executing---line 1586 of file seg.bst
+You've used 31 entries,
+            2639 wiz_defined-function locations,
+            892 strings with 10690 characters,
+and the built_in function-call counts, 11461 in all, are:
+= -- 1235
+> -- 374
+< -- 21
++ -- 132
+- -- 118
+* -- 981
+:= -- 1995
+add.period$ -- 31
+call.type$ -- 31
+change.case$ -- 219
+chr.to.int$ -- 31
+cite$ -- 31
+duplicate$ -- 424
+empty$ -- 888
+format.name$ -- 163
+if$ -- 2359
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 40
+newline$ -- 97
+num.names$ -- 93
+pop$ -- 173
+preamble$ -- 1
+purify$ -- 214
+quote$ -- 0
+skip$ -- 307
+stack$ -- 0
+substring$ -- 876
+swap$ -- 22
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 168
+warning$ -- 0
+while$ -- 96
+width$ -- 0
+write$ -- 340
+(There were 2 error messages)

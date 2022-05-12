@@ -1,0 +1,48 @@
+%\documentclass[paper,twocolumn,twoside]{geophysics}
+%\documentclass[manuscript,noblind]{geophysics}
+\documentclass{article}
+
+% Extra packages
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{bm}
+\usepackage[hyphens,spaces]{url}
+\usepackage[pdftex,colorlinks=true]{hyperref}
+\hypersetup{
+	allcolors=black,
+}
+\usepackage{lipsum}
+\usepackage[table]{xcolor}
+
+\begin{document}
+
+
+{
+	\begin{center}
+		\begin{tabular}[]{|l|c|c|c|}
+			\hline
+			\textbf{$N$} & \textbf{$\mathbf{A}$} & \textbf{First columns of matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$} & \textbf{$\mathbf{L}$}\\
+			\hline 
+			$100$ & 0.0763 & 0.0183 & 0.00610\\
+			\hline
+			$400$ & 1.22 & 0.0744 & 0.0248\\
+			\hline
+			$2,500$ & 48 & 0.458 & 0.1528\\
+			\hline
+			$10,000$ & 763 & 1.831 & 0.6104\\
+			\hline
+			$40,000$ & 12,207 & 7.32 & 2.4416 \\
+			\hline
+			$250,000$ & 476,837 & 45.768 & 15.3 \\
+			\hline
+			$500,000$ & 1,907,349 & 91.56 & 30.518 \\
+			\hline
+			$1,000,000$ & 7,629,395 & 183.096 & 61.035 \\
+			\hline
+		\end{tabular}
+	\end{center} 
+\caption{RAM-usage}{This table shows the computer memory usage (in Megabytes) for storing the whole 	$N \times N$ matrix $\mathbf{A}$ (equation 13), the first columns of the BCCB	matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation A-6) (both need 8 bytes per element) and the matrix $\mathbf{L}$ (equation A-18) (16 bytes per element).
+\label{tab:RAM-usage}}
+}
+
+\end{document}
