@@ -5,11 +5,6 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: seg.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-I was expecting a `,' or a `}'---line 543 of file references.bib
- : 
- : @article{mendoncca2020subspace,
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
 You can't pop an empty literal stack for entry chan-jin2007
 while executing---line 1586 of file seg.bst
 You've used 31 entries,
@@ -53,4 +48,4 @@ warning$ -- 0
 while$ -- 96
 width$ -- 0
 write$ -- 340
-(There were 2 error messages)
+(There was 1 error message)
