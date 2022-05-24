@@ -152,20 +152,20 @@ def cgls_eq_bccb_mag(x,y,z,zj,shape,data,F,h,itmax):
     # Dataset lenght 
     N = shape[0]*shape[1]
 
-    if N < 150000:
+    #if N < 150000:
         # Calculates the first and last rows of the first and last rows of
         # blocks of the sensitivity matrix for N < 150 000
-        bttb_0, bttb_1, bttb_2, bttb_3 = bttb_mag(x,y,z,zj,F,h,shape)
+    #    bttb_0, bttb_1, bttb_2, bttb_3 = bttb_mag(x,y,z,zj,F,h,shape)
         # Calculates the eigenvalues of BCCB and the transposed matrix
-        cev = cev_mag(bttb_0,bttb_1,bttb_2,bttb_3,shape,N)
-        cev_row = cev_mag_row(bttb_0,bttb_1,bttb_2,bttb_3,shape,N)
-    else:
+    #    cev = cev_mag(bttb_0,bttb_1,bttb_2,bttb_3,shape,N)
+    #    cev_row = cev_mag_row(bttb_0,bttb_1,bttb_2,bttb_3,shape,N)
+    #else:
         # Calculates the first row of each component of the second derivatives
         # of the function 1/r
-        hxx,hxy,hxz,hyy,hyz,hzz = h_bttb_mag(x,y,z,zj,F,h,shape)
+    hxx,hxy,hxz,hyy,hyz,hzz = h_bttb_mag(x,y,z,zj,F,h,shape)
         # Calculates the eigenvalues of BCCB and the transposed matrix
-        cev = ones_cev_mag(hxx,hxy,hxz,hyy,hyz,hzz,shape,N,F,h)
-        cev_row = ones_cev_mag_row(hxx,hxy,hxz,hyy,hyz,hzz,shape,N,F,h)
+    cev = ones_cev_mag_no_for(hxx,hxy,hxz,hyy,hyz,hzz,shape,N,F,h)
+    cev_row = ones_cev_mag_row_no_for(hxx,hxy,hxz,hyy,hyz,hzz,shape,N,F,h)
 
     #CGLS inversion method for Equivalent layer
     p_cgls = cgls_bccb_loop(cev,cev_row,shape,N,data,itmax)
@@ -432,7 +432,7 @@ def lsqr_eq_bccb_mag_tikho_0(x,y,z,zj,shape,data,F,h,itmax):
 
     return p_lsqr, datap
 
-def sensibility_matrix(x,y,z,zj,F,h,N):
+def sensitivity_matrix(x,y,z,zj,F,h,N):
     '''
     Calculates a full NxN matrix given by
     the first derivative of the function
@@ -454,7 +454,7 @@ def sensibility_matrix(x,y,z,zj,F,h,N):
     for i in range (N):
         a = (x-x[i])
         b = (y-y[i])
-        c = (zj-z[i])
+        c = (z-zj[i])
         r = (a*a+b*b+c*c)
         r3 = r**(-1.5)
         r5 = r**(2.5)
@@ -464,7 +464,7 @@ def sensibility_matrix(x,y,z,zj,F,h,N):
         Hyy = -r3+3*(b*b)/r5
         Hyz = 3*(b*c)/r5
         Hzz = -r3+3*(c*c)/r5
-        A[i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
+        A[:,i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
         F[2]*Hyz)*h[1] + (F[0]*Hxz+F[1]*Hyz+F[2]*Hzz)*h[2])
     return A
 
@@ -494,7 +494,7 @@ def classic_mag(x,y,z,zj,F,h,N,data):
     for i in range (N):
         a = (x-x[i])
         b = (y-y[i])
-        c = (zj-z[i])
+        c = (z-zj[i])
         r = (a*a+b*b+c*c)
         r3 = r**(-1.5)
         r5 = r**(2.5)
@@ -504,7 +504,7 @@ def classic_mag(x,y,z,zj,F,h,N,data):
         Hyy = -r3+3*(b*b)/r5
         Hyz = 3*(b*c)/r5
         Hzz = -r3+3*(c*c)/r5
-        A[i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
+        A[:,i] = 100*((F[0]*Hxx+F[1]*Hxy+F[2]*Hxz)*h[0] + (F[0]*Hxy+F[1]*Hyy+
         F[2]*Hyz)*h[1] + (F[0]*Hxz+F[1]*Hyz+F[2]*Hzz)*h[2])
     I = np.identity(N)
     ATA = A.T.dot(A)
@@ -633,7 +633,7 @@ def h_bttb_mag(x,y,z,zj,F,h,shape):
     # First row of each component of the second derivatives
     a = (x-x[0])
     b = (y-y[0])
-    c = (zj-z[0])
+    c = (z-zj[0])
     r = (a*a+b*b+c*c)
     r3 = r**(-1.5)
     r5 = r**(2.5)
@@ -671,9 +671,9 @@ def ones_cev_mag(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
     for i in range (shape[0]):
         block_xx = Hxx[shape[1]*(i):shape[1]*(i+1)]
         block_xy = Hxy[shape[1]*(i):shape[1]*(i+1)]
-        block_xz = -Hxz[shape[1]*(i):shape[1]*(i+1)]
+        block_xz = Hxz[shape[1]*(i):shape[1]*(i+1)]
         block_yy = Hyy[shape[1]*(i):shape[1]*(i+1)]
-        block_yz = -Hyz[shape[1]*(i):shape[1]*(i+1)]
+        block_yz = Hyz[shape[1]*(i):shape[1]*(i+1)]
         block_zz = Hzz[shape[1]*(i):shape[1]*(i+1)]
         rev_xx = block_xx[::-1]
         rev_xy = -block_xy[::-1]
@@ -742,9 +742,9 @@ def ones_cev_mag_row(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
     for i in range (shape[0]):
         block_xx = Hxx[shape[1]*(i):shape[1]*(i+1)]
         block_xy = Hxy[shape[1]*(i):shape[1]*(i+1)]
-        block_xz = Hxz[shape[1]*(i):shape[1]*(i+1)]
+        block_xz = -Hxz[shape[1]*(i):shape[1]*(i+1)]
         block_yy = Hyy[shape[1]*(i):shape[1]*(i+1)]
-        block_yz = Hyz[shape[1]*(i):shape[1]*(i+1)]
+        block_yz = -Hyz[shape[1]*(i):shape[1]*(i+1)]
         block_zz = Hzz[shape[1]*(i):shape[1]*(i+1)]
         rev_xx = block_xx[::-1]
         rev_xy = -block_xy[::-1]
@@ -786,6 +786,117 @@ def ones_cev_mag_row(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
     BCCB = bccb.reshape(2*shape[0],2*shape[1]).T
     cev_mag_row = np.fft.fft2(BCCB)
     return cev_mag_row
+
+def ones_cev_mag_no_for(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
+    '''
+    Calculates the eigenvalues of the BCCB matrix using 
+    only the effect of one equivalent source.
+
+    input
+    shape: tuple - grid size.
+    N: scalar - number of observation points.
+    Hxx,Hxy,Hxz,Hyy,Hyz,Hzz: numpy array - first row of each component of 
+    the second derivatives of 1/r necessary to calculate the BCCB eigenvalues.
+
+    output
+    cev: numpy array - eigenvalues of the BCCB matrix.
+    '''
+    Hxx_matrix = Hxx.reshape(shape[0],shape[1])
+    Hxy_matrix = Hxy.reshape(shape[0],shape[1])
+    Hxz_matrix = Hxz.reshape(shape[0],shape[1])
+    Hyy_matrix = Hyy.reshape(shape[0],shape[1])
+    Hyz_matrix = Hyz.reshape(shape[0],shape[1])
+
+    bccb_xx = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xx[:shape[0],:shape[1]] = Hxx_matrix
+    bccb_xx[:shape[0],shape[1]+1:] = Hxx_matrix[:,1:shape[1]][:,::-1]
+    bccb_xx[shape[0]+1:,:] = bccb_xx[1:shape[0],:][::-1]
+
+    bccb_xy = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xy[:shape[0],:shape[1]] = Hxy_matrix
+    bccb_xy[:shape[0],shape[1]+1:] = -Hxy_matrix[:,1:shape[1]][:,::-1]
+    bccb_xy[shape[0]+1:,:] = -bccb_xy[1:shape[0],:][::-1]
+
+    bccb_xz = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xz[:shape[0],:shape[1]] = Hxz_matrix
+    bccb_xz[:shape[0],shape[1]+1:] = Hxz_matrix[:,1:shape[1]][:,::-1]
+    bccb_xz[shape[0]+1:,:] = -bccb_xz[1:shape[0],:][::-1]
+
+    bccb_yy = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_yy[:shape[0],:shape[1]] = Hyy_matrix
+    bccb_yy[:shape[0],shape[1]+1:] = Hyy_matrix[:,1:shape[1]][:,::-1]
+    bccb_yy[shape[0]+1:,:] = bccb_yy[1:shape[0],:][::-1]
+
+    bccb_yz = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_yz[:shape[0],:shape[1]] = Hyz_matrix
+    bccb_yz[:shape[0],shape[1]+1:] = -Hyz_matrix[:,1:shape[1]][:,::-1]
+    bccb_yz[shape[0]+1:,:] = bccb_yz[1:shape[0],:][::-1]
+
+    bccb_zz = -bccb_xx-bccb_yy
+
+    bccb = 100*((F[0]*bccb_xx+F[1]*bccb_xy+F[2]*bccb_xz)*h[0] + 
+                           (F[0]*bccb_xy+F[1]*bccb_yy+F[2]*bccb_yz)*h[1] +
+                           (F[0]*bccb_xz+F[1]*bccb_yz+F[2]*bccb_zz)*h[2])
+
+    BCCB = bccb.T
+    cev_mag = np.fft.fft2(BCCB)
+    return cev_mag
+    
+def ones_cev_mag_row_no_for(Hxx,Hxy,Hxz,Hyy,Hyz,Hzz,shape,N,F,h):
+    '''
+    Calculates the eigenvalues of the transposed BCCB matrix using 
+    only the effect of one equivalent source.
+
+    input
+    shape: tuple - grid size.
+    N: scalar - number of observation points.
+    Hxx,Hxy,Hxz,Hyy,Hyz,Hzz: numpy array - first row of each component of
+    the second derivatives of 1/r necessary to calculate the transposed
+    BCCB eigenvalues.
+
+    output
+    cev: numpy array - eigenvalues of the transposed BCCB matrix.
+    '''
+    Hxx_matrix = Hxx.reshape(shape[0],shape[1])
+    Hxy_matrix = Hxy.reshape(shape[0],shape[1])
+    Hxz_matrix = -Hxz.reshape(shape[0],shape[1])
+    Hyy_matrix = Hyy.reshape(shape[0],shape[1])
+    Hyz_matrix = -Hyz.reshape(shape[0],shape[1])
+
+    bccb_xx = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xx[:shape[0],:shape[1]] = Hxx_matrix
+    bccb_xx[:shape[0],shape[1]+1:] = Hxx_matrix[:,1:shape[1]][:,::-1]
+    bccb_xx[shape[0]+1:,:] = bccb_xx[1:shape[0],:][::-1]
+
+    bccb_xy = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xy[:shape[0],:shape[1]] = Hxy_matrix
+    bccb_xy[:shape[0],shape[1]+1:] = -Hxy_matrix[:,1:shape[1]][:,::-1]
+    bccb_xy[shape[0]+1:,:] = -bccb_xy[1:shape[0],:][::-1]
+
+    bccb_xz = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_xz[:shape[0],:shape[1]] = Hxz_matrix
+    bccb_xz[:shape[0],shape[1]+1:] = Hxz_matrix[:,1:shape[1]][:,::-1]
+    bccb_xz[shape[0]+1:,:] = -bccb_xz[1:shape[0],:][::-1]
+
+    bccb_yy = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_yy[:shape[0],:shape[1]] = Hyy_matrix
+    bccb_yy[:shape[0],shape[1]+1:] = Hyy_matrix[:,1:shape[1]][:,::-1]
+    bccb_yy[shape[0]+1:,:] = bccb_yy[1:shape[0],:][::-1]
+
+    bccb_yz = np.zeros((shape[0]*2,shape[1]*2))
+    bccb_yz[:shape[0],:shape[1]] = Hyz_matrix
+    bccb_yz[:shape[0],shape[1]+1:] = -Hyz_matrix[:,1:shape[1]][:,::-1]
+    bccb_yz[shape[0]+1:,:] = bccb_yz[1:shape[0],:][::-1]
+
+    bccb_zz = -bccb_xx-bccb_yy
+
+    bccb = 100*((F[0]*bccb_xx+F[1]*bccb_xy+F[2]*bccb_xz)*h[0] + 
+                           (F[0]*bccb_xy+F[1]*bccb_yy+F[2]*bccb_yz)*h[1] +
+                           (F[0]*bccb_xz+F[1]*bccb_yz+F[2]*bccb_zz)*h[2])
+
+    BCCB = bccb.T
+    cev_mag_row = np.fft.fft2(BCCB)
+    return cev_mag_row    
 
 def cev_mag(bttb_0,bttb_1,bttb_2,bttb_3,shape,N):
     '''
