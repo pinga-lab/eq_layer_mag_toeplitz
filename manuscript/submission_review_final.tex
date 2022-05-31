@@ -809,7 +809,7 @@ using the \textit{standard Conjugate Gradient Least Squares (CGLS) method}:
 	
 	7 - $it = it + 1$
 	
-	8 - Repeat previous steps until convergence (stops if $\delta = \dfrac{|\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}|}{N} \leq 10^{-3}$).
+	8 - Repeat previous steps until convergence (stops if $\delta = \dfrac{||\mathbf{r}_{(it + 1)} - \mathbf{r}_{(it)}||}{N} \leq 10^{-3}$).
 	
 	\caption{Standard CGLS pseudocode \citep[][ p. 166]{aster2019parameter}.}
 	\label{al:std-cgls-algorithm}
@@ -900,8 +900,6 @@ With $N = 10,000$, the classical method takes more than sixty-three seconds, the
 CGLS more than twelve seconds, while our method takes only half a second. 
 The CPU used for this test was a Intel Core i7-7700HQ@2.8GHz.
 
-%In Figure \ref{fig:sources_time} a comparison between the time to complete the task to calculate the first column of the BCCB matrix embbeded from the from $\mathbf{A}$ (equation \ref{eq:aij_mag}) by using only one equivalent source, i.e., calculating all six first column of the second derivatives matrices from $\mathbf{H}$ (equation \ref{eq:Hi}) and using four equivalent sources to calculate the four necessary columns from the non-symmetric matrix $\mathbf{A}$ (equation \ref{eq:aij_mag}). Although, very similar in time, with one source a small advantage can be observed as the number of data $N$ increases and goes beyond $N = 200,000$. This test was done from $N = 10,000$ to $N = 700,000$ with increases of $5,625$ observation points.
-
 Table \ref{tab:RAM-usage} shows a comparison between the computer memory storage 
 associated with each method. In the classical and standard CGLS methods, the whole 
 matrix $\mathbf{A}$ (equation \ref{eq:A_expand}) has to be stored. For example, a dataset with 
@@ -923,8 +921,7 @@ surveys formed by
 i) a regular data grid on a flat surface;
 ii) irregular data grids on a flat surface; and 
 iii) regular data grids on $x$- and $y$-directions but, irregular on the $z$-direction (irregular surface).
-Note that the simulated surveys in (ii) and (iii) violate the premises of our method, implying 
-that matrix $\mathbf{A}$ is not BTTB.
+Note that the simulated surveys in (ii) and (iii) violate the premises of our method, implying that matrix $\mathbf{A}$ is not BTTB.
 
 %=======================================
 \subsection*{Simulated airborne surveys}
@@ -1002,16 +999,11 @@ The data residuals using the classical method (equation \ref{eq:classical-method
 are shown in the upper panel of Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a, 
 with mean $0.4118$ nT and standard deviation $0.3780$ nT. This process took $17.10$ seconds.
 Using our method, the data residuals (the middle panel in Figure
-\ref{fig:synthetic_residuals_convergence_comparison_v2}a) have mean $0.9972$ nT and standard
-deviation $1.3904$ nT. In this case, however, the processing time was only $0.25$ seconds.
+\ref{fig:synthetic_residuals_convergence_comparison_v2}a) have mean $0.9974$ nT and standard
+deviation $1.3900$ nT. In this case, however, the processing time was only $0.25$ seconds.
 As expected, the Euclidean norm of the data residuals produced by our method 
 (lower panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}a) decreases. 
 The convergence criterion was satisfied at iteration $51$.
-%This result shows that, in practice, our method converges way before $N$ iterations,
-%where $N$ is the number of observations.
-%Setting the convergence to $N$ iterations, besides being unnecessary, it also demands a larger 
-%computer processing time, even in this synthetic test with a small number 
-%of $N = 5,\, 000$ observations.
 
 %======================================================================================
 \subsection*{Tests with irregular data grids on a flat surface}
@@ -1033,17 +1025,7 @@ Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}c shows the result
 with the irregular data grid perturbed by using $30\%$ of the regular grid spacing.
 The data residuals 
 obtained by the classical method (upper panel in Figure \ref{fig:synthetic_residuals_convergence_comparison_v2}c) produced an acceptable data fit, having mean 
-$0.4070$ nT and standard deviation $0.3899$ nT. 
-%Using our method, the data residuals (middle panel in Figure 
-%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $0.9788$ nT and 
-%standard deviation $0.7462$ nT produced a worse data fitting.
-%The convergence of our method (lower panel in Figure 
-%\ref{fig:synthetic_residuals_convergence_comparison_v2}c) shows that, 
-%similarly to the previous results, the Euclidean norm of the residuals decreases; however it starts
-%increasing without achieving an invariance. Hence, the convergence is not achieved. 
-%
-%\textbf{Alternative text} $\rightarrow$
-%
+$0.4070$ nT and standard deviation $0.3899$ nT.
 Using our method, the data residuals (middle panel in Figure 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}c) with mean $1.5129$ nT and 
 standard deviation $1.8526$ nT also produced a good data fitting.
@@ -1052,8 +1034,6 @@ The convergence of our method (lower panel in Figure
 similarly to the previous results, the Euclidean norm of the residuals decreases; converging 
 to a constant value at iteration $54$. Note that this good result was obtained by 
 using a very perturbed data grid (upper panel in Figure \ref{fig:synthetic_data_comparison_v2}c).
-%
-%$\leftarrow$ \textbf{Alternative text}
 
 %======================================================================================
 \subsection*{Tests with regular data grid and irregular surfaces}
@@ -1093,9 +1073,6 @@ a horizontally regular grid, on a flat surface, the results obtained with synthe
 data show that our method is robust in dealing either with irregular grids in the 
 horizontal directions or with uneven surfaces.
 However, the robustness of our method has limitations.
-%The performance limitation of our method depends on the degree of 
-%departure of the (i) $x$- and $y$-coordinates from those of the closest 
-%regular grid and (ii) the $z$ coordinates from a constant value.
 High discrepancies in the $x$-, $y$, and $z$-coordinates lead to unacceptable 
 data fittings (large data residuals), as shown the middle panels in Figures 
 \ref{fig:synthetic_residuals_convergence_comparison_v2}c and
@@ -1129,7 +1106,6 @@ Note that the maximum absolute value of the continuation residuals produced by u
 method (middle panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e) 
 are about two times greater than those produced by the classical method 
 (upper panel in Figure \ref{fig:synthetic_upward_residuals_comparison_v2}e).
-%Besides, they are generally concentrated at the boundaries of the study area.
 
 %%  Fourier 
 In contrast, the continuation residuals obtained by using the 
@@ -1212,43 +1188,6 @@ sensitivity matrix with the classical method.
 In this case, our method uses only $59.97$ Megabytes, allowing regular desktop computers to be able 
 to process this amount of data.
 
-
-%
-%\textbf{Alternative text} $\rightarrow$
-%
-%As the study area is very large, the main magnetic field varies with position.
-%For this application, we set the main field direction as that of a mid location 
-%(latitude $-6.5^{\circ}$ and longitude $-50.75^{\circ}$) where the declination is $-19.86^{\circ}$ 
-%and inclination is $XXXXXX^{\circ}$ according to IGRF model at 1st January, 2014 (epoch of the survey).
-%(É ESTRANHO CALCULAR A DECLINAÇÃO COM UM MODELO E A INCLINAÇÃO COM OUTRO)
-%
-%$\leftarrow$ \textbf{Alternative text}
-%
-
-%(Figure \ref{fig:carajas_real_data_decimated_gridline}a), we obtain the  predicted data shown in 
-%Figure \ref{fig:carajas_gz_predito_mag_gridline}a and data residuals 
-%(Figure \ref{fig:carajas_gz_predito_mag_gridline}b) with mean $0.0762$ nT and the standard deviation 
-%$0.4886$ nT, revealing an acceptable data fitting.
-%Our method took $\approx 390.80$ seconds to converge at about $200$ iterations.
-%
-%POR QUE A CURVA DE CONVERGENCIA NÃO FOI MOSTRADA?
-%
-
-%By applying our method to the decimated irregular grid 
-%(Figure \ref{fig:carajas_real_data_decimated_gridline}b), we obtain the predicted data shown in 
-%Figure \ref{fig:carajas_gz_predito_mag_decimated}a and data residuals 
-%(Figure \ref{fig:carajas_gz_predito_mag_decimated}b) with mean $0.0717$ nT and standard deviation 
-%$0.3144$ nT. In this case, our method took $\approx 385.56$ seconds 
-%to converge at about $200$ iterations (Figure \ref{fig:convergence_carajas_mag_decimated}).
-%(TEM ALGO ESTRANHO AQUI. COMO QUE 2000 ITERAÇÕES FOI MAIS MAIS RÁPIDO DO QUE AS 200 ITERAÇÕES DO GRID INTERPOLADO?).
-
-%The convergence curve reveals a good convergence rate obtained with the decimated 
-%irregular grid. This result shows the robustness of our method in processing irregular grid. Notice that we used in our %method of the interpolated regular grid $200$ iterations and the mean residual still decreasing up to $2000$. This happens %because the invariance convergence criterion was met as the mean residuals are very small and each iteration decreases less %than $0.00001$
-
-%We have found, in applying our method to the decimated irregular grid, that the data residual amplitude (Figure \ref{fig:carajas_gz_predito_mag_decimated}b) is lower than the data residual amplitude (Figure 
-%\ref{fig:carajas_gz_predito_mag_gridline}b) obtained by applying our method to the interpolated regular grid.
-%It occurs because  the  process of decimating the original irregularly data creates neither new observation points nor new data. Rather, the interpolation of the original irregularly data creates either new observation points or new data. 
-
 Finally, Figure \ref{fig:carajas_upward_comparison}a shows the upward-continued magnetic data to a
 horizontal plane located at an altitude of $5, \,000$ m using the estimated equivalent layer obtained by applying our
 method to the decimated irregular grid. This process took $\approx 2.64$ seconds, showing good results 
@@ -1257,8 +1196,6 @@ Figure \ref{fig:carajas_upward_comparison}b shows the upward-continued magnetic 
 horizontal plane located at an altitude of $5, \,000$ m using the classical Fourier filtering method to the decimated irregular grid.
 This process took $\approx 0.5$ seconds.
 The comparison between the upward results shows a similar total-field magnetic for both cases with attenuation of the anomalies. Interestingly, the Fourier method did not present border effects to this real data. We stress that we did not use a padding scheme to expand the data.
-%Altough, no border effect could be observed, this result showed unexpected high values in some regions, for example, the upper left corner,
-%which has values near to the same magnitude as the observed data, despite the general attenuation of the anomalies occured as expected.
 
 
 \section{Conclusions}
@@ -1275,14 +1212,8 @@ By using this property, we have developed a fast and memory efficient iterative 
 estimating the physical-property distribution on the equivalent layer.
 
 Comparisons between the estimated physical-property distribution obtained with our method and 
-the classical approach that solves the least-squares normal equations via Cholesky decomposition 
-show similar results. 
-The differences in total number of floating-point operations (flops), memory usage and computation 
-time, however, are noticeable. 
-For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of
-magnitude smaller than that required by the classical method. Besides, our method uses
-less than $1\%$ of the computer memory and takes about $3\%$ of the computation time associated with
-the classical method in this case.% (TEM QUE CHECAR ESTAS VALORES)
+the classical approach that solves the least-squares normal equations, with Cholesky decomposition, show similar results. 
+The differences in total number of floating-point operations (flops), memory usage and computation time, however, are noticeable. For a mid-size grid of $100 \times 50$ points, the total number of flops is about four orders of magnitude smaller than that required by the classical method. Besides, our method uses less than $1\%$ of the computer memory and takes about $3\%$ of the computation time associated with the classical method in this case.
 Significantly better results can be obtained with larger data sets.
 
 Tests with synthetic data show that the computational time required by our method has 
@@ -1312,9 +1243,9 @@ irregular observation surfaces.
 This study was financed by the brazilian agencies CAPES (in the form of a scholarship), FAPERJ
 (grants n. E-26 202.729/2018 and 26/202.582/2019) and CNPq (scholarship n. 300809/2022-0 and grants n. 309624/2021-5 and 315768/2020-7). The authors thank the Geological Survey of Brazil (CPRM) for providing the field data, the editors and the reviewers that contibuted to this work.
 
-\section{Figures}
+%\section{Figures}
 
-\plot{Figure 1}{width=0cm}
+\plot{Figure 1}{width=\textwidth}
 {
 	{Figure 1. Schematic representation of an $N_{x} \times N_{y}$ regular grid of points (black dots) with $N_{x} = 3$ and $N_{y} = 2$, where each point has an associated index. This index may represent $i$ or $j$, that are associated with observation points $(x_{i}, y_{i}, z_{0})$ and equivalent sources $(x_{j}, y_{j}, z_{c})$. Left panel shows an example of $x$-oriented grid, with indices varying along $x$-axis, while right panel shows an example of $y$-oriented grid, with indices varying along $y$-axis.}
 	\label{fig:regular-grids}
@@ -1322,13 +1253,13 @@ This study was financed by the brazilian agencies CAPES (in the form of a schola
 
 %% Computational performance
 
-\plot{Figure 2}{width=0cm}
+\plot{Figure 2}{width=\textwidth}
 {
 	{Figure 2. Number of flops associated with classical method (equation \ref{eq:flops-classical-method}), the standard CGLS method (equation \ref{eq:flops-standard-cgls}) and our method (equation \ref{eq:flops-convolutional-method}), all of them with $N^{it} = 50$. The number of observation points $N$ varies from $5,000$ to $1,000,000$.}
 	\label{fig:flops}
 }
 
-\plot{Figure 3}{width=0cm}
+\plot{Figure 3}{width=\textwidth}
 {
 	{Figure 3. Comparison between the runtime of the equivalent-layer technique using the classical method, standard CGLS method and our method. The values for the standard CGLS and our method use $N^{it} = 50$ iterations.}
 	\label{fig:solve_time}
@@ -1336,26 +1267,26 @@ This study was financed by the brazilian agencies CAPES (in the form of a schola
 
 %% Synthetic data part I
 
-\plot{Figure 4}{width=0cm}
+\plot{Figure 4}{width=9cm}
 {
 	{Figure 4. Synthetic tests: the simulated airborne magnetic surveys  - The first row shows the grids of observation points and the irregular observation surfaces that simulate the airborne magnetic surveys. The second row shows the noise-corrupted total-field anomalies produced by the synthetic sources and calculated on the simulated airborne magnetic survey shown in the first row. The third row shows the  noise-free total-field anomalies produced by the synthetic sources at $z = -1,300$ m (the true upward-continued total-field anomalies).	The fourth row shows the noise-free total-field anomalies produced by the synthetic sources at inclination $I_{0} = 90\circ$ (the true reduced to pole total-field anomalies). The results shown in these last three rows were obtained by using the simulated airborne magnetic surveys as follows: (a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m. A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an irregular observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$. The black lines represent the horizontal projection of the sources.}
 	\label{fig:synthetic_data_comparison_v2}
 }
 
-\plot{Figure 5}{width=0cm}
+\plot{Figure 5}{width=\textwidth}
 {
 	{Figure 5. Synthetic tests: the data residuals and convergence - The first row shows the data residuals using the classical method. The second and third rows show, respectively, the data residuals and the convergence curves using the convolutional equivalent layer (our method). The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.: (a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m. A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an irregular observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$. The black lines represent the horizontal projection of the sources.}
 	\label{fig:synthetic_residuals_convergence_comparison_v2}
 }
 
 
-\plot{Figure 6}{width=0cm}
+\plot{Figure 6}{width=\textwidth}
 {
 	{Figure 6. Synthetic tests: the data residuals of the upward-continued total-field anomalies (third row in Figure \ref{fig:synthetic_data_comparison_v2}). The data residuals of the upward-continued total-field anomalies are defined as the difference between the noise-free total-field anomaly produced by the synthetic sources at $z = -1,300$ m (third  row in Figure \ref{fig:synthetic_data_comparison_v2}) and the predicted total-field anomaly at $z = -1,300$ m  obtained by using three methods: the classical method (first row); the convolutional equivalent layer (second row); and the classic approach in the Fourier domain (third row). The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.: (a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$   in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m.	A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an irregular observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$. The black lines represent the horizontal projection of the sources.}
 	\label{fig:synthetic_upward_residuals_comparison_v2}
 }
 
-\plot{Figure 7}{width=0cm}
+\plot{Figure 7}{width=\textwidth}
 {
 	{Figure 7. Synthetic tests: the data residuals of the reduced to pole total-field anomalies (fourth row in Figure \ref{fig:synthetic_data_comparison_v2}). The data residuals of the reduced to pole total-field anomalies are defined as the difference between the noise-free total-field anomaly produced by the synthetic sources at the pole (fourth  row in Figure \ref{fig:synthetic_data_comparison_v2}) and the predicted total-field anomaly obtained by using three methods: the classical method (first row); the convolutional equivalent layer (second row); and the classic approach in the Fourier domain (third row). The results shown in these three rows were obtained by using the simulated airborne magnetic surveys shown in Figure \ref{fig:synthetic_data_comparison_v2}, i.e.: (a) A regular grid of $100 \times 50$ observation points in the $x-$ and $y-$directions and a flat observation surface at $z= -900$ m. An irregular grid with uncertainties of (b) $20\%$ and (c) $30\%$ in the $x-$ and $y-$coordinates and a flat observation surface at $z= - 900$ m.	A regular grid  of $100 \times 50$ observation points in the $x-$ and $y-$coordinates and an irregular observation surface with uncertainties of (d) $5\%$ and  (e) $10\%$. The black lines represent the horizontal projection of the sources.}
 	\label{fig:synthetic_zrtp_residuals_comparison_v2}
@@ -1363,26 +1294,25 @@ This study was financed by the brazilian agencies CAPES (in the form of a schola
 
 %% Field Data
 
-\plot{Figure 8}{width=0cm}
+\plot{Figure 8}{width=\textwidth}
 {
 	{Figure 8. (a) Observed total-field anomaly over the Carajás Province, northen Brazil. The aeromagnetic survey was flown in $131$ north-south flight lines at an average altitude of $900$ m, totaling $N = 6,081,345$ observation points. (b) Data residuals, defined as the difference between the regular interpolated grid data (not shown) and the predicted data (not shown), with mean of $0.9089$ nT and standard deviation of $3.6425$ nT. (c) Data residuals, defined as the difference between the irregular decimated grid data (not shown) and the predicted data (not shown), with mean of $0.9936$ nT and standard deviation of $4.0479$ nT. (d) Convergence curve using our method to the decimated irregular grid of the real data of Carajás Province, Brazil.}
 	\label{fig:carajas_residuals_comparison}
 }
 
-\plot{Figure 9}{width=0cm}
+\plot{Figure 9}{width=9cm}
 {
 	{Figure 9. Upward-continuations of real data of Carajás Province, Brazil at altitude of 5,000 m by using: (a) the convolutional equivalent layer (our method) and (b) the classical Fourier method.}
 	\label{fig:carajas_upward_comparison}
 }
 
-\section{Tables}
+%\section{Tables}
 
 \tabl{RAM-usage}
 {Table 1. This table shows the computer memory usage (in Megabytes) for storing the whole $N \times N$ matrix $\mathbf{A}$ (equation \ref{eq:A_expand}), the first columns of the BCCB matrices $\mathbf{C}_{\boldsymbol{\alpha\beta}}$ (equation \ref{eq:w_alpha_beta}) (both need 8 bytes per element) and the matrix $\mathbf{L}$ (equation \ref{eq:L}) (16 bytes per element).
 \label{tab:RAM-usage}}
 
 \append{BTTB matrix-vector product}
-
 This appendix follows a similar approach to that presented by \citet{takahashi2020convolutional}
 to efficiently compute the product of the sensitivity matrix
 $\mathbf{A}$ (equations \ref{eq:A_expand}) and a generic vector $\mathbf{b}$. 
