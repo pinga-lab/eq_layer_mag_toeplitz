@@ -1440,7 +1440,7 @@ def sphere_gz(xp, yp, zp, spheres, dens=None):
     res *= G*SI2MGAL
     return res
 
-def sphere_gz(xp, yp, zp, prisms):
+def polyprism_gz(xp, yp, zp, prisms):
     r"""
     z component of gravitational acceleration of a polygonal prism.
 
